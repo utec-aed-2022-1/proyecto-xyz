@@ -57,4 +57,9 @@ TEST_CASE("sha256", "[sha256]")
         // == 128
         sha256_hex(std::vector<bool>{1, 0, 0, 0, 0, 0, 0, 0})
         == "76BE8B528D0075F7AAE98D6FA57A6D3C83AE480A8469E668D7B0AF968995AC71");
+
+    CHECK(
+        // == 128
+        sha256_hex(128)
+        == "76BE8B528D0075F7AAE98D6FA57A6D3C83AE480A8469E668D7B0AF968995AC71");
 }
