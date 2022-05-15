@@ -2,11 +2,23 @@
 
 #include <array>
 #include <bitset>
+#include <climits>
 #include <cstdint>
 #include <deque>
+#include <limits>
 #include <sstream>
 #include <string>
+#include <type_traits>
 #include <vector>
+
+template<
+    typename Integer,
+    std::enable_if_t<std::numeric_limits<Integer>::is_integer, bool> = true>
+auto right_rotate(Integer n, unsigned rotation) -> Integer
+{
+    constexpr unsigned integer_bits = sizeof(Integer) * CHAR_BIT;
+    return n >> rotation | n << (integer_bits - rotation);
+}
 
 template<typename T>
 auto sha256(T) -> std::array<uint32_t, 8>;

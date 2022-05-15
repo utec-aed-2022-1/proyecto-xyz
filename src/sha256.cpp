@@ -9,11 +9,6 @@
 
 #include "sha256.hpp"
 
-auto right_rotate(uint32_t n, unsigned rotation) -> uint32_t
-{
-    return n >> rotation | n << (32 - rotation);
-}
-
 auto pre_process(std::deque<bool> bits) -> std::deque<bool>
 {
     uint64_t bits_original_size = bits.size(); // We asumme big endian
