@@ -1,6 +1,14 @@
 #include "catch.hpp"
 #include "sha256.hpp"
 
+TEST_CASE("right rotate", "[sha256]")
+{
+    CHECK(right_rotate(uint8_t(1), 1) == 0x80);
+    CHECK(right_rotate(uint16_t(1), 1) == 0x8000);
+    CHECK(right_rotate(uint32_t(1), 1) == 0x80000000);
+    CHECK(right_rotate(uint64_t(1), 1) == 0x8000000000000000);
+}
+
 TEST_CASE("to hex", "[sha256]")
 {
     CHECK(to_hex_string(1) == "00000001");
