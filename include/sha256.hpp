@@ -15,8 +15,7 @@ template<
     std::enable_if_t<std::numeric_limits<Integer>::is_integer, bool> = true>
 auto right_rotate(Integer n, unsigned rotation) -> Integer
 {
-    constexpr unsigned integer_bits = sizeof(Integer) * CHAR_BIT;
-    return n >> rotation | n << (integer_bits - rotation);
+    return n >> rotation | n << (std::numeric_limits<Integer>::digits - rotation);
 }
 
 template<typename T>
