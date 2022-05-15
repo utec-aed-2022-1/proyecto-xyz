@@ -1,3 +1,6 @@
+#include <cstdint>
+#include <vector>
+
 #include "catch.hpp"
 #include "sha256.hpp"
 
@@ -41,17 +44,17 @@ TEST_CASE("to hex", "[sha256]")
 TEST_CASE("sha256", "[sha256]")
 {
     CHECK(
-        sha256_hex(std::deque<bool>())
+        sha256_hex(std::vector<bool>())
         == "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855");
 
     CHECK(
         // == "hello"
-        sha256_hex(std::deque<bool>{0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0,
+        sha256_hex(std::vector<bool>{0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 0,
                                     1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1})
         == "2CF24DBA5FB0A30E26E83B2AC5B9E29E1B161E5C1FA7425E73043362938B9824");
 
     CHECK(
         // == 128
-        sha256_hex(std::deque<bool>{1, 0, 0, 0, 0, 0, 0, 0})
+        sha256_hex(std::vector<bool>{1, 0, 0, 0, 0, 0, 0, 0})
         == "76BE8B528D0075F7AAE98D6FA57A6D3C83AE480A8469E668D7B0AF968995AC71");
 }

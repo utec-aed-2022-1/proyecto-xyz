@@ -4,7 +4,6 @@
 #include <bitset>
 #include <climits>
 #include <cstdint>
-#include <deque>
 #include <limits>
 #include <sstream>
 #include <string>
@@ -23,7 +22,7 @@ auto right_rotate(Integer n, unsigned rotation) -> Integer
 template<typename T>
 auto sha256(T) -> std::array<uint32_t, 8>;
 
-auto sha256(std::deque<bool> bytes) -> std::array<uint32_t, 8>;
+auto sha256(std::vector<bool> bytes) -> std::array<uint32_t, 8>;
 
 auto to_hex_string(uint32_t n) -> std::string;
 auto to_hex_string(std::bitset<4> n) -> std::string;

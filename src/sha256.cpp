@@ -1,7 +1,6 @@
 #include <bitset>
 #include <cassert>
 #include <cstdint>
-#include <deque>
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -9,7 +8,7 @@
 
 #include "sha256.hpp"
 
-auto pre_process(std::deque<bool> bits) -> std::deque<bool>
+auto pre_process(std::vector<bool> bits) -> std::vector<bool>
 {
     uint64_t bits_original_size = bits.size(); // We asumme big endian
 
@@ -31,7 +30,7 @@ auto pre_process(std::deque<bool> bits) -> std::deque<bool>
     return bits;
 }
 
-auto sha256(std::deque<bool> bits) -> std::array<uint32_t, 8>
+auto sha256(std::vector<bool> bits) -> std::array<uint32_t, 8>
 {
     uint32_t h0 = 0x6a09e667;
     uint32_t h1 = 0xbb67ae85;
@@ -55,8 +54,9 @@ auto sha256(std::deque<bool> bits) -> std::array<uint32_t, 8>
            0xc67178f2};
 
     bits = pre_process(bits);
+    std::vector<bool>::size_type bits_i = 0;
 
-    while (!bits.empty())
+    while (bits_i != bits.size())
     {
         std::array<uint32_t, 64> w{};
 
@@ -66,8 +66,8 @@ auto sha256(std::deque<bool> bits) -> std::array<uint32_t, 8>
             uint32_t to_add = 0;
             for (size_t j = 0; j < 32; j++)
             {
-                to_add = (to_add << 1) + bits.front();
-                bits.pop_front();
+                to_add = (to_add << 1) + bits[bits_i];
+                ++bits_i;
             }
             w.at(i) = to_add;
         }
