@@ -45,3 +45,8 @@ vgcore.*
 # direnv
 .envrc
 .direnv/
+
+.task/
+
+compile/
+.vscode/
