@@ -19,6 +19,7 @@ auto right_rotate(Integer n, unsigned rotation) -> Integer
 }
 
 auto sha256(std::vector<bool> bytes) -> std::array<uint32_t, 8>;
+auto sha256(uint8_t const* octets, size_t n_octets) -> std::array<uint32_t, 8>;
 
 template<
     typename Integer,
