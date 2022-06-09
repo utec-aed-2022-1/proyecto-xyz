@@ -1,6 +1,6 @@
 # -*- mode: just; -*-
 
-build_dir := "build/"
+build_dir := "build_linux/"
 
 build: _build_exists
     meson compile -C {{build_dir}}
