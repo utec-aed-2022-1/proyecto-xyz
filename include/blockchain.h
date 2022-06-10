@@ -1,9 +1,6 @@
-//
-// Created by Mauricio on 9/06/2022.
-//
+#pragma once
 
-#ifndef PROYECTO_XYZ_BLOCKCHAIN_H
-#define PROYECTO_XYZ_BLOCKCHAIN_H
+#include <string>
 
 class blockchain
 {
@@ -31,4 +28,3 @@ public:
     ~blockchain();
 };
 
-#endif // PROYECTO_XYZ_BLOCKCHAIN_H
