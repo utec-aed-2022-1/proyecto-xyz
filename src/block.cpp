@@ -4,6 +4,7 @@
 
 #include "../include/sha256.hpp"
 #include "../include/block.hpp"
+#include "../include/json.hpp"
 
 using namespace std;
 
@@ -23,4 +24,25 @@ auto block::calculateHash() -> string {
   // sha256_hex<block>(this);
 
   return "sha256_hex(this)";
+}
+
+auto block::mineBlock(uint32_t nDifficulty) -> void {
+  // char *strHash = new char[nDifficulty + 1];
+  // for (uint32_t i = 0; i < nDifficulty; ++i)
+  //   strHash[i] = '0';
+
+  // strHash[nDifficulty] = '\0';
+
+  // string str(strHash);
+
+  // do {
+  //   nonce++;
+  //   hash = calculateHash();
+  // } while (hash.substr(0, nDifficulty) != str);
+
+  cout << "Block mined: " << hash << endl;
+}
+
+auto toJson() -> void {
+  // json j;
 }

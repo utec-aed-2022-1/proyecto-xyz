@@ -27,20 +27,7 @@ public:
 
   auto calculateHash() -> string;
 
-  // void mineBlock(uint32_t nDifficulty) {
-  //   char *strHash = new char[nDifficulty + 1];
-  //   for (uint32_t i = 0; i < nDifficulty; ++i)
-  //     strHash[i] = '0';
+  auto mineBlock(uint32_t nDifficulty) -> void;
 
-  //   strHash[nDifficulty] = '\0';
-
-  //   string str(strHash);
-
-  //   do {
-  //     nonce++;
-  //     hash = calculateHash();
-  //   } while (hash.substr(0, nDifficulty) != str);
-
-  //   cout << "Block mined: " << hash << endl;
-  // }
+  auto toJson() -> void;
 };
