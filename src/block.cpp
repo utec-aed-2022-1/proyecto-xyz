@@ -20,7 +20,7 @@ auto block::calculateHash() -> string {
   // stringstream ss;
   // ss << id << data << nonce << prevHash;
 
-  // sha256_hex<block>(*this);
+  // sha256_hex<block>(this);
 
   return "sha256_hex(this)";
 }
