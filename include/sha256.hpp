@@ -55,6 +55,8 @@ auto sha256(Integer n) -> std::array<uint32_t, 8>
     return sha256_raw(change_endianess(n));
 }
 
+auto sha256(std::string const& str) -> std::array<uint32_t, 8>;
+
 auto to_hex_string(uint32_t n) -> std::string;
 auto to_hex_string(std::bitset<4> n) -> std::string;
 

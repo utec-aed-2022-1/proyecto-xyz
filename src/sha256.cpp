@@ -273,6 +273,12 @@ auto sha256(uint8_t const* octets, uint64_t n_octets) -> std::array<uint32_t, 8>
     return {h0, h1, h2, h3, h4, h5, h6, h7};
 }
 
+auto sha256(std::string const& str) -> std::array<uint32_t, 8>
+{
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
+    return sha256(reinterpret_cast<uint8_t const*>(str.data()), str.size());
+}
+
 auto to_hex_string(uint32_t n) -> std::string
 {
     using bs = std::bitset<4>;
