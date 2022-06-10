@@ -12,6 +12,11 @@ TEST_CASE("right rotate", "[sha256]")
     CHECK(right_rotate(uint64_t(1), 1) == 0x8000000000000000);
 }
 
+TEST_CASE("change_endianess", "[sha256]")
+{
+    REQUIRE(change_endianess(0x11121314U) == 0x14131211U);
+}
+
 TEST_CASE("to hex", "[sha256]")
 {
     CHECK(to_hex_string(1) == "00000001");
