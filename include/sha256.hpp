@@ -18,16 +18,26 @@ auto right_rotate(Integer n, unsigned rotation) -> Integer
     return n >> rotation | n << (std::numeric_limits<Integer>::digits - rotation);
 }
 
-auto sha256(std::vector<bool> bytes) -> std::array<uint32_t, 8>;
-auto sha256(uint8_t const* octets, uint64_t n_octets) -> std::array<uint32_t, 8>;
-
 template<
     typename Integer,
     std::enable_if_t<std::numeric_limits<Integer>::is_integer, bool> = true>
-auto sha256(Integer n) -> std::array<uint32_t, 8>
+auto change_endianess(Integer n) -> Integer
 {
-    return sha256_raw(change_endianess(n));
+    static constexpr size_t n_digits = std::numeric_limits<Integer>::digits
+                                       + (std::numeric_limits<Integer>::is_signed ? 1 : 0);
+    ;
+    Integer ret = 0;
+    Integer byte_mask = 0xFF;
+    for (size_t i = 0; i < n_digits; i += 8)
+    {
+        ret <<= 8;
+        ret += byte_mask & (n >> i);
+    }
+    return ret;
 }
+
+auto sha256(std::vector<bool> bytes) -> std::array<uint32_t, 8>;
+auto sha256(uint8_t const* octets, uint64_t n_octets) -> std::array<uint32_t, 8>;
 
 template<typename T>
 auto sha256_raw(T const& v) -> std::array<uint32_t, 8>
@@ -35,6 +45,14 @@ auto sha256_raw(T const& v) -> std::array<uint32_t, 8>
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
     auto p8 = reinterpret_cast<uint8_t const*>(&v);
     return sha256(p8, sizeof(v));
+}
+
+template<
+    typename Integer,
+    std::enable_if_t<std::numeric_limits<Integer>::is_integer, bool> = true>
+auto sha256(Integer n) -> std::array<uint32_t, 8>
+{
+    return sha256_raw(change_endianess(n));
 }
 
 auto to_hex_string(uint32_t n) -> std::string;
