@@ -1,7 +1,13 @@
 #pragma once
 
+#include <array>
+#include <sstream>
 #include <string>
-#define hashZeros "0000000000000000000000000000000000000000000000000000000000000000";
+
+#include "sha256.hpp"
+
+#define hashZeros \
+  "0000000000000000000000000000000000000000000000000000000000000000";
 
 using namespace std;
 
@@ -43,4 +49,12 @@ public:
 
   //   cout << "Block mined: " << hash << endl;
   // }
+
+ public:
+  friend auto sha256(block const& bl) -> std::array<uint32_t, 8> {
+    std::ostringstream oss;
+    oss << "id" << bl.id << "data" << bl.data << "nonce" << bl.nonce
+        << "prevhash" << bl.prevHash;
+    return sha256(oss.str());
+  }
 };
