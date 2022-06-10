@@ -50,6 +50,14 @@ auto sha256(Integer n, bool strip_leading_zeroes = true) -> std::array<uint32_t,
     return sha256(integer_in_bits);
 }
 
+template<typename T>
+auto sha256_raw(T const& v) -> std::array<uint32_t, 8>
+{
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
+    auto p8 = reinterpret_cast<uint8_t const*>(&v);
+    return sha256(p8, sizeof(v));
+}
+
 auto to_hex_string(uint32_t n) -> std::string;
 auto to_hex_string(std::bitset<4> n) -> std::string;
 
