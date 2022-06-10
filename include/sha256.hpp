@@ -55,6 +55,14 @@ auto to_hex_string(ForwardIterator b, ForwardIterator e) -> std::string
     return oss.str();
 }
 
+template<
+    typename Container,
+    std::enable_if_t<std::is_same_v<typename Container::value_type, uint32_t>, bool> = true>
+auto to_hex_string(Container const& c) -> std::string
+{
+    return to_hex_string(c.begin(), c.end());
+}
+
 template<typename... Args>
 auto sha256_hex(Args... args) -> std::string
 {
