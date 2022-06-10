@@ -40,6 +40,7 @@ auto block::mineBlock(uint32_t nDifficulty) -> void {
   //   hash = calculateHash();
   // } while (hash.substr(0, nDifficulty) != str);
 
+  cout << "nDifficulty: " << nDifficulty << endl;
   cout << "Block mined: " << hash << endl;
 }
 
