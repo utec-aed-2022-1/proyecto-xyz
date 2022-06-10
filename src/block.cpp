@@ -6,6 +6,7 @@
 #include "../include/block.hpp"
 #include "../include/json.hpp"
 
+using json = nlohmann::json;
 using namespace std;
 
 auto block::getHash() -> string {
@@ -44,6 +45,13 @@ auto block::mineBlock(uint32_t nDifficulty) -> void {
   cout << "Block mined: " << hash << endl;
 }
 
-auto toJson() -> void {
-  // json j;
+auto block::toJson() -> void {
+  json j;
+  j["id"] = this->id;
+  j["nonce"] = this->nonce;
+  j["data"] = this->data;
+  j["prev"] = this->prevHash;
+  j["hash"] = this->hash;
+
+  cout << j << endl;
 }
