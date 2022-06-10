@@ -1,32 +1,31 @@
 #pragma once
 
-#include <cstdint>
-#include <sstream>
 #include <string>
-
-#include "sha256.hpp"
+#define hashZeros "0000000000000000000000000000000000000000000000000000000000000000";
 
 using namespace std;
 
-class Block {
- private:
+class block {
+private:
   uint64_t id;
-  uint64_t nonce;
   string data;
+  uint64_t nonce;
+
+public:
   string hash;
-
-  // string calculateHash() const {
-  //   stringstream ss;
-  //   ss << id << data << nonce << prevHash;
-
-  //   return sha256_hex(ss.str());
-  // }
- public:
   string prevHash;
 
-  Block(uint64_t id, string data) : id(id), data(data) { nonce = -1; }
+  block(uint64_t id, string data) : id(id), data(data) { 
+    nonce = -1; 
+    hash = hashZeros;
+    prevHash = hashZeros;
+  }
 
-  string getHash() { return hash; }
+  auto getHash() -> string;
+
+  auto getPrevHash() -> string;
+
+  auto calculateHash() -> string;
 
   // void mineBlock(uint32_t nDifficulty) {
   //   char *strHash = new char[nDifficulty + 1];
