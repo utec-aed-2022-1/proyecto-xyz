@@ -2,7 +2,6 @@
 #include <iostream>
 #include <sstream>
 
-#include "../include/sha256.hpp"
 #include "../include/block.hpp"
 #include "../include/json.hpp"
 
