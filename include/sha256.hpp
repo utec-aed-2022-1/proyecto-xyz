@@ -24,30 +24,9 @@ auto sha256(uint8_t const* octets, uint64_t n_octets) -> std::array<uint32_t, 8>
 template<
     typename Integer,
     std::enable_if_t<std::numeric_limits<Integer>::is_integer, bool> = true>
-auto sha256(Integer n, bool strip_leading_zeroes = true) -> std::array<uint32_t, 8>
+auto sha256(Integer n) -> std::array<uint32_t, 8>
 {
-    std::vector<bool> integer_in_bits;
-    int n_digits = std::numeric_limits<Integer>::digits;
-
-    if (strip_leading_zeroes)
-    {
-        while (n_digits > 0)
-        {
-            if ((n >> (n_digits - 1)) & 1)
-            {
-                break;
-            }
-            --n_digits;
-        }
-    }
-
-    while (n_digits > 0)
-    {
-        integer_in_bits.push_back(n >> (n_digits - 1) & 1);
-        --n_digits;
-    }
-
-    return sha256(integer_in_bits);
+    return sha256_raw(change_endianess(n));
 }
 
 template<typename T>
