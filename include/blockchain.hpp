@@ -2,18 +2,20 @@
 
 #include <string>
 
+#include "block.hpp"
+
 class blockchain {
  private:
   using block = std::string;
   using TDATA = std::string;
   using THASH = std::string;
-  using vector = Vector;
+  using vector = std::vector<block>;
 
-  vector<block> bc;
+  vector bc;
 
  public:
   blockchain();
-  blockchain(json data);
+//   blockchain(json data);
 
   bool serialize();
   bool deserialize();
