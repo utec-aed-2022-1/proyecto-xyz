@@ -1,10 +1,5 @@
 #include "../include/block.hpp"
 
-#include <sys/stat.h>
-#include <sys/types.h>
-
-#include <fstream>
-
 auto toJson(block const& bl) -> json {
   json j;
 
@@ -39,6 +34,7 @@ auto block::calculateHash() -> string {
   return sha256_hex(data);
 }
 
+
 auto block::mineBlock(uint32_t nDifficulty) -> json {
   char* strHash = new char[nDifficulty + 1];
   for (uint32_t i = 0; i < nDifficulty; ++i) strHash[i] = '0';
@@ -66,6 +62,4 @@ auto block::mineBlock(uint32_t nDifficulty) -> json {
   return dataJson;
 }
 
-auto block::saveInJson(json jsxn) -> void {
-  jsonToFile(jsxn);
-}
+auto block::saveInJson(json jsxn) -> void { jsonToFile(jsxn); }

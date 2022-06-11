@@ -1,8 +1,12 @@
 #pragma once
 
-#include <array>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <iostream>
+#include <fstream>
 #include <string>
+#include <array>
+#include <vector>
 
 #include "../include/json.hpp"
 #include "sha256.hpp"
@@ -23,11 +27,20 @@ struct block {
   uint64_t nonce;
   string hash;
   string prevHash;
+  string jsxn;
+
+  // auto readFromJson(string pathFile) -> block;
+
+  block() = default;
 
   block(uint64_t id, string data) : id(id), data(data) {
     nonce = nonceDefaultVal;
     hash = hashZeros;
     prevHash = hashZeros;
+  }
+
+  block(string jsxn) : jsxn(jsxn) {
+    readFromJson(jsxn, *this);
   }
 
   // block(uint64_t id, string data, string prevHash) : id(id), data(data),
@@ -50,6 +63,22 @@ struct block {
   auto mineBlock(uint32_t nDifficulty) -> json;
 
   auto saveInJson(json jsxn) -> void;
+
+  auto readFromJson(string pathFile, block& blck) -> void {
+  string line;
+
+  ifstream read(pathFile);
+  if (read.is_open()) {
+    while (!read.eof()) {
+      getline(read, line);
+      json jsonParsed = json::parse(line);
+      blck.id = jsonParsed["id"];
+      blck.data = jsonParsed["data"];
+    }
+    read.close();
+  } else
+    cout << "Unable to open file";
+}
 
   // friend auto sha256_(block const& bl) -> array<uint32_t, 8> {
   //   std::cout << "id: " << bl.id << "\ndata: " << bl.data
