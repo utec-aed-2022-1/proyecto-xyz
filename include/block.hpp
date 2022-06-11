@@ -1,16 +1,17 @@
 #pragma once
 
 #include <array>
-#include <cstdint>
 #include <iostream>
-#include <sstream>
 #include <string>
 
+#include "../include/json.hpp"
 #include "sha256.hpp"
 
+using json = nlohmann::json;
 using namespace std;
 
-const string hashZeros = "0000000000000000000000000000000000000000000000000000000000000000";
+const string hashZeros =
+    "0000000000000000000000000000000000000000000000000000000000000000";
 const uint64_t nonceDefaultVal = -1;
 
 auto sha256(uint64_t id, string const& data, uint64_t nonce,
@@ -29,15 +30,26 @@ struct block {
     prevHash = hashZeros;
   }
 
+  // block(uint64_t id, string data, string prevHash) : id(id), data(data),
+  // prevHash(prevHash) {
+  //   nonce = nonceDefaultVal;
+  //   hash = hashZeros;
+  // }
+
+  // block(uint64_t id, string data, string prevHash, uint64_t nonce) : id(id),
+  // data(data), prevHash(prevHash), nonce(nonce) {
+  //   hash = hashZeros;
+  // }
+
   auto getHash() -> string;
 
   auto getPrevHash() -> string;
 
   auto calculateHash() -> string;
 
-  auto mineBlock(uint32_t nDifficulty) -> void;
+  auto mineBlock(uint32_t nDifficulty) -> json;
 
-  // auto toJson() -> void;
+  auto saveInJson(json jsxn) -> void;
 
   // friend auto sha256_(block const& bl) -> array<uint32_t, 8> {
   //   std::cout << "id: " << bl.id << "\ndata: " << bl.data

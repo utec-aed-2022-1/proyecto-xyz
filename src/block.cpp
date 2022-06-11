@@ -1,70 +1,71 @@
-#include <iostream>
-
 #include "../include/block.hpp"
-#include "../include/json.hpp"
 
-using json = nlohmann::json;
-using namespace std;
+#include <sys/stat.h>
+#include <sys/types.h>
+
+#include <fstream>
 
 auto toJson(block const& bl) -> json {
   json j;
 
   j["id"] = bl.id;
-  if(bl.nonce != nonceDefaultVal)
-    j["nonce"] = bl.nonce;
+  if (bl.nonce != nonceDefaultVal) j["nonce"] = bl.nonce;
   j["data"] = bl.data;
-  if(bl.prevHash != hashZeros)
-    j["prev"] = bl.prevHash;
-  if(bl.hash != hashZeros)
-    j["hash"] = bl.hash;
+  j["prev"] = bl.prevHash;
+  if (bl.hash != hashZeros) j["hash"] = bl.hash;
 
   return j;
 }
 
-auto block::getHash() -> string {
-  return hash;
+auto jsonToFile(json jsxn) -> void {
+  mkdir("blocksRegister", 0777);
+  string file = "blocksRegister/" + to_string(jsxn["id"]) + ".json";
+  ofstream jsonFile(file);  // writing to a file
+  if (jsonFile.is_open()) {
+    jsonFile << jsxn << endl;
+    jsonFile.close();
+  } else
+    cout << "Unable to open file";
 }
 
-auto block::getPrevHash() -> string {
-  return prevHash;
-}
+auto block::getHash() -> string { return hash; }
+
+auto block::getPrevHash() -> string { return prevHash; }
 
 auto block::calculateHash() -> string {
-  cout << "calculateHash(): "<< endl;
-
   json idData = toJson(*this);
-  cout << idData << endl;
-
   string data = to_string(idData["id"]) + to_string(idData["data"]);
 
   return sha256_hex(data);
 }
 
-auto block::mineBlock(uint32_t nDifficulty) -> void {
-  // char *strHash = new char[nDifficulty + 1];
-  // for (uint32_t i = 0; i < nDifficulty; ++i)
-  //   strHash[i] = '0';
+auto block::mineBlock(uint32_t nDifficulty) -> json {
+  char* strHash = new char[nDifficulty + 1];
+  for (uint32_t i = 0; i < nDifficulty; ++i) strHash[i] = '0';
 
-  // strHash[nDifficulty] = '\0';
+  strHash[nDifficulty] = '\0';
+  string str(strHash);
 
-  // string str(strHash);
+  do {
+    json dataJson = toJson(*this);
+    string pureData = to_string(dataJson["id"]) + to_string(dataJson["data"]) +
+                      to_string(dataJson["prevHash"]) +
+                      to_string(dataJson["nonce"]);
+    nonce++;
+    hash = sha256_hex(pureData);
+    // cout << "nonce: " << nonce << endl;
+    // cout << "hash: " << hash << endl;
+  } while (hash.substr(0, nDifficulty) != str);
 
-  // do {
-  //   nonce++;
-  //   hash = calculateHash();
-  // } while (hash.substr(0, nDifficulty) != str);
+  json dataJson = toJson(*this);
 
   cout << "nDifficulty: " << nDifficulty << endl;
-  cout << "Block mined: " << hash << endl;
+  cout << "nonce: " << nonce << endl;
+  cout << "hash: " << hash << endl;
+
+  return dataJson;
 }
 
-// auto block::toJson() -> void {
-//   json j;
-//   j["id"] = this->id;
-//   j["nonce"] = this->nonce;
-//   j["data"] = this->data;
-//   j["prev"] = this->prevHash;
-//   j["hash"] = this->hash;
-
-//   cout << j << endl;  
-// }
+auto block::saveInJson(json jsxn) -> void {
+  jsonToFile(jsxn);
+}
