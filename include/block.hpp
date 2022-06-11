@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <cstdint>
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -12,13 +13,16 @@
 
 using namespace std;
 
+auto sha256(uint64_t id, string const& data, uint64_t nonce,
+            string const& prev_hash) -> array<uint32_t, 8>;
+
 class block {
- private:
+private:
   uint64_t id;
   string data;
   uint64_t nonce;
 
- public:
+public:
   string hash;
   string prevHash;
 
@@ -42,9 +46,17 @@ class block {
     std::cout << "id: " << bl.id << "\ndata: " << bl.data
               << "\nnonce: " << bl.nonce << "\nprevhash: " << bl.prevHash;
 
-    ostringstream oss;
-    oss << "id" << bl.id << "data" << bl.data << "nonce" << bl.nonce
-        << "prevhash" << bl.prevHash;
-    return sha256(oss.str());
+    // ostringstream oss;
+    // oss << "id" << bl.id << "data" << bl.data << "nonce" << bl.nonce
+    //     << "prevhash" << bl.prevHash;
+    return sha256(bl.id, bl.data, bl.nonce, bl.prevHash);
   }
 };
+
+auto sha256(uint64_t id, string const& data, uint64_t nonce,
+            string const& prev_hash) -> array<uint32_t, 8> {
+  ostringstream oss;
+  oss << "id" << id << "data" << data << "nonce" << nonce << "prevhash"
+      << prev_hash;
+  return sha256(oss.str());
+}
