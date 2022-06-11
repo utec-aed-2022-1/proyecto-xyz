@@ -21,7 +21,7 @@ const uint64_t nonceDefaultVal = -1;
 auto sha256(uint64_t id, string const& data, uint64_t nonce,
             string const& prev_hash) -> array<uint32_t, 8>;
 
-struct block {
+struct Block {
   uint64_t id;
   string data;
   uint64_t nonce;
@@ -29,27 +29,27 @@ struct block {
   string prevHash;
   string jsxn;
 
-  // auto readFromJson(string pathFile) -> block;
+  // auto readFromJson(string pathFile) -> Block;
 
-  block() = default;
+  Block() = default;
 
-  block(uint64_t id, string data) : id(id), data(data) {
+  Block(uint64_t id, string data) : id(id), data(data) {
     nonce = nonceDefaultVal;
     hash = hashZeros;
     prevHash = hashZeros;
   }
 
-  block(string jsxn) : jsxn(jsxn) {
+  Block(string jsxn) : jsxn(jsxn) {
     readFromJson(jsxn, *this);
   }
 
-  // block(uint64_t id, string data, string prevHash) : id(id), data(data),
+  // Block(uint64_t id, string data, string prevHash) : id(id), data(data),
   // prevHash(prevHash) {
   //   nonce = nonceDefaultVal;
   //   hash = hashZeros;
   // }
 
-  // block(uint64_t id, string data, string prevHash, uint64_t nonce) : id(id),
+  // Block(uint64_t id, string data, string prevHash, uint64_t nonce) : id(id),
   // data(data), prevHash(prevHash), nonce(nonce) {
   //   hash = hashZeros;
   // }
@@ -64,7 +64,7 @@ struct block {
 
   auto saveInJson(json jsxn) -> void;
 
-  auto readFromJson(string pathFile, block& blck) -> void {
+  auto readFromJson(string pathFile, Block& blck) -> void {
   string line;
 
   ifstream read(pathFile);
@@ -80,7 +80,7 @@ struct block {
     cout << "Unable to open file";
 }
 
-  // friend auto sha256_(block const& bl) -> array<uint32_t, 8> {
+  // friend auto sha256_(Block const& bl) -> array<uint32_t, 8> {
   //   std::cout << "id: " << bl.id << "\ndata: " << bl.data
   //             << "\nnonce: " << bl.nonce << "\nprevhash: " << bl.prevHash;
 

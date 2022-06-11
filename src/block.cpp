@@ -1,6 +1,6 @@
 #include "../include/block.hpp"
 
-auto toJson(block const& bl) -> json {
+auto toJson(Block const& bl) -> json {
   json j;
 
   j["id"] = bl.id;
@@ -23,11 +23,11 @@ auto jsonToFile(json jsxn) -> void {
     cout << "Unable to open file";
 }
 
-auto block::getHash() -> string { return hash; }
+auto Block::getHash() -> string { return hash; }
 
-auto block::getPrevHash() -> string { return prevHash; }
+auto Block::getPrevHash() -> string { return prevHash; }
 
-auto block::calculateHash() -> string {
+auto Block::calculateHash() -> string {
   json idData = toJson(*this);
   string data = to_string(idData["id"]) + to_string(idData["data"]);
 
@@ -35,7 +35,7 @@ auto block::calculateHash() -> string {
 }
 
 
-auto block::mineBlock(uint32_t nDifficulty) -> json {
+auto Block::mineBlock(uint32_t nDifficulty) -> json {
   char* strHash = new char[nDifficulty + 1];
   for (uint32_t i = 0; i < nDifficulty; ++i) strHash[i] = '0';
 
@@ -62,4 +62,4 @@ auto block::mineBlock(uint32_t nDifficulty) -> json {
   return dataJson;
 }
 
-auto block::saveInJson(json jsxn) -> void { jsonToFile(jsxn); }
+auto Block::saveInJson(json jsxn) -> void { jsonToFile(jsxn); }

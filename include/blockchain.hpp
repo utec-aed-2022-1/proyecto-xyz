@@ -10,7 +10,7 @@ class blockchain {
   using block = std::string;
   using TDATA = std::string;
   using THASH = std::string;
-  using vector = std::vector<block>;
+  using vector = std::vector<Block>;
 
   vector bc;
 
