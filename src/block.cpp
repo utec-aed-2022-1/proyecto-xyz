@@ -1,3 +1,4 @@
+#include <array>
 #include <cstdint>
 #include <iostream>
 #include <sstream>
@@ -16,14 +17,12 @@ auto block::getPrevHash() -> string {
   return prevHash;
 }
 
-auto block::calculateHash() -> string {
+auto block::calculateHash() -> array<uint32_t, 8> {
   cout << "calculateHash(): " << this->id << endl;
   // stringstream ss;
   // ss << id << data << nonce << prevHash;
 
-  // sha256_hex<block>(this);
-
-  return "sha256_hex(this)";
+  return sha256_(*this);
 }
 
 auto block::mineBlock(uint32_t nDifficulty) -> void {
@@ -52,5 +51,5 @@ auto block::toJson() -> void {
   j["prev"] = this->prevHash;
   j["hash"] = this->hash;
 
-  cout << j << endl;
+  cout << j << endl;  
 }

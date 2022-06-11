@@ -1,3 +1,4 @@
+#include <array>
 #include <iostream>
 
 #include "sha256.hpp"
@@ -11,12 +12,14 @@ auto main() -> int
 
     block blck(1, "Hello World");
 
-    cout << blck.getHash() << endl;
-    cout << blck.getPrevHash() << endl;
+    // cout << blck.getHash() << endl;
+    // cout << blck.getPrevHash() << endl;
 
-    cout << blck.calculateHash() << endl;
+    array<uint32_t, 8> aa = blck.calculateHash();
 
-    blck.toJson();
+    cout << aa[0] << endl;
+
+    // blck.toJson();
 
     return 0;
 }

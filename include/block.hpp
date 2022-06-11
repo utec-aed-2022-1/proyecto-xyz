@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <iostream>
 #include <sstream>
 #include <string>
 
@@ -12,17 +13,17 @@
 using namespace std;
 
 class block {
-private:
+ private:
   uint64_t id;
   string data;
   uint64_t nonce;
 
-public:
+ public:
   string hash;
   string prevHash;
 
-  block(uint64_t id, string data) : id(id), data(data) { 
-    nonce = -1; 
+  block(uint64_t id, string data) : id(id), data(data) {
+    nonce = -1;
     hash = hashZeros;
     prevHash = hashZeros;
   }
@@ -31,13 +32,16 @@ public:
 
   auto getPrevHash() -> string;
 
-  auto calculateHash() -> string;
+  auto calculateHash() -> array<uint32_t, 8>;
 
   auto mineBlock(uint32_t nDifficulty) -> void;
 
   auto toJson() -> void;
 
-  friend auto sha256(block const& bl) -> array<uint32_t, 8> {
+  friend auto sha256_(block const& bl) -> array<uint32_t, 8> {
+    std::cout << "id: " << bl.id << "\ndata: " << bl.data
+              << "\nnonce: " << bl.nonce << "\nprevhash: " << bl.prevHash;
+
     ostringstream oss;
     oss << "id" << bl.id << "data" << bl.data << "nonce" << bl.nonce
         << "prevhash" << bl.prevHash;
