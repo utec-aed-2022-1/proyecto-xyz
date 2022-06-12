@@ -79,7 +79,7 @@ auto to_hex_string(Container const& c) -> std::string {
 }
 
 template <typename... Args>
-auto sha256_hex(Args... args) -> std::string {
-  auto arr = sha256(args...);
+auto sha256_hex(Args&&... args) -> std::string {
+  auto arr = sha256(std::forward<Args>(args)...);
   return to_hex_string(arr.begin(), arr.end());
 }
