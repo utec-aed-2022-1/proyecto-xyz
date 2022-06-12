@@ -55,6 +55,7 @@ struct Block {
   auto getPrevHash() -> string;
 
   auto calculateHash() -> string;
+  void updateHash();
 
   auto mineBlock(uint32_t nDifficulty) -> json;
 

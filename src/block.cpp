@@ -49,6 +49,10 @@ auto Block::calculateHash() -> string {
   return sha256_hex(this->id, this->nonce, this->data, this->prevHash);
 }
 
+void Block::updateHash() {
+  this->hash = sha256_hex(this->id, this->nonce, this->data, this->prevHash);
+}
+
 auto Block::mineBlock(uint32_t nDifficulty) -> json {
   char* strHash = new char[nDifficulty + 1];
   for (uint32_t i = 0; i < nDifficulty; ++i) strHash[i] = '0';
