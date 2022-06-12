@@ -2,10 +2,11 @@
 
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <iostream>
-#include <fstream>
-#include <string>
+
 #include <array>
+#include <fstream>
+#include <iostream>
+#include <string>
 #include <vector>
 
 #include "../include/json.hpp"
@@ -39,9 +40,7 @@ struct Block {
     prevHash = hashZeros;
   }
 
-  Block(string jsxn) : jsxn(jsxn) {
-    readFromJson(jsxn, *this);
-  }
+  Block(string jsxn) : jsxn(jsxn) { readFromJson(jsxn, *this); }
 
   // Block(uint64_t id, string data, string prevHash) : id(id), data(data),
   // prevHash(prevHash) {
@@ -65,20 +64,20 @@ struct Block {
   auto saveInJson(json jsxn) -> void;
 
   auto readFromJson(string pathFile, Block& blck) -> void {
-  string line;
+    string line;
 
-  ifstream read(pathFile);
-  if (read.is_open()) {
-    while (!read.eof()) {
-      getline(read, line);
-      json jsonParsed = json::parse(line);
-      blck.id = jsonParsed["id"];
-      blck.data = jsonParsed["data"];
-    }
-    read.close();
-  } else
-    cout << "Unable to open file";
-}
+    ifstream read(pathFile);
+    if (read.is_open()) {
+      while (!read.eof()) {
+        getline(read, line);
+        json jsonParsed = json::parse(line);
+        blck.id = jsonParsed["id"];
+        blck.data = jsonParsed["data"];
+      }
+      read.close();
+    } else
+      cout << "Unable to open file";
+  }
 
   // friend auto sha256_(Block const& bl) -> array<uint32_t, 8> {
   //   std::cout << "id: " << bl.id << "\ndata: " << bl.data

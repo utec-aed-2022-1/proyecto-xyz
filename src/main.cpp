@@ -24,7 +24,7 @@ auto main() -> int {
 
   blck.saveInJson(jsxn);
 
-  // from json file (falta implementar cuando hay más de 1 registro) 
+  // from json file (falta implementar cuando hay más de 1 registro)
   // Block blck("blocksInput/1.json");
   // cout << blck.calculateHash() << endl;
 
@@ -33,6 +33,6 @@ auto main() -> int {
 
   // blck.saveInJson(jsxn);
 
-    Blockchain A;
-    return 0;
+  Blockchain A;
+  return 0;
 }
