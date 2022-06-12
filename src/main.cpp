@@ -2,9 +2,7 @@
 #include <iostream>
 
 #include "../include/json.hpp"
-#include "block.hpp"
 #include "blockchain.hpp"
-#include "sha256.hpp"
 
 using json = nlohmann::json;
 using namespace std;
@@ -24,7 +22,7 @@ auto main() -> int {
 
   blck.saveInJson(jsxn);
 
-  // from json file (falta implementar cuando hay más de 1 registro) 
+  // from json file (falta implementar cuando hay más de 1 registro)
   // Block blck("blocksInput/1.json");
   // cout << blck.calculateHash() << endl;
 
@@ -33,6 +31,7 @@ auto main() -> int {
 
   // blck.saveInJson(jsxn);
 
-    Blockchain A;
-    return 0;
+  Blockchain A("mainjson.json");
+  A.serialize();
+  return 0;
 }
