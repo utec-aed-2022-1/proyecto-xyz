@@ -1,5 +1,6 @@
 #include "../include/block.hpp"
 
+#include <algorithm>
 using json = nlohmann::json;
 
 void to_json(json& j, Block const& blk) {
@@ -51,6 +52,17 @@ auto Block::calculateHash() -> string {
 
 void Block::updateHash() {
   this->hash = sha256_hex(this->id, this->nonce, this->data, this->prevHash);
+}
+
+void Block::mine(uint32_t difficulty) {
+  nonce = 0;
+  this->updateHash();
+
+  while (std::any_of(hash.begin(), std::next(hash.begin(), difficulty),
+                     [](char c) { return c != '0'; })) {
+    ++nonce;
+    this->updateHash();
+  }
 }
 
 auto Block::mineBlock(uint32_t nDifficulty) -> json {
