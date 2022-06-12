@@ -40,6 +40,7 @@ auto Block::mineBlock(uint32_t nDifficulty) -> json {
 
   strHash[nDifficulty] = '\0';
   string str(strHash);
+  delete []strHash;
 
   do {
     json dataJson = toJson(*this);
