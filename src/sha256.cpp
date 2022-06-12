@@ -9,6 +9,38 @@
 #include <string>
 #include <vector>
 
+// All 3 variants sourced from:
+// https://github.com/HowardHinnant/hash_append/issues/7#issuecomment-629414712
+
+auto hash_combine(uint16_t lhs, uint16_t rhs) -> size_t {
+  lhs ^= rhs + 0x9e37U + (lhs << 3) + (lhs >> 1);
+  return lhs;
+}
+
+auto hash_combine(uint32_t lhs, uint32_t rhs) -> size_t {
+  lhs ^= rhs + 0x9e3779b9U + (lhs << 6) + (lhs >> 2);
+  return lhs;
+}
+
+auto hash_combine(uint64_t lhs, uint64_t rhs) -> size_t {
+  lhs ^= rhs + 0x9e3779b97f4a7c15 + (lhs << 12) + (lhs >> 4);
+  return lhs;
+}
+
+/**
+ * `lhs` is received by value to allow calling the move constructor in case the
+ * argument is an rvalue and avoid allocating a new `std::array`.
+ **/
+auto hash_combine(std::array<uint32_t, 8> lhs,
+                  std::array<uint32_t, 8> const& rhs)
+    -> std::array<uint32_t, 8> {
+  for (size_t i = 0; i < lhs.size(); ++i) {
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+    lhs[i] = hash_combine(lhs[i], rhs[i]);
+  }
+  return lhs;
+}
+
 auto pre_process(std::vector<bool> bits) -> std::vector<bool> {
   uint64_t bits_original_size = bits.size();  // We asumme big endian
 

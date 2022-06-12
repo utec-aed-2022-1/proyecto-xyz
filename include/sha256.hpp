@@ -34,6 +34,12 @@ auto change_endianess(Integer n) -> Integer {
   return ret;
 }
 
+auto hash_combine(uint16_t lhs, uint16_t rhs) -> size_t;
+auto hash_combine(uint32_t lhs, uint32_t rhs) -> size_t;
+auto hash_combine(uint64_t lhs, uint64_t rhs) -> size_t;
+auto hash_combine(std::array<uint32_t, 8> lhs,
+                  std::array<uint32_t, 8> const& rhs)
+    -> std::array<uint32_t, 8>;
 auto sha256(std::vector<bool> bytes) -> std::array<uint32_t, 8>;
 auto sha256(uint8_t const* octets, uint64_t n_octets)
     -> std::array<uint32_t, 8>;
@@ -53,6 +59,11 @@ auto sha256(Integer n) -> std::array<uint32_t, 8> {
 }
 
 auto sha256(std::string const& str) -> std::array<uint32_t, 8>;
+
+template <typename First, typename... Args>
+auto sha256(First arg, Args... args) -> std::array<uint32_t, 8> {
+  return hash_combine(sha256(arg), sha256(std::forward<Args>(args)...));
+}
 
 auto to_hex_string(uint32_t n) -> std::string;
 auto to_hex_string(std::bitset<4> n) -> std::string;
