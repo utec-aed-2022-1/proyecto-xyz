@@ -1,22 +1,27 @@
 #pragma once
 
+#include <fstream>
+#include <iostream>
 #include <string>
 #include <vector>
 
 #include "block.hpp"
+#include "json.hpp"
 
-class blockchain {
+class Blockchain {
  private:
   using block = std::string;
   using TDATA = std::string;
   using THASH = std::string;
   using vector = std::vector<Block>;
+  using json = nlohmann::json;
 
   vector bc;
+  std::string jsonfile = "mainjson.json";
 
  public:
-  blockchain();
-//   blockchain(json data);
+  Blockchain(bool deserialize = true);
+  Blockchain(std::string jsonfile);
 
   bool serialize();
   bool deserialize();
@@ -27,5 +32,5 @@ class blockchain {
   bool edit(int position, TDATA data);
   bool clean();
 
-  ~blockchain();
+  ~Blockchain();
 };

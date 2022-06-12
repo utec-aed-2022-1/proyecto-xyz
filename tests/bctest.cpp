@@ -4,9 +4,9 @@
 
 #include "catch.hpp"
 #include "blockchain.hpp"
-
-// TEST_CASE("kkkkkk", "[blockchain]")
-// {
-//   blockchain A;
-//   CHECK(A.serialize() == true);
-// }
+/*
+TEST_CASE("deserialize ", "[blockchain]")
+{
+    Blockchain A(true);
+}
+*/
