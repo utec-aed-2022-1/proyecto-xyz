@@ -23,6 +23,9 @@ auto sha256(uint64_t id, string const& data, uint64_t nonce,
             string const& prev_hash) -> array<uint32_t, 8>;
 
 struct Block {
+  friend void to_json(nlohmann::json& j, Block const& blk);
+  friend void from_json(const nlohmann::json& j, Block& blk);
+
   uint64_t id;
   string data;
   uint64_t nonce;
@@ -83,3 +86,6 @@ struct Block {
   //   return sha256(bl.id, bl.data, bl.nonce, bl.prevHash);
   // }
 };
+
+void to_json(nlohmann::json& j, Block const& blk);
+void from_json(const nlohmann::json& j, Block& blk);

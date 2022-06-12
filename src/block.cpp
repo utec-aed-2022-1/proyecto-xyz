@@ -1,5 +1,23 @@
 #include "../include/block.hpp"
 
+using json = nlohmann::json;
+
+void to_json(json& j, Block const& blk) {
+  j = json{{"id", blk.id},
+           {"nonce", blk.nonce},
+           {"data", blk.data},
+           {"prev", blk.prevHash},
+           {"hash", blk.hash}};
+}
+
+void from_json(const json& j, Block& blk) {
+  j.at("id").get_to(blk.id);
+  j.at("nonce").get_to(blk.nonce);
+  j.at("data").get_to(blk.data);
+  j.at("prev").get_to(blk.prevHash);
+  j.at("hash").get_to(blk.hash);
+}
+
 auto toJson(Block const& bl) -> json {
   json j;
 
