@@ -42,12 +42,6 @@ struct Block {
 
   Block(string jsxn) : jsxn(jsxn) { readFromJson(jsxn, *this); }
 
-  Block(uint64_t id, string data, string prevHash)
-      : id(id), data(data), prevHash(prevHash) {
-    nonce = nonceDefaultVal;
-    hash = hashZeros;
-  }
-
   Block(uint64_t id, string data, string prevHash, uint64_t nonce, string hash)
       : id(id), data(data), prevHash(prevHash), nonce(nonce), hash(hash) {
     ;
@@ -89,11 +83,3 @@ struct Block {
   //   return sha256(bl.id, bl.data, bl.nonce, bl.prevHash);
   // }
 };
-
-// auto sha256(uint64_t id, string const& data, uint64_t nonce,
-//             string const& prev_hash) -> array<uint32_t, 8> {
-//   ostringstream oss;
-//   oss << "id" << id << "data" << data << "nonce" << nonce << "prevhash"
-//       << prev_hash;
-//   return sha256(oss.str());
-// }

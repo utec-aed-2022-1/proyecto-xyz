@@ -34,6 +34,7 @@ bin/
 
 # Build directory
 build/
+build_linux/
 
 # Clangd
 compile_commands.json
