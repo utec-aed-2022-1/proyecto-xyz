@@ -1,1 +1,0 @@
-[{"cmd": ["/mnt/c/Users/Mauricio/Documents/GitHub/proyecto-xyz/build_linux/tests/main"], "env": {}, "name": "project tests", "workdir": null, "timeout": 30, "suite": ["xyz-aed-project"], "is_parallel": true, "priority": 0, "protocol": "exitcode"}]
