@@ -46,10 +46,7 @@ auto Block::getHash() -> string { return hash; }
 auto Block::getPrevHash() -> string { return prevHash; }
 
 auto Block::calculateHash() -> string {
-  json idData = toJson(*this);
-  string data = to_string(idData["id"]) + to_string(idData["data"]);
-
-  return sha256_hex(data);
+  return sha256_hex(this->id, this->nonce, this->data, this->prevHash);
 }
 
 auto Block::mineBlock(uint32_t nDifficulty) -> json {
