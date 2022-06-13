@@ -16,10 +16,10 @@ class Blockchain {
 
   using TDATA = std::string;
   using THASH = std::string;
-  using vector = std::vector<Block>;
+  using blocks_t = std::vector<Block>;
   using json = nlohmann::json;
 
-  vector bc;
+  blocks_t bc;
   uint32_t difficulty = 3;
   std::string jsonfile = "mainjson.json";
 
