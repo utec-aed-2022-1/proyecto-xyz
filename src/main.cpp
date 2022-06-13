@@ -32,6 +32,7 @@ auto main() -> int {
   // blck.saveInJson(jsxn);
 
   Blockchain A("mainjson.json");
-  A.serialize();
+  A.setserializedestruction(true);
+  A.serialize("mainjson.json");
   return 0;
 }
