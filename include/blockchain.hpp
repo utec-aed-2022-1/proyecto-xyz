@@ -10,7 +10,6 @@
 
 class Blockchain {
  private:
-  using Block = Block;
   friend void to_json(nlohmann::json& j, Blockchain const& blocks);
   friend void from_json(const nlohmann::json& j, Blockchain& blocks);
 
