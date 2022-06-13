@@ -6,6 +6,13 @@
 
 #include <utility>
 
+#include "json.hpp"
+
+using json = nlohmann::json;
+
+void to_json(json& j, Blockchain const& blocks) { j = json{blocks.bc}; }
+void from_json(const json& j, Blockchain& blocks) { j.get_to(blocks.bc); }
+
 Blockchain::Blockchain(bool deserialize) {
   if (deserialize) {
     if (!this->deserialize(jsonfile))

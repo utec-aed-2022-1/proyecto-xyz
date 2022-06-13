@@ -11,6 +11,9 @@
 class Blockchain {
  private:
   using Block = Block;
+  friend void to_json(nlohmann::json& j, Blockchain const& blocks);
+  friend void from_json(const nlohmann::json& j, Blockchain& blocks);
+
   using TDATA = std::string;
   using THASH = std::string;
   using vector = std::vector<Block>;
@@ -38,3 +41,6 @@ class Blockchain {
 
   ~Blockchain();
 };
+
+void to_json(nlohmann::json& j, Blockchain const& blocks);
+void from_json(const nlohmann::json& j, Blockchain& blocks);
