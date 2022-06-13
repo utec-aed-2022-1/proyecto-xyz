@@ -1,7 +1,7 @@
 #include <array>
 #include <iostream>
 
-#include "../include/json.hpp"
+#include "json.hpp"
 #include "blockchain.hpp"
 
 using json = nlohmann::json;

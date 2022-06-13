@@ -1,4 +1,4 @@
-#include "../include/block.hpp"
+#include "block.hpp"
 
 #include <algorithm>
 using json = nlohmann::json;

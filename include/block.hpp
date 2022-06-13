@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "../include/json.hpp"
+#include "json.hpp"
 #include "sha256.hpp"
 
 using json = nlohmann::json;
