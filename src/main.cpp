@@ -20,7 +20,7 @@ auto main() -> int {
   cout << "Mina el bloque: " << endl;
   json jsxn = blck.mineBlock(3);
 
-  blck.saveInJson(jsxn);
+  blck.saveInJson("aa/file.json");
 
   // from json file (falta implementar cuando hay más de 1 registro)
   // Block blck("blocksInput/1.json");

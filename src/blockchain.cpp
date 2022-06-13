@@ -105,7 +105,7 @@ bool Blockchain::deserialize_private(const std::string& filename) {
   }
   json j = json::parse(to_json);
 
-  for (int i = 0; i < j["data"].size(); i++) {
+  for (size_t i = 0; i < j["data"].size(); i++) {
     Block blck(j["data"][i]["id"], j["data"][i]["data"], j["data"][i]["prev"],
                j["data"][i]["nonce"], j["data"][i]["hash"]);
     this->bc.push_back(blck);
@@ -113,7 +113,7 @@ bool Blockchain::deserialize_private(const std::string& filename) {
 
   // verificar si el archivo leido es valido
   bool flag = false;
-  for (int i = 0; i < this->bc.size(); i++) {
+  for (size_t i = 0; i < this->bc.size(); i++) {
     std::string temp_hash = this->bc[i].hash;
     uint64_t temp_nonce = this->bc[i].nonce;
     std::string temp_prev;
