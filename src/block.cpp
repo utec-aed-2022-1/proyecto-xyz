@@ -1,6 +1,7 @@
 #include "block.hpp"
 
 #include <algorithm>
+#include <cstdint>
 #include <fstream>
 #include <string>
 
@@ -54,10 +55,11 @@ auto jsonToFile(json jsxn) -> void {
     cout << "Unable to open file";
 }
 
+auto Block::getId() -> uint64_t { return this->id; }
 auto Block::getData() -> string const& { return this->data; }
-
+auto Block::getNonce() -> uint64_t { return this->nonce; }
 auto Block::getHash() -> string const& { return hash; }
-auto Block::getPrevHash() -> string { return prevHash; }
+auto Block::getPrevHash() -> string const& { return prevHash; }
 
 auto Block::calculateHash() -> string {
   return sha256_hex(this->id, this->nonce, this->data, this->prevHash);

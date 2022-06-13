@@ -50,10 +50,11 @@ struct Block {
     ;
   }
 
+  auto getId() -> uint64_t;
   auto getData() -> string const&;
-
-  auto getPrevHash() -> string;
+  auto getNonce() -> uint64_t;
   auto getHash() -> string const&;
+  auto getPrevHash() -> string const&;
 
   auto calculateHash() -> string;
   void updateHash();
