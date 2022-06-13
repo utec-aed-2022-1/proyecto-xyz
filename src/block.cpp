@@ -55,8 +55,8 @@ auto jsonToFile(json jsxn) -> void {
 }
 
 auto Block::getData() -> string const& { return this->data; }
-auto Block::getHash() -> string { return hash; }
 
+auto Block::getHash() -> string const& { return hash; }
 auto Block::getPrevHash() -> string { return prevHash; }
 
 auto Block::calculateHash() -> string {

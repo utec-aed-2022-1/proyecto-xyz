@@ -51,9 +51,9 @@ struct Block {
   }
 
   auto getData() -> string const&;
-  auto getHash() -> string;
 
   auto getPrevHash() -> string;
+  auto getHash() -> string const&;
 
   auto calculateHash() -> string;
   void updateHash();
