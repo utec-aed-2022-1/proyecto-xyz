@@ -46,7 +46,7 @@ struct Block {
   Block(string jsxn) : jsxn(jsxn) { readFromJson(jsxn, *this); }
 
   Block(uint64_t id, string data, string prevHash, uint64_t nonce, string hash)
-      : id(id), data(data), prevHash(prevHash), nonce(nonce), hash(hash) {
+      : id(id), data(data), nonce(nonce), hash(hash), prevHash(prevHash) {
     ;
   }
 
