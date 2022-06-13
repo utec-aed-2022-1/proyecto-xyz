@@ -5,6 +5,7 @@ catch2_tests_exe = executable('main',
                               '../src/sha256.cpp',
                               '../src/block.cpp',
                               '../src/blockchain.cpp',
+                              '../src/util.cpp',
                               'bctest.cpp',
                               link_with : [],
                               include_directories : inc)
