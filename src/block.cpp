@@ -54,6 +54,7 @@ auto jsonToFile(json jsxn) -> void {
     cout << "Unable to open file";
 }
 
+auto Block::getData() -> string const& { return this->data; }
 auto Block::getHash() -> string { return hash; }
 
 auto Block::getPrevHash() -> string { return prevHash; }
