@@ -63,7 +63,7 @@ struct Block {
 
   auto mineBlock(uint32_t nDifficulty) -> json;
 
-  auto saveInJson(json jsxn) -> void;
+  void saveInJson(std::string const& filepath);
 
   auto readFromJson(string pathFile, Block& blck) -> void {
     string line;

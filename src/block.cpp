@@ -6,6 +6,7 @@
 #include <string>
 
 #include "sha256.hpp"
+#include "util.hpp"
 
 using json = nlohmann::json;
 
@@ -97,4 +98,6 @@ auto Block::mineBlock(uint32_t nDifficulty) -> json {
   return dataJson;
 }
 
-auto Block::saveInJson(json jsxn) -> void { jsonToFile(jsxn); }
+void Block::saveInJson(std::string const& filepath) {
+  jsonToFile(filepath, json(*this));
+}
