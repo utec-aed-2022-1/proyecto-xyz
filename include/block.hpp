@@ -42,16 +42,10 @@ struct Block {
 
   Block(string jsxn) : jsxn(jsxn) { readFromJson(jsxn, *this); }
 
-  // Block(uint64_t id, string data, string prevHash) : id(id), data(data),
-  // prevHash(prevHash) {
-  //   nonce = nonceDefaultVal;
-  //   hash = hashZeros;
-  // }
-
-  // Block(uint64_t id, string data, string prevHash, uint64_t nonce) : id(id),
-  // data(data), prevHash(prevHash), nonce(nonce) {
-  //   hash = hashZeros;
-  // }
+  Block(uint64_t id, string data, string prevHash, uint64_t nonce, string hash)
+      : id(id), data(data), prevHash(prevHash), nonce(nonce), hash(hash) {
+    ;
+  }
 
   auto getHash() -> string;
 
@@ -78,4 +72,14 @@ struct Block {
     } else
       cout << "Unable to open file";
   }
+
+  // friend auto sha256_(Block const& bl) -> array<uint32_t, 8> {
+  //   std::cout << "id: " << bl.id << "\ndata: " << bl.data
+  //             << "\nnonce: " << bl.nonce << "\nprevhash: " << bl.prevHash;
+
+  //   // ostringstream oss;
+  //   // oss << "id" << bl.id << "data" << bl.data << "nonce" << bl.nonce
+  //   //     << "prevhash" << bl.prevHash;
+  //   return sha256(bl.id, bl.data, bl.nonce, bl.prevHash);
+  // }
 };
