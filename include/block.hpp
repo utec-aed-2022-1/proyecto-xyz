@@ -45,10 +45,13 @@ struct Block {
 
   Block(string jsxn) : jsxn(jsxn) { readFromJson(jsxn, *this); }
 
-  Block(uint64_t id, string data, string prevHash, uint64_t nonce, string hash)
-      : id(id), data(data), nonce(nonce), hash(hash), prevHash(prevHash) {
+  Block(uint64_t id, string data, uint64_t nonce, string prevHash,
+        string hash = "")
+      : id(id), data(std::move(data)), nonce(nonce), hash(std::move(hash)), prevHash(std::move(prevHash)) {
     ;
   }
+
+  auto operator==(Block const& other) const -> bool;
 
   auto getId() -> uint64_t;
   auto getData() -> string const&;

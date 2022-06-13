@@ -45,6 +45,12 @@ auto toJson(Block const& bl) -> json {
   return j;
 }
 
+auto Block::operator==(Block const& other) const -> bool {
+  return this->id == other.id && this->data == other.data &&
+         this->nonce == other.nonce && this->hash == other.hash &&
+         this->prevHash == other.prevHash;
+}
+
 auto Block::getId() -> uint64_t { return this->id; }
 auto Block::getData() -> string const& { return this->data; }
 auto Block::getNonce() -> uint64_t { return this->nonce; }
