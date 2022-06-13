@@ -28,6 +28,8 @@ class Blockchain {
   explicit Blockchain(bool deserialize);
   explicit Blockchain(const std::string& filename);
 
+  auto getBlocks() -> blocks_t const&;
+
   bool serialize(const std::string& filename = "mainjson.json");
   bool deserialize(const std::string& filename = "mainjson.json");
   bool push(TDATA data);

@@ -32,6 +32,8 @@ Blockchain::Blockchain(const std::string& filename) {
     throw std::invalid_argument("Deserialize failed");
 }
 
+auto Blockchain::getBlocks() -> blocks_t const& { return this->bc; }
+
 bool Blockchain::serialize(const std::string& filename) {
   std::ofstream file(filename, std::ofstream::trunc);
 
