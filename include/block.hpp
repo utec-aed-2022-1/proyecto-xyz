@@ -3,7 +3,9 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+#include <algorithm>
 #include <array>
+#include <cstdint>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -11,6 +13,7 @@
 
 #include "json.hpp"
 #include "sha256.hpp"
+#include "util.hpp"
 
 using json = nlohmann::json;
 using namespace std;
@@ -19,13 +22,7 @@ const string hashZeros =
     "0000000000000000000000000000000000000000000000000000000000000000";
 const uint64_t nonceDefaultVal = -1;
 
-auto sha256(uint64_t id, string const& data, uint64_t nonce,
-            string const& prev_hash) -> array<uint32_t, 8>;
-
 struct Block {
-  friend void to_json(nlohmann::json& j, Block const& blk);
-  friend void from_json(const nlohmann::json& j, Block& blk);
-
   uint64_t id;
   string data;
   uint64_t nonce;
@@ -47,7 +44,11 @@ struct Block {
 
   Block(uint64_t id, string data, uint64_t nonce, string prevHash,
         string hash = "")
-      : id(id), data(std::move(data)), nonce(nonce), hash(std::move(hash)), prevHash(std::move(prevHash)) {
+      : id(id),
+        data(move(data)),
+        nonce(nonce),
+        hash(move(hash)),
+        prevHash(move(prevHash)) {
     ;
   }
 
@@ -60,13 +61,13 @@ struct Block {
   auto getPrevHash() -> string const&;
 
   auto calculateHash() -> string;
-  void updateHash();
+  auto updateHash() -> void;
 
-  void mine(uint32_t difficulty);
+  auto mine(uint32_t difficulty) -> void;
 
   auto mineBlock(uint32_t nDifficulty) -> json;
 
-  void saveInJson(std::string const& filepath);
+  auto saveInJson(string const& filepath) -> void;
 
   auto readFromJson(string pathFile, Block& blck) -> void {
     string line;
@@ -83,19 +84,9 @@ struct Block {
     } else
       cout << "Unable to open file";
   }
-
-  // friend auto sha256_(Block const& bl) -> array<uint32_t, 8> {
-  //   std::cout << "id: " << bl.id << "\ndata: " << bl.data
-  //             << "\nnonce: " << bl.nonce << "\nprevhash: " << bl.prevHash;
-
-  //   // ostringstream oss;
-  //   // oss << "id" << bl.id << "data" << bl.data << "nonce" << bl.nonce
-  //   //     << "prevhash" << bl.prevHash;
-  //   return sha256(bl.id, bl.data, bl.nonce, bl.prevHash);
-  // }
 };
 
-void to_json(nlohmann::json& j, Block const& blk);
-void from_json(const nlohmann::json& j, Block& blk);
+auto to_json(json& j, Block const& blk) -> void;
+auto from_json(const json& j, Block& blk) -> void;
 
-auto blockFromFile(std::string const& filepath) -> Block;
+auto blockFromFile(string const& filepath) -> Block;

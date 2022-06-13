@@ -1,16 +1,6 @@
 #include "block.hpp"
 
-#include <algorithm>
-#include <cstdint>
-#include <fstream>
-#include <string>
-
-#include "sha256.hpp"
-#include "util.hpp"
-
-using json = nlohmann::json;
-
-void to_json(json& j, Block const& blk) {
+auto to_json(json& j, Block const& blk) -> void {
   j = json{{"id", blk.id},
            {"nonce", blk.nonce},
            {"data", blk.data},
@@ -18,7 +8,7 @@ void to_json(json& j, Block const& blk) {
            {"hash", blk.hash}};
 }
 
-void from_json(const json& j, Block& blk) {
+auto from_json(const json& j, Block& blk) -> void {
   j.at("id").get_to(blk.id);
   j.at("nonce").get_to(blk.nonce);
   j.at("data").get_to(blk.data);
@@ -26,8 +16,8 @@ void from_json(const json& j, Block& blk) {
   j.at("hash").get_to(blk.hash);
 }
 
-auto blockFromFile(std::string const& filepath) -> Block {
-  std::ifstream fp{filepath};
+auto blockFromFile(string const& filepath) -> Block {
+  ifstream fp{filepath};
   json j;
   fp >> j;
   return j.get<Block>();
@@ -46,56 +36,35 @@ auto toJson(Block const& bl) -> json {
 }
 
 auto Block::operator==(Block const& other) const -> bool {
-  return this->id == other.id && this->data == other.data &&
-         this->nonce == other.nonce && this->hash == other.hash &&
-         this->prevHash == other.prevHash;
+  return id == other.id && data == other.data && nonce == other.nonce &&
+         hash == other.hash && prevHash == other.prevHash;
 }
 
-auto Block::getId() -> uint64_t { return this->id; }
-auto Block::getData() -> string const& { return this->data; }
-auto Block::getNonce() -> uint64_t { return this->nonce; }
+auto Block::getId() -> uint64_t { return id; }
+auto Block::getData() -> string const& { return data; }
+auto Block::getNonce() -> uint64_t { return nonce; }
 auto Block::getHash() -> string const& { return hash; }
 auto Block::getPrevHash() -> string const& { return prevHash; }
 
 auto Block::calculateHash() -> string {
-  return sha256_hex(this->id, this->nonce, this->data, this->prevHash);
+  return sha256_hex(id, nonce, data, prevHash);
 }
 
-void Block::updateHash() {
-  this->hash = sha256_hex(this->id, this->nonce, this->data, this->prevHash);
-}
+auto Block::updateHash() -> void { hash = calculateHash(); }
 
-void Block::mine(uint32_t difficulty) {
+auto Block::mine(uint32_t difficulty) -> void {
   nonce = 0;
-  this->updateHash();
+  updateHash();
 
-  while (std::any_of(hash.begin(), std::next(hash.begin(), difficulty),
-                     [](char c) { return c != '0'; })) {
+  while (any_of(hash.begin(), next(hash.begin(), difficulty),
+                [](char c) { return c != '0'; })) {
     ++nonce;
-    this->updateHash();
+    updateHash();
   }
 }
 
 auto Block::mineBlock(uint32_t nDifficulty) -> json {
-  char* strHash = new char[nDifficulty + 1];
-  for (uint32_t i = 0; i < nDifficulty; ++i) strHash[i] = '0';
-
-  strHash[nDifficulty] = '\0';
-  string str(strHash);
-  delete[] strHash;
-
-  do {
-    json dataJson = toJson(*this);
-    ostringstream oss;
-
-    oss << dataJson["id"].get<uint64_t>() << dataJson["data"].get<string>()
-        << dataJson["prevHash"].get<string>()
-        << dataJson["nonce"].get<uint64_t>();
-    nonce++;
-    hash = sha256_hex(oss.str());
-    // cout << "nonce: " << nonce << endl;
-    // cout << "hash: " << hash << endl;
-  } while (hash.substr(0, nDifficulty) != str);
+  mine(nDifficulty);
 
   json dataJson = toJson(*this);
 
@@ -106,6 +75,6 @@ auto Block::mineBlock(uint32_t nDifficulty) -> json {
   return dataJson;
 }
 
-void Block::saveInJson(std::string const& filepath) {
+auto Block::saveInJson(string const& filepath) -> void {
   jsonToFile(filepath, json(*this));
 }
