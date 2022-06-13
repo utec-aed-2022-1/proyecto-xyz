@@ -92,3 +92,5 @@ struct Block {
 
 void to_json(nlohmann::json& j, Block const& blk);
 void from_json(const nlohmann::json& j, Block& blk);
+
+auto blockFromFile(std::string const& filepath) -> Block;

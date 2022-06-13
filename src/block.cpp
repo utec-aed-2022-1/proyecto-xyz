@@ -1,6 +1,11 @@
 #include "block.hpp"
 
 #include <algorithm>
+#include <fstream>
+#include <string>
+
+#include "sha256.hpp"
+
 using json = nlohmann::json;
 
 void to_json(json& j, Block const& blk) {
@@ -17,6 +22,13 @@ void from_json(const json& j, Block& blk) {
   j.at("data").get_to(blk.data);
   j.at("prev").get_to(blk.prevHash);
   j.at("hash").get_to(blk.hash);
+}
+
+auto blockFromFile(std::string const& filepath) -> Block {
+  std::ifstream fp{filepath};
+  json j;
+  fp >> j;
+  return j.get<Block>();
 }
 
 auto toJson(Block const& bl) -> json {
