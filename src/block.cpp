@@ -4,10 +4,10 @@ auto toJson(Block const& bl) -> json {
   json j;
 
   j["id"] = bl.id;
-  if (bl.nonce != nonceDefaultVal) j["nonce"] = bl.nonce;
+  j["nonce"] = bl.nonce;
   j["data"] = bl.data;
-  j["prev"] = bl.prevHash;
-  if (bl.hash != hashZeros) j["hash"] = bl.hash;
+  j["prevHash"] = bl.prevHash;
+  j["hash"] = bl.hash;
 
   return j;
 }
@@ -28,10 +28,15 @@ auto Block::getHash() -> string { return hash; }
 auto Block::getPrevHash() -> string { return prevHash; }
 
 auto Block::calculateHash() -> string {
-  json idData = toJson(*this);
-  string data = to_string(idData["id"]) + to_string(idData["data"]);
+  json dataJson = toJson(*this);
 
-  return sha256_hex(data);
+  ostringstream oss;
+
+  oss << dataJson["id"].get<uint64_t>() << dataJson["data"].get<string>()
+      << dataJson["prevHash"].get<string>()
+      << dataJson["nonce"].get<uint64_t>();
+
+  return sha256_hex(oss.str());
 }
 
 auto Block::mineBlock(uint32_t nDifficulty) -> json {
@@ -40,15 +45,17 @@ auto Block::mineBlock(uint32_t nDifficulty) -> json {
 
   strHash[nDifficulty] = '\0';
   string str(strHash);
-  delete []strHash;
+  delete[] strHash;
 
   do {
     json dataJson = toJson(*this);
-    string pureData = to_string(dataJson["id"]) + to_string(dataJson["data"]) +
-                      to_string(dataJson["prevHash"]) +
-                      to_string(dataJson["nonce"]);
+    ostringstream oss;
+
+    oss << dataJson["id"].get<uint64_t>() << dataJson["data"].get<string>()
+        << dataJson["prevHash"].get<string>()
+        << dataJson["nonce"].get<uint64_t>();
     nonce++;
-    hash = sha256_hex(pureData);
+    hash = sha256_hex(oss.str());
     // cout << "nonce: " << nonce << endl;
     // cout << "hash: " << hash << endl;
   } while (hash.substr(0, nDifficulty) != str);
