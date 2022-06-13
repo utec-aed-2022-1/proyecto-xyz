@@ -13,6 +13,13 @@ using json = nlohmann::json;
 void to_json(json& j, Blockchain const& blocks) { j = json{blocks.bc}; }
 void from_json(const json& j, Blockchain& blocks) { j.get_to(blocks.bc); }
 
+auto blockchainFromFile(std::string const& filepath) -> Blockchain {
+  std::ifstream fp{filepath};
+  json j;
+  fp >> j;
+  return j.get<Blockchain>();
+}
+
 Blockchain::Blockchain(bool deserialize) {
   if (deserialize) {
     if (!this->deserialize(jsonfile))

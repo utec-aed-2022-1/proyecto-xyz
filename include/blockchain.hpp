@@ -44,3 +44,5 @@ class Blockchain {
 
 void to_json(nlohmann::json& j, Blockchain const& blocks);
 void from_json(const nlohmann::json& j, Blockchain& blocks);
+
+auto blockchainFromFile(std::string const& filepath) -> Blockchain;
