@@ -44,17 +44,6 @@ auto toJson(Block const& bl) -> json {
   return j;
 }
 
-auto jsonToFile(json jsxn) -> void {
-  mkdir("blocksRegister", 0777);
-  string file = "blocksRegister/" + to_string(jsxn["id"]) + ".json";
-  ofstream jsonFile(file);  // writing to a file
-  if (jsonFile.is_open()) {
-    jsonFile << jsxn << endl;
-    jsonFile.close();
-  } else
-    cout << "Unable to open file";
-}
-
 auto Block::getId() -> uint64_t { return this->id; }
 auto Block::getData() -> string const& { return this->data; }
 auto Block::getNonce() -> uint64_t { return this->nonce; }
