@@ -24,8 +24,9 @@ class Blockchain {
   bool valid_bc = false;
   bool destructionserialize = false;
 
-  bool deserialize_private(const std::string& filename);
+  bool deserialize_private(std::string filename);
   bool serialize_private(std::string filename);
+  void push(json data, int diferenciador);
 
  public:
   Blockchain() = default;
@@ -35,13 +36,13 @@ class Blockchain {
   auto getBlocks() -> blocks_t const&;
 
   bool serialize(std::string filename);
-  bool deserialize(const std::string& filename);
-  bool push(TDATA data);
-  bool push(json data);
-  void setserializedestruction(bool destructionserialize);
+  bool deserialize(std::string filename);
+  void push(TDATA data);
+  void push(std::string filename, bool isfile);
+  void setserializedestruction(bool destructionserialize_);
   Block front();
   Block end();
-  int size();
+  size_t size();
   TDATA find(int position);
   bool edit(int position, TDATA data);
   void clear();

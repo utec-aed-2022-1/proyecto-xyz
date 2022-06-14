@@ -1,0 +1,75 @@
+{
+    "data" : [
+        {
+          "type": "Retiros de dinero"
+          "id_cliente": "73889383"
+          "id_user": "73889383"
+          "lugar": "Lima"
+          "monto": 2.5 <-centavos
+          "fecha":  ["10-12-2003", "23:59:59"]
+        },
+        {
+          "type": "Transferencias bancarias"
+          "id_user": "73889383"
+          "monto": 2.5
+          "fecha":  "1997-07-16T19:20:30:00Z"
+          "id_emisor" : "73889383"
+          "id_receptor" : "33223522"
+        },
+        {
+          "type": "Registro de ventas"
+          "id_user": "73889383"
+          "monto": 25
+          "fecha":  "1997-07-16T19:20:30:00Z"
+          "id_cliente" : "73889383"
+          "id_vendedor" : "33223522"
+        }
+    ]
+}
+
+---------
+block:
+    string data;
+
+blockchain:
+    vector<block>
+    [](){
+        return a.user < b.user;
+    }
+bank:
+    unordered_map users;
+    //serialize <- Mauricio
+    //deserialize <- Nikole
+    blockchain blck;
+
+    login(); //push usuarios <- Alvaro
+
+//standar
+    tree<block*> monto;
+    hash<block*> lugar;
+    tree<block*> fecha;
+    tree<block*> general([](){
+        a.username[0] < b.username[0]
+    });
+//
+    ///funciones de utilidad
+    montototal();
+    vendedormasventas();
+    ///
+---------
+
+
+
+
+
+json j;
+j["data"][1]["type"] == "Registro de ventas"
+
+{id: 1  data :"{
+                 "type": "Registro de ventas"
+                 "id_user": "73889383"
+                 "monto": 25
+                 "fecha":  "1997-07-16T19:20:30:00Z"
+                 "id_cliente" : "73889383"
+                 "id_vendedor" : "33223522"
+               }"} - {id:2} - {id:3}
