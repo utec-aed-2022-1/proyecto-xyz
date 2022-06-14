@@ -36,8 +36,24 @@ blockchain:
     [](){
         return a.user < b.user;
     }
+
+struct User:
+    int id;
+    string dni;
+    string name;
+    string password
+
+---- Registro
+    Ingrese dni:
+    Ingrese nombre:
+    Ingrese password:
+----
+---- Login
+    Ingrese dni:
+    Ingrese password:
+----
 bank:
-    unordered_map users;
+    unordered_map<int, User> users;
     //serialize <- Mauricio
     //deserialize <- Nikole
     blockchain blck;
