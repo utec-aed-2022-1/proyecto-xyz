@@ -20,11 +20,7 @@ auto main() -> int { /*
    cout << "Mina el bloque: " << endl;
    json jsxn = blck.mineBlock(3);
 
-<<<<<<< Updated upstream
-  blck.saveInJson("aa/file.json");
-=======
-   blck.saveInJson(jsxn);*/
->>>>>>> Stashed changes
+  blck.saveInJson("aa/file.json");*/
 
   // from json file (falta implementar cuando hay más de 1 registro)
   // Block blck("blocksInput/1.json");

@@ -105,16 +105,10 @@ bool Blockchain::deserialize_private(std::string filename) {
   }
   json j = json::parse(to_json);
 
-<<<<<<< Updated upstream
-  for (size_t i = 0; i < j["data"].size(); i++) {
-    Block blck(j["data"][i]["id"], j["data"][i]["data"], j["data"][i]["prev"],
-               j["data"][i]["nonce"], j["data"][i]["hash"]);
-=======
   for (int i = 0; i < j["data"].size(); i++) {
     Block blck(j["data"][i]["id"], j["data"][i]["data"], j["data"][i]["nonce"],
                j["data"][i]["prev"], j["data"][i]["hash"]);
 
->>>>>>> Stashed changes
     this->bc.push_back(blck);
   }
 
