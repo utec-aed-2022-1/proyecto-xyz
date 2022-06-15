@@ -58,6 +58,23 @@ bool Blockchain::isValid() {
   return true;
 }
 
+void Blockchain::makeValid() {
+  if (this->empty()) {
+    return;
+  }
+
+  auto it = this->bc.begin();
+  it->mine(this->difficulty);
+  std::string const* prevHash = &it->hash;
+
+  while (it != this->bc.end()) {
+    it->prevHash = *prevHash;
+    it->mine(this->difficulty);
+
+    prevHash = &it->hash;
+  }
+}
+
 Block Blockchain::front() { return this->bc.front(); }
 Block Blockchain::end() { return this->bc.back(); }
 

@@ -28,6 +28,7 @@ class Blockchain {
 
   void push(TDATA data);
   bool isValid();
+  void makeValid();
 
   Block front();
   Block end();
