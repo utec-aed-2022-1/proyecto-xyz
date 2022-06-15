@@ -68,6 +68,8 @@ Block Blockchain::front() { return this->bc.front(); }
 Block Blockchain::end() { return this->bc.back(); }
 
 size_t Blockchain::size() { return this->bc.size(); }
+bool Blockchain::empty() { return this->bc.empty(); }
+size_t Blockchain::nextId() { return this->bc.size() + 1; }
 
 TDATA Blockchain::find(size_t position) {
   if (position >= this->size()) {
