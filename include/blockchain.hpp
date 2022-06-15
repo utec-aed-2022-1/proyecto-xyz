@@ -26,7 +26,7 @@ class Blockchain {
 
   bool deserialize_private(std::string filename);
   bool serialize_private(std::string filename);
-  void push(json data, int diferenciador);
+  void push(json data, size_t diferenciador);
 
  public:
   Blockchain() = default;
@@ -43,8 +43,8 @@ class Blockchain {
   Block front();
   Block end();
   size_t size();
-  TDATA find(int position);
-  bool edit(int position, TDATA data);
+  TDATA find(size_t position);
+  bool edit(size_t position, TDATA data);
   void clear();
 
   ~Blockchain();
