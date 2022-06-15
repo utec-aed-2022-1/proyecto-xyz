@@ -2,6 +2,7 @@
 #include <iostream>
 
 #include "blockchain.hpp"
+#include "bank.hpp"
 #include "json.hpp"
 
 using json = nlohmann::json;
