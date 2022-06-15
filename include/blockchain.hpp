@@ -24,6 +24,12 @@ class Blockchain {
  public:
   Blockchain() = default;
 
+  Blockchain(Blockchain const& other) = default;
+  Blockchain(Blockchain&& other) = default;
+
+  Blockchain& operator=(Blockchain const& other) = default;
+  Blockchain& operator=(Blockchain&& other) = default;
+
   auto getBlocks() -> blocks_t const&;
 
   void push(TDATA data);
