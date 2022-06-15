@@ -20,9 +20,6 @@ class Blockchain {
 
   blocks_t bc;
   uint32_t difficulty = 3;
-  std::string jsonfile = "mainjson.json";
-  bool valid_bc = false;
-  bool destructionserialize = false;
 
  public:
   Blockchain() = default;
