@@ -68,6 +68,11 @@ auto Block::isValid(uint32_t difficulty) -> bool {
 }
 
 auto Block::mine(uint32_t difficulty) -> void {
+  updateHash();
+  if (isValid(difficulty)) {
+    return;
+  }
+
   nonce = 0;
   updateHash();
 
