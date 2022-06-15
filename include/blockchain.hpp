@@ -43,7 +43,7 @@ class Blockchain {
   bool empty();
   size_t nextId();
 
-  TDATA find(size_t position);
+  TDATA const& find(size_t position);
   void edit(size_t position, TDATA data);
   void clear();
 

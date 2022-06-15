@@ -82,12 +82,8 @@ size_t Blockchain::size() { return this->bc.size(); }
 bool Blockchain::empty() { return this->bc.empty(); }
 size_t Blockchain::nextId() { return this->bc.size() + 1; }
 
-TDATA Blockchain::find(size_t position) {
-  if (position >= this->size()) {
-    throw std::invalid_argument("find: index out of range");
-  }
-
-  return this->bc[position].data;
+TDATA const& Blockchain::find(size_t position) {
+  return this->bc.at(position).data;
 }
 
 void Blockchain::edit(size_t position, TDATA data) {
