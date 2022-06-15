@@ -38,7 +38,7 @@ blockchain:
     }
 
 struct User:
-    int id;
+    size_t id;
     string dni;
     string name;
     string password
@@ -53,7 +53,7 @@ struct User:
     Ingrese password:
 ----
 bank:
-    unordered_map<int, User> users;
+    unordered_map<string, User> users;
     //serialize <- Mauricio
     //deserialize <- Nikole
     blockchain blck;

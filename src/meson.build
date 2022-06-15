@@ -7,6 +7,7 @@ main_exe = executable('main',
                       'sha256.cpp',
                       'block.cpp',
                       'blockchain.cpp',
+                      'bank.cpp',
                       'util.cpp',
                       link_with : [],
                       include_directories : inc)
