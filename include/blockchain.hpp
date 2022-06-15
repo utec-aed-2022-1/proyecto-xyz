@@ -9,13 +9,15 @@
 #include "json.hpp"
 
 class Blockchain {
+ public:
+  using blocks_t = std::vector<Block>;
+
  private:
   friend void to_json(nlohmann::json& j, Blockchain const& blocks);
   friend void from_json(const nlohmann::json& j, Blockchain& blocks);
 
   using TDATA = std::string;
   using THASH = std::string;
-  using blocks_t = std::vector<Block>;
   using json = nlohmann::json;
 
   blocks_t bc;
