@@ -63,6 +63,7 @@ struct Block {
   auto calculateHash() -> string;
   auto updateHash() -> void;
 
+  auto isValid(uint32_t difficulty) -> bool;
   auto mine(uint32_t difficulty) -> void;
 
   auto mineBlock(uint32_t nDifficulty) -> json;

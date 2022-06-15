@@ -62,12 +62,16 @@ auto Block::calculateHash() -> string {
 
 auto Block::updateHash() -> void { hash = calculateHash(); }
 
+auto Block::isValid(uint32_t difficulty) -> bool {
+  return all_of(this->hash.begin(), next(this->hash.begin(), difficulty),
+                [](char c) { return c == '0'; });
+}
+
 auto Block::mine(uint32_t difficulty) -> void {
   nonce = 0;
   updateHash();
 
-  while (any_of(hash.begin(), next(hash.begin(), difficulty),
-                [](char c) { return c != '0'; })) {
+  while (!this->isValid(difficulty)) {
     ++nonce;
     updateHash();
   }
