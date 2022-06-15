@@ -1,7 +1,3 @@
-//
-// Created by Mauricio on 9/06/2022.
-//
-
 #include "blockchain.hpp"
 
 #include <utility>
@@ -105,7 +101,7 @@ bool Blockchain::deserialize_private(std::string filename) {
   }
   json j = json::parse(to_json);
 
-  for (int i = 0; i < j["data"].size(); i++) {
+  for (size_t i = 0; i < j["data"].size(); i++) {
     Block blck(j["data"][i]["id"], j["data"][i]["data"], j["data"][i]["nonce"],
                j["data"][i]["prev"], j["data"][i]["hash"]);
 
@@ -147,7 +143,7 @@ bool Blockchain::deserialize_private(std::string filename) {
 bool Blockchain::deserialize(std::string filename) {
   if(!this->bc.empty()) this->bc.clear();
 
-  filename = "blocksinput/" + filename;
+  filename = "./blocksInput/" + filename;
   if (filename == this->jsonfile) {
     cout << "This is an invalid name, try again" << endl;
     return false;
@@ -167,7 +163,7 @@ void Blockchain::push(TDATA data) {
 void Blockchain::push(std::string filename, bool isfile) {
   if (!isfile) cout << "fichero que no es un fichero ingresado" << endl;
   // read json file
-  filename = "blocksinput/" + filename;
+  filename = "blocksInput/" + filename;
   std::ifstream file(filename, std::ifstream::in);
 
   if (file.fail()) {
@@ -191,7 +187,8 @@ void Blockchain::push(std::string filename, bool isfile) {
   file.close();
 }
 
-void Blockchain::push(json data, int diferenciador) {
+void Blockchain::push(json data, size_t diferenciador) {
+  cout << diferenciador << endl;
   Block blck(this->bc.size() + 1, data["data"]);
   if (!this->bc.empty())
     blck.prevHash = this->bc.back().hash;
@@ -211,16 +208,16 @@ void Blockchain::setserializedestruction(bool destructionserialize_) {
 
 size_t Blockchain::size() { return this->bc.size(); }
 
-TDATA Blockchain::find(int position) {
-  if (position >= this->size() || position < 0) {
+TDATA Blockchain::find(size_t position) {
+  if (position >= this->size()) {
     throw std::invalid_argument("find: index out of range");
   }
 
   return this->bc[position].data;
 }
 
-bool Blockchain::edit(int position, TDATA data) {
-  if (position >= this->size() || position < 0) {
+bool Blockchain::edit(size_t position, TDATA data) {
+  if (position >= this->size()) {
     return false;
   }
 
