@@ -23,11 +23,11 @@ const string hashZeros =
 const uint64_t nonceDefaultVal = -1;
 
 struct Block {
-  uint64_t id;
-  string data;
-  uint64_t nonce;
-  string hash;
-  string prevHash;
+  uint64_t id{0};
+  string data{""};
+  uint64_t nonce{0};
+  string hash{hashZeros};
+  string prevHash{hashZeros};
   string jsxn;
 
   // auto readFromJson(string pathFile) -> Block;
