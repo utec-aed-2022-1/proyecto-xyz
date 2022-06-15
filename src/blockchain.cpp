@@ -90,17 +90,21 @@ TDATA Blockchain::find(size_t position) {
   return this->bc[position].data;
 }
 
-bool Blockchain::edit(size_t position, TDATA data) {
-  if (position >= this->size()) {
-    return false;
-  }
+void Blockchain::edit(size_t position, TDATA data) {
+  Block& blk = this->bc.at(position);
+  blk.data = std::move(data);
+  blk.mine(this->difficulty);
 
-  this->bc[position].data = data;
-  for (size_t i = position; i < this->bc.size(); i++) {
-    this->bc[position].nonce = nonceDefaultVal;
-    this->bc[position].mineBlock(this->difficulty);
+  std::string const* prevHash = &blk.hash;
+
+  for (size_t i = position + 1; i < this->bc.size(); ++i) {
+    Block& blk = this->bc[i];
+
+    blk.prevHash = *prevHash;
+    blk.mine(this->difficulty);
+
+    prevHash = &blk.hash;
   }
-  return true;
 }
 
 void Blockchain::clear() { this->bc.clear(); }
