@@ -145,12 +145,19 @@ bool Blockchain::deserialize_private(std::string filename) {
 }
 
 bool Blockchain::deserialize(std::string filename) {
+  if(!this->bc.empty()) this->bc.clear();
+
+  if (!this->bc.empty()) this->bc.clear();
+
   filename = "blocksinput/" + filename;
   if (filename == this->jsonfile) {
     cout << "This is an invalid name, try again" << endl;
     return false;
-  } else
-    return this->deserialize_private(filename);
+  } else {
+    bool boolean = this->deserialize_private(filename);
+    this->valid_bc = boolean;
+    return boolean;
+  }
 }
 
 void Blockchain::push(TDATA data) {
@@ -188,9 +195,10 @@ void Blockchain::push(std::string filename, bool isfile) {
 
 void Blockchain::push(json data, int diferenciador) {
   Block blck(this->bc.size() + 1, data["data"]);
-  if (!this->bc.empty()) blck.prevHash = this->bc.back().hash;
-
-  this->valid_bc = true;
+  if (!this->bc.empty())
+    blck.prevHash = this->bc.back().hash;
+  else
+    this->valid_bc = true;
   blck.mineBlock(difficulty);
   this->bc.push_back(blck);
 }
