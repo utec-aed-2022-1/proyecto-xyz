@@ -1,5 +1,15 @@
 #include "block.hpp"
 
+#include <algorithm>
+#include <cstdint>
+#include <fstream>
+#include <string>
+
+#include "sha256.hpp"
+#include "util.hpp"
+
+using json = nlohmann::json;
+
 auto to_json(json& j, Block const& blk) -> void {
   j = json{{"id", blk.id},
            {"nonce", blk.nonce},
