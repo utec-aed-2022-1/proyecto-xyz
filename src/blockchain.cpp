@@ -33,8 +33,32 @@ void Blockchain::push(TDATA data) {
   this->bc.push_back(new_block);
 }
 
-Block Blockchain::front() { return this->bc.front(); }
+bool Blockchain::isValid() {
+  if (this->size() == 0) {
+    return true;
+  }
 
+  auto it = this->bc.begin();
+  std::string const* prevHash = &it->hash;
+
+  if (!it->isValid(this->difficulty)) {
+    return false;
+  }
+  ++it;
+
+  while (it != this->bc.end()) {
+    if (it->prevHash != *prevHash || it->calculateHash() != it->hash ||
+        !it->isValid(this->difficulty)) {
+      return false;
+    }
+
+    prevHash = &it->hash;
+  }
+
+  return true;
+}
+
+Block Blockchain::front() { return this->bc.front(); }
 Block Blockchain::end() { return this->bc.back(); }
 
 size_t Blockchain::size() { return this->bc.size(); }

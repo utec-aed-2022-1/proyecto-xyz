@@ -27,6 +27,7 @@ class Blockchain {
   auto getBlocks() -> blocks_t const&;
 
   void push(TDATA data);
+  bool isValid();
 
   Block front();
   Block end();
