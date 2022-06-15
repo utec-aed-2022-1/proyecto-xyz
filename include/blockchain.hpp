@@ -24,15 +24,12 @@ class Blockchain {
   bool valid_bc = false;
   bool destructionserialize = false;
 
-  void push(json data, size_t diferenciador);
-
  public:
   Blockchain() = default;
 
   auto getBlocks() -> blocks_t const&;
 
   void push(TDATA data);
-  void push(std::string filename, bool isfile);
 
   Block front();
   Block end();

@@ -20,47 +20,17 @@ auto blockchainFromFile(std::string const& filepath) -> Blockchain {
 auto Blockchain::getBlocks() -> blocks_t const& { return this->bc; }
 
 void Blockchain::push(TDATA data) {
-  json j;
-  j["data"] = data;
-  this->push(j, 1);
-}
+  Block new_block;
 
-void Blockchain::push(std::string filename, bool isfile) {
-  if (!isfile) cout << "fichero que no es un fichero ingresado" << endl;
-  // read json file
-  filename = "blocksInput/" + filename;
-  std::ifstream file(filename, std::ifstream::in);
+  new_block.data = std::move(data);
+  new_block.id = this->nextId();
 
-  if (file.fail()) {
-    // File does not exist code here
-    cout << "This file does not exist" << endl;
-    return;
+  if (!this->empty()) {
+    new_block.prevHash = bc.back().hash;
   }
 
-  // deserialize
-  char c = file.get();
-  std::string to_json;
-  while (file.good()) {  // TODO: No funciona con el operador sobrecargado <<,
-    // puede no ser la forma mas eficiente
-    to_json += c;
-    c = file.get();
-  }
-  json j = json::parse(to_json);
-
-  this->push(j, 1);
-
-  file.close();
-}
-
-void Blockchain::push(json data, size_t diferenciador) {
-  cout << diferenciador << endl;
-  Block blck(this->bc.size() + 1, data["data"]);
-  if (!this->bc.empty())
-    blck.prevHash = this->bc.back().hash;
-  else
-    this->valid_bc = true;
-  blck.mineBlock(difficulty);
-  this->bc.push_back(blck);
+  new_block.mine(this->difficulty);
+  this->bc.push_back(new_block);
 }
 
 Block Blockchain::front() { return this->bc.front(); }
