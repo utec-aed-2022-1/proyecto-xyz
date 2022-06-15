@@ -38,7 +38,8 @@ auto main() -> int { /*
   A.push("1.json", true);
   A.edit(3, "itsme Mario aksdalda");
   A.serialize("mainjson.json");
+  A.deserialize("mainjson.json");
   cout << "Size: " << A.size() << endl;
-  cout << "Find: " << A.find(3) << endl;
+  cout << "Find: " << A.find(1) << endl;
   return 0;
 }
