@@ -28,3 +28,8 @@ tasks:
       - rm -rf {{.build_dir}}
     status:
       - test ! -d {{.build_dir}}
+
+  test:
+    deps: [build]
+    cmds:
+      - meson test -C {{.build_dir}} {{.CLI_ARGS}}

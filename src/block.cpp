@@ -50,6 +50,13 @@ auto Block::operator==(Block const& other) const -> bool {
          hash == other.hash && prevHash == other.prevHash;
 }
 
+auto operator<<(ostream& os, Block const& blck) -> ostream& {
+  os << "id: " << blck.id << " \ndata: " << blck.data
+     << " \nnonce: " << blck.nonce << " \nprevHash: " << blck.prevHash
+     << " \nhash: " << blck.hash;
+  return os;
+}
+
 auto Block::getId() -> uint64_t { return id; }
 auto Block::getData() -> string const& { return data; }
 auto Block::getNonce() -> uint64_t { return nonce; }

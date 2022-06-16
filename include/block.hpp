@@ -53,6 +53,7 @@ struct Block {
   }
 
   auto operator==(Block const& other) const -> bool;
+  friend auto operator<<(ostream& os, Block const& blck) -> ostream&;
 
   auto getId() -> uint64_t;
   auto getData() -> string const&;
