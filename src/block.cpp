@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cstdint>
 #include <fstream>
+#include <ostream>
 #include <string>
 
 #include "sha256.hpp"
@@ -48,6 +49,13 @@ auto toJson(Block const& bl) -> json {
 auto Block::operator==(Block const& other) const -> bool {
   return id == other.id && data == other.data && nonce == other.nonce &&
          hash == other.hash && prevHash == other.prevHash;
+}
+
+auto operator<<(ostream& os, Block const& blck) -> ostream& {
+  os << "id: " << blck.id << " \ndata: " << blck.data
+     << " \nnonce: " << blck.nonce << " \nprevHash: " << blck.prevHash
+     << " \nhash: " << blck.hash;
+  return os;
 }
 
 auto Block::getId() -> uint64_t { return id; }
