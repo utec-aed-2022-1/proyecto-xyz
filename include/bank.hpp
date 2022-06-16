@@ -16,8 +16,8 @@ struct User {
   string password;
 };
 
-auto user_to_json(json& j, const User& p) -> void;
-auto user_from_json(const json& j, User& p) -> void;
+auto to_json(json& j, User const& p) -> void;
+auto from_json(json const& j, User& p) -> void;
 
 class Bank {
  private:
