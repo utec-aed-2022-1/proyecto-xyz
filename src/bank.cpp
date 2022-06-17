@@ -1,11 +1,11 @@
 #include "bank.hpp"
 
-auto user_to_json(json& j, const User& p) -> void {
+auto to_json(json& j, User const& p) -> void {
   j = json{
       {"id", p.id}, {"dni", p.dni}, {"name", p.name}, {"password", p.password}};
 }
 
-auto user_from_json(const json& j, User& p) -> void {
+auto from_json(json const& j, User& p) -> void {
   j.at("id").get_to(p.id);
   j.at("dni").get_to(p.dni);
   j.at("name").get_to(p.name);
