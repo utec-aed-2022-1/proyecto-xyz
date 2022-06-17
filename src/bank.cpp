@@ -12,13 +12,20 @@ auto from_json(json const& j, User& p) -> void {
   j.at("password").get_to(p.password);
 }
 
-auto Bank::serialize(string filename) -> bool {
+auto Bank::serialize(string filepath) -> bool {
   User usuario{1, "43414121", "Mauricio", "124sdadSAwa"};
+  ifstream fp{filepath};
   json j;
-  // json j = usuario;
-  cout << j;
-  // for(auto& x : this->users){
-  //   json j = x.second;
-  // }
+  fp >> j;
+
+  to_json(j, usuario);
+  // return j.get<Bank>();
+  return true;
+}
+
+auto Bank::deserialize(json jsxn, string filepath) -> bool {
+  User usuario{1, "43414121", "Mauricio", "124sdadSAwa"};
+  from_json(jsxn, usuario);
+  
   return true;
 }

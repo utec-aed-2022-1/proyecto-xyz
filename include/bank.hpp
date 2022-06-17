@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <fstream>
 
 #include "json.hpp"
 #include "util.hpp"
@@ -14,6 +15,8 @@ struct User {
   string dni;
   string name;
   string password;
+
+  User(size_t id, string dni, string name, string password) : id{id}, dni{dni}, name{name}, password{password} {}
 };
 
 auto to_json(json& j, User const& p) -> void;
@@ -25,5 +28,6 @@ class Bank {
 
  public:
   Bank() = default;
-  auto serialize(string filename) -> bool;
+  auto serialize(string filepath) -> bool;
+  auto deserialize(json jsxn, string filepath) -> bool;
 };
