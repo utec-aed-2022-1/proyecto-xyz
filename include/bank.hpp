@@ -37,4 +37,6 @@ class Bank {
   auto pushOperation(BankOperation bop) -> void {
     m_operations.emplace_back(std::move(bop));
   }
+
+  auto addUser(User p) -> void { m_users[p.dni] = std::move(p); }
 };
