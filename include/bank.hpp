@@ -40,4 +40,6 @@ class Bank {
   }
 
   auto addUser(User p) -> void { m_users[p.dni] = std::move(p); }
+
+  auto getUsers() -> users_t const& { return m_users; }
 };
