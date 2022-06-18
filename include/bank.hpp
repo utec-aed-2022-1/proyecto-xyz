@@ -31,4 +31,10 @@ class Bank {
  public:
   Bank() = default;
   auto serialize(string filename) -> bool;
+
+  auto getOperations() -> operations_t const& { return m_operations; }
+
+  auto pushOperation(BankOperation bop) -> void {
+    m_operations.emplace_back(std::move(bop));
+  }
 };
