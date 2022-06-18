@@ -21,7 +21,7 @@ auto from_json(json const& j, User& p) -> void;
 
 class Bank {
  private:
-  unordered_map<string, User> users;
+  unordered_map<string, User> m_users;
 
  public:
   Bank() = default;
