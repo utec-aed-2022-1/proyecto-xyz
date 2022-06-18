@@ -24,8 +24,9 @@ auto from_json(json const& j, User& p) -> void;
 class Bank {
  private:
   using operations_t = std::vector<BankOperation>;
+  using users_t = unordered_map<string, User>;
 
-  unordered_map<string, User> m_users;
+  users_t m_users;
   std::vector<BankOperation> m_operations;
 
  public:
