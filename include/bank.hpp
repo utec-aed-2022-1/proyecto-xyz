@@ -2,7 +2,9 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
+#include <vector>
 
+#include "bank_operations.hpp"
 #include "json.hpp"
 #include "util.hpp"
 
@@ -21,7 +23,10 @@ auto from_json(json const& j, User& p) -> void;
 
 class Bank {
  private:
+  using operations_t = std::vector<BankOperation>;
+
   unordered_map<string, User> m_users;
+  std::vector<BankOperation> m_operations;
 
  public:
   Bank() = default;
