@@ -43,3 +43,6 @@ auto from_json(const nlohmann::json& j, BankSaleRegister& bw) -> void;
 
 using BankOperation =
     std::variant<BankWithdrawal, BankTransfer, BankSaleRegister>;
+
+auto to_json(nlohmann::json& j, BankOperation const& bop) -> void;
+auto from_json(const nlohmann::json& j, BankOperation& bop) -> void;

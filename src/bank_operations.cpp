@@ -1,5 +1,9 @@
 #include "bank_operations.hpp"
 
+#include <functional>
+#include <stdexcept>
+#include <variant>
+
 #include "json.hpp"
 
 using nlohmann::json;
@@ -45,4 +49,26 @@ auto from_json(const json& j, BankSaleRegister& bw) -> void {
   j.at("date").get_to(bw.date);
   j.at("id_client").get_to(bw.id_client);
   j.at("id_seller").get_to(bw.id_seller);
+}
+
+auto to_json(json& j, BankOperation const& bop) -> void {
+  std::visit([&j](auto const& sbop) { to_json(j, sbop); }, bop);
+}
+
+auto from_json(const json& j, BankOperation& bop) -> void {
+  if (j["type"] == "withdrawal") {
+    BankWithdrawal bo;
+    from_json(j, bo);
+    bop = bo;
+  } else if (j["type"] == "transfer") {
+    BankTransfer bo;
+    from_json(j, bo);
+    bop = bo;
+  } else if (j["type"] == "sale_register") {
+    BankSaleRegister bo;
+    from_json(j, bo);
+    bop = bo;
+  } else {
+    throw std::runtime_error("No recognized type");
+  }
 }
