@@ -1,106 +1,88 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
+
 import {
-  useColorMode,
-  Switch,
-  Flex,
+  FormControl,
+  FormLabel,
+  Input,
+  Container,
+  Box,
   Button,
-  IconButton,
-  Heading
+  CircularProgress
 } from '@chakra-ui/react'
-import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
-import Link from 'next/link'
 
-const Navbar = () => {
-  const { colorMode, toggleColorMode } = useColorMode()
-  const isDark = colorMode === 'dark'
-  const [display, changeDisplay] = useState('none')
+import { userLogin } from '../src/utils/loginApi'
+import ErrorMessage from './ErrorMessage'
+
+const LoginForm = () => {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    setIsLoading(true)
+    try {
+      await userLogin({ email, password })
+      setIsLoading(false)
+      alert('logged in successfully')
+    } catch (error) {
+      setError('Invalid username or password')
+      setIsLoading(false)
+      setEmail('')
+      setPassword('')
+    }
+  }
+
   return (
-    <Flex>
-      <Flex position="fixed" top="1.5rem" left="1rem" align="center">
-        <Link href="/" passHref>
-          <Heading>XYZ</Heading>
-        </Link>
-      </Flex>
-      <Flex position="fixed" top="1rem" right="1rem" align="center">
-        {/* Desktop */}
-        <Flex display={['none', 'none', 'flex', 'flex']}>
-          <Link href="/" passHref>
-            <Button as="a" variant="ghost" aria-label="Home" my={5} w="100%">
-              Home
-            </Button>
-          </Link>
-
-          <Link href="/about" passHref>
-            <Button as="a" variant="ghost" aria-label="About" my={5} w="100%">
-              About
-            </Button>
-          </Link>
-
-          <Link href="/login" passHref>
-            <Button as="a" variant="ghost" aria-label="Login" my={5} mr={3} w="100%">
-              Login
-            </Button>
-          </Link>
-        </Flex>
-
-        {/* Mobile */}
-        <IconButton
-          aria-label="Open Menu"
-          size="lg"
-          mr={2}
-          icon={<HamburgerIcon />}
-          onClick={() => changeDisplay('flex')}
-          display={['flex', 'flex', 'none', 'none']}
-        />
-        <Switch color="green" isChecked={isDark} onChange={toggleColorMode} />
-      </Flex>
-
-      {/* Mobile Content */}
-      <Flex
-        w="100vw"
-        display={display}
-        bgColor="gray.50"
-        zIndex={20}
-        h="100vh"
-        pos="fixed"
-        top="0"
-        left="0"
-        overflowY="auto"
-        flexDir="column"
-      >
-        <Flex justify="flex-end">
-          <IconButton
-            mt={2}
-            mr={2}
-            aria-label="Open Menu"
-            size="lg"
-            icon={<CloseIcon />}
-            onClick={() => changeDisplay('none')}
-          />
-        </Flex>
-
-        <Flex flexDir="column" align="center">
-          <Link href="/" passHref>
-            <Button as="a" variant="ghost" aria-label="Home" my={5} w="100%">
-              Home
-            </Button>
-          </Link>
-
-          <Link href="/about" passHref>
-            <Button as="a" variant="ghost" aria-label="About" my={5} w="100%">
-              About
-            </Button>
-          </Link>
-
-          <Link href="/contact" passHref>
-            <Button as="a" variant="ghost" aria-label="Contact" my={5} w="100%">
-              Contact
-            </Button>
-          </Link>
-        </Flex>
-      </Flex>
-    </Flex>
+    <Container maxW="md" centerContent>
+      <Box w="100%" borderWidth={1} borderRadius={8} boxShadow="lg" p="4">
+        <form onSubmit={handleSubmit}>
+          {error && <ErrorMessage message={error} />}
+          <FormControl isRequired>
+            <Box mb="5">
+              <FormLabel htmlFor="email">Email</FormLabel>
+              <Input
+                id="email"
+                type="email"
+                placeholder="test@test.com"
+                onChange={(event) => {
+                  setEmail(event.currentTarget.value)
+                  setError('')
+                }}
+              />
+            </Box>
+            <Box mb="5">
+              <FormLabel htmlFor="password">Password</FormLabel>
+              <Input
+                id="password"
+                type="password"
+                placeholder="*******"
+                onChange={(event) => {
+                  setPassword(event.currentTarget.value)
+                  setError('')
+                }}
+              />
+            </Box>
+          </FormControl>
+          <Button
+            type="submit"
+            colorScheme="teal"
+            variantcolor="teal"
+            variant="outline"
+            width="full"
+            mt={4}
+          >
+            {isLoading ? (
+              <CircularProgress isIndeterminate size="24px" color="teal" />
+            ) : (
+              'Sign In'
+            )}
+          </Button>
+        </form>
+      </Box>
+    </Container>
   )
 }
 
-export default Navbar
+export default LoginForm
