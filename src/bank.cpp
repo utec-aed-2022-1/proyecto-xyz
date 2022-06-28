@@ -11,14 +11,3 @@ auto from_json(json const& j, User& p) -> void {
   j.at("name").get_to(p.name);
   j.at("password").get_to(p.password);
 }
-
-auto Bank::serialize(string filename) -> bool {
-  User usuario{1, "43414121", "Mauricio", "124sdadSAwa"};
-  json j;
-  // json j = usuario;
-  cout << j;
-  // for(auto& x : this->users){
-  //   json j = x.second;
-  // }
-  return true;
-}
