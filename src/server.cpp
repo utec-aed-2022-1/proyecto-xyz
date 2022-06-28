@@ -27,6 +27,11 @@ auto main() -> int {
     res.set_content(json{bank.getUsers()}.dump(), "text/json");
   });
 
+  svr.Get(R"(/users/(\d+))", [&](const Request& req, Response& res) {
+    std::string const& id = req.matches[1];
+    res.set_content(json{bank.getUser(id)}.dump(), "text/json");
+  });
+
   svr.Post("/users", [&](const Request& /*req*/, Response& /*res*/,
                          const ContentReader& content_reader) {
     content_reader([&](const char* data, size_t /*data_length*/) {
