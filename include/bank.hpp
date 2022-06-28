@@ -12,7 +12,6 @@ using namespace std;
 using json = nlohmann::json;
 
 struct User {
-  size_t id;
   string dni;
   string name;
   string password;
