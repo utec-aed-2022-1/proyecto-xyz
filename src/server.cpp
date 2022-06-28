@@ -14,8 +14,8 @@ auto main() -> int {
   Server svr;
 
   Bank bank;
-  bank.addUser(User{1, "dni1", "name1", "pass1"});
-  bank.addUser(User{2, "dni2", "name2", "pass2"});
+  bank.addUser(User{"1", "name1", "pass1"});
+  bank.addUser(User{"2", "name2", "pass2"});
 
   bank.pushOperation(
       BankTransfer{"id_user 1", 111, "date 1", "id_sender 1", "id_receiver 1"});
