@@ -1,7 +1,7 @@
 export const userLogin = async ({ email, password }) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      if (email === 'test@test.com' && password === 'password') {
+      if (email === '12345678' && password === 'password') {
         resolve();
       } else {
         reject();

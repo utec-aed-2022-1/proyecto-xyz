@@ -15,9 +15,6 @@ export default function Login() {
 
       <Navbar />
       <Container maxW="2xl" py="10" centerContent>
-        <Heading as="h4" size="xl" align="center" mb="8">
-          Login
-        </Heading>
         <LoginForm />
       </Container>
     </div>
