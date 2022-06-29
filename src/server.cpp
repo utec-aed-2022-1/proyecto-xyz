@@ -14,8 +14,8 @@ auto main() -> int {
   Server svr;
 
   Bank bank;
-  bank.addUser(User{1, "dni1", "name1", "pass1"});
-  bank.addUser(User{2, "dni2", "name2", "pass2"});
+  bank.addUser(User{"1", "name1", "pass1"});
+  bank.addUser(User{"2", "name2", "pass2"});
 
   bank.pushOperation(
       BankTransfer{"id_user 1", 111, "date 1", "id_sender 1", "id_receiver 1"});
@@ -25,6 +25,11 @@ auto main() -> int {
 
   svr.Get("/users", [&bank](const Request& /*req*/, Response& res) {
     res.set_content(json{bank.getUsers()}.dump(), "text/json");
+  });
+
+  svr.Get(R"(/users/(\d+))", [&](const Request& req, Response& res) {
+    std::string const& id = req.matches[1];
+    res.set_content(json{bank.getUser(id)}.dump(), "text/json");
   });
 
   svr.Post("/users", [&](const Request& /*req*/, Response& /*res*/,
