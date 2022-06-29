@@ -1,0 +1,12 @@
+a {
+  text-decoration: none !important;
+}
+
+.scroll-box {
+  overflow-y: scroll;
+  height: 58vh;
+}
+
+.hidden-overflow {
+  overflow-y: hidden;
+}

@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Navbar from '../components/Navbar'
 
-import { Box, Container, Button, Text, VStack } from '@chakra-ui/react'
+import { Box, Container, Button, Text, VStack, Link } from '@chakra-ui/react'
 import { ArrowForwardIcon } from '@chakra-ui/icons'
 
 export default function Dashboard() {
@@ -23,27 +23,36 @@ export default function Dashboard() {
             justifyContent="center"
             alignItems="stretch"
           >
-            <Button
-              rightIcon={<ArrowForwardIcon />}
-              colorScheme="teal"
-              variant="outline"
-            >
-              Withdrawal
-            </Button>
-            <Button
-              rightIcon={<ArrowForwardIcon />}
-              colorScheme="teal"
-              variant="outline"
-            >
-              Transfer
-            </Button>
-            <Button
-              rightIcon={<ArrowForwardIcon />}
-              colorScheme="teal"
-              variant="outline"
-            >
-              Sales Record
-            </Button>
+            <Link href="/withdrawal" passHref>
+              <Button
+                w="100%"
+                rightIcon={<ArrowForwardIcon />}
+                colorScheme="teal"
+                variant="outline"
+              >
+                Withdrawal
+              </Button>
+            </Link>
+            <Link href="/transfer" passHref>
+              <Button
+                w="100%"
+                rightIcon={<ArrowForwardIcon />}
+                colorScheme="teal"
+                variant="outline"
+              >
+                Transfer
+              </Button>
+            </Link>
+            <Link href="/sales-record" passHref>
+              <Button
+                w="100%"
+                rightIcon={<ArrowForwardIcon />}
+                colorScheme="teal"
+                variant="outline"
+              >
+                Sales Record
+              </Button>
+            </Link>
           </VStack>
         </Box>
       </Container>
