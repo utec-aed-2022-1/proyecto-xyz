@@ -23,6 +23,12 @@ auto main() -> int {
 
   std::cerr << json{bank.getUsers()} << "\n";
 
+  svr.set_pre_routing_handler([](const auto&  /*req*/, auto& res) {
+    res.set_header("Access-Control-Allow-Headers", "*");
+    res.set_header("Access-Control-Allow-Origin", "*");
+    return Server::HandlerResponse::Handled;
+  });
+
   svr.Get("/users", [&bank](const Request& /*req*/, Response& res) {
     res.set_header("Access-Control-Allow-Origin", "*");
 
