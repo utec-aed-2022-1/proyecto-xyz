@@ -19,6 +19,11 @@ tasks:
     cmds: 
       - ./{{.build_dir}}src/main
 
+  serve:
+    deps: [build]
+    cmds: 
+      - ./{{.build_dir}}src/server
+
   setup:
     cmds:
       - meson setup {{.CLI_ARGS}} {{.build_dir}}

@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import {
   FormControl,
@@ -17,12 +17,33 @@ import {
 import { userLogin } from '../src/utils/loginApi'
 import ErrorMessage from './ErrorMessage'
 
+import axios from 'axios'
+
 const LoginForm = () => {
   const [dni, setDni] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [registerForm, setRegisterForm] = useState(0)
+
+  const [user, getUser] = useState('')
+
+  const url = 'http://localhost:8000'
+
+  useEffect(() => {
+    getUsers()
+  }, [])
+
+  const getUsers = () => {
+    axios
+      .get(`${url}/users`)
+      .then((res) => {
+        const allUsers = res.data[0]
+        console.log('allUsers', allUsers)
+        getUser(allUsers)
+      })
+      .catch((err) => console.log(err))
+  }
 
   function changeForm() {
     setRegisterForm(!registerForm)
@@ -148,7 +169,7 @@ const LoginForm = () => {
                 )}
               </Button>
               <Text align="center" fontSize="sm" mt="3">
-                Have an account? {' '}
+                Have an account?{' '}
                 <Link color="teal" onClick={changeForm}>
                   Login
                 </Link>
