@@ -15,13 +15,24 @@ export const userLogin = async ({ dni, password }) => {
 }
 
 export const userRegister = async ({ dni, name, password }) => {
-  console.log('userRegister')
+  const options = {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Headers':
+        'Origin, X-Requested-With, Content-Type, Accept'
+    }
+  }
   axios
-    .post(`${url}/user`, {
-      dni: dni,
-      name: name,
-      password: password
-    })
+    .post(
+      `${url}/user`,
+      {
+        dni: dni,
+        name: name,
+        password: password
+      },
+      options
+    )
     .then(function (response) {
       console.log(response)
       return response
