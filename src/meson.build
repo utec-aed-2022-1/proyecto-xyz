@@ -11,8 +11,12 @@ bank_library = library('bank',
                        link_with : [sha256_library],
                        include_directories : inc)
 
+pthread = meson.get_compiler('cpp').find_library('pthread')
+
 httplib_library = library('httplib',
                           'httplib.cpp',
+                          link_with : [],
+                          dependencies : [pthread],
                           include_directories : inc)
 
 server_exe = executable('server',
