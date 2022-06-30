@@ -16,7 +16,8 @@ struct User {
   string name;
   string password;
 
-  User(size_t id, string dni, string name, string password) : id{id}, dni{dni}, name{name}, password{password} {}
+  User() {}
+  User(string dni, string name, string password) : dni{dni}, name{name}, password{password} {}
 };
 
 auto to_json(json& j, User const& p) -> void;
