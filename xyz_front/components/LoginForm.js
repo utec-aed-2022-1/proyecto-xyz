@@ -14,13 +14,14 @@ import {
   Heading
 } from '@chakra-ui/react'
 
-import { userLogin } from '../src/utils/loginApi'
+import { userLogin, userRegister } from '../src/utils/loginApi'
 import ErrorMessage from './ErrorMessage'
 
 import axios from 'axios'
 
 const LoginForm = () => {
   const [dni, setDni] = useState('')
+  const [name, setName] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -51,16 +52,34 @@ const LoginForm = () => {
   }
 
   const handleSubmit = async (event) => {
+    console.log('registerForm', registerForm)
     event.preventDefault()
     setIsLoading(true)
+    // Login
+    if (!registerForm) {
+      try {
+        await userLogin({ dni, password })
+        setIsLoading(false)
+        console.log('logged in successfully')
+      } catch (error) {
+        setError('Invalid username or password')
+        setIsLoading(false)
+        setDni('')
+        setPassword('')
+      }
+      return
+    }
+    // Register
+    console.log('Register')
     try {
-      await userLogin({ dni, password })
+      await userRegister({ dni, name, password })
       setIsLoading(false)
-      alert('logged in successfully')
+      console.log('register successfully')
     } catch (error) {
-      setError('Invalid username or password')
+      setError('Invalid data')
       setIsLoading(false)
       setDni('')
+      setName('')
       setPassword('')
     }
   }
@@ -139,7 +158,15 @@ const LoginForm = () => {
                 </Box>
                 <Box mb="5">
                   <FormLabel htmlFor="name">Nombre</FormLabel>
-                  <Input id="name" type="text" placeholder="Jhon Doe" />
+                  <Input
+                    id="name"
+                    type="text"
+                    placeholder="Jhon Doe"
+                    onChange={(event) => {
+                      setName(event.currentTarget.value)
+                      setError('')
+                    }}
+                  />
                 </Box>
                 <Box mb="5">
                   <FormLabel htmlFor="password">Password</FormLabel>
