@@ -81,7 +81,7 @@ const Navbar = () => {
         <Flex
           w="100vw"
           display={display}
-          bgColor="gray.50"
+          bgColor={isDark ? 'gray.800' : 'gray.50'}
           zIndex={20}
           h="100vh"
           pos="fixed"
