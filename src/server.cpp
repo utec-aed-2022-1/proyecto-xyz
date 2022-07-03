@@ -69,5 +69,6 @@ auto main() -> int {
   });
 
   size_t const port = 8000;
+  cout << "Listening on port " << port << endl;
   svr.listen("localhost", port);
 }
