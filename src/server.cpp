@@ -21,8 +21,6 @@ auto main() -> int {
       BankTransfer{"id_user 1", 111, "date 1", "id_sender 1", "id_receiver 1"});
   bank.pushOperation(BankWithdrawal{"id_user 2", 222, "date 2", "id_client 2"});
 
-  std::cerr << json{bank.getUsers()} << "\n";
-
   svr.set_pre_routing_handler([](const auto& req, auto& res) {
     res.set_header("Access-Control-Allow-Headers", "*");
     res.set_header("Access-Control-Allow-Origin", "*");
