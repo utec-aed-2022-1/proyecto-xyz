@@ -32,14 +32,14 @@ auto main() -> int {
   svr.Get("/users", [&bank](const Request& /*req*/, Response& res) {
     res.set_header("Access-Control-Allow-Origin", "*");
 
-    res.set_content(json{bank.getUsers()}.dump(), "text/json");
+    res.set_content(json{bank.getUsers()}.dump(), "application/json");
   });
 
   svr.Get(R"(/user/(\d+))", [&](const Request& req, Response& res) {
     res.set_header("Access-Control-Allow-Origin", "*");
 
     std::string const& id = req.matches[1];
-    res.set_content(json{bank.getUser(id)}.dump(), "text/json");
+    res.set_content(json{bank.getUser(id)}.dump(), "application/json");
   });
 
   svr.Post("/user", [&](const Request& /*req*/, Response& res,
@@ -55,7 +55,7 @@ auto main() -> int {
   svr.Get("/operations", [&bank](const Request& /*req*/, Response& res) {
     res.set_header("Access-Control-Allow-Origin", "*");
 
-    res.set_content(json(bank.getOperations()).dump(), "text/json");
+    res.set_content(json(bank.getOperations()).dump(), "application/json");
   });
 
   svr.Post("/operation", [&](const Request& /*req*/, Response& res,
