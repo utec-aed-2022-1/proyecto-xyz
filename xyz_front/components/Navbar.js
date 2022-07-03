@@ -22,7 +22,7 @@ const Navbar = () => {
       <Flex>
         <Box p="4">
           <Flex top="1.5rem" left="1rem" align="center">
-            <Link href="/" passHref>
+            <Link href="/">
               <a>
                 <Heading>XYZ</Heading>
               </a>
@@ -34,7 +34,7 @@ const Navbar = () => {
           <Flex top="1rem" right="1rem" align="center">
             {/* Desktop */}
             <Flex display={['none', 'none', 'flex', 'flex']}>
-              <Link href="/" passHref>
+              <Link href="/">
                 <Button
                   as="a"
                   variant="ghost"
@@ -46,7 +46,7 @@ const Navbar = () => {
                 </Button>
               </Link>
 
-              <Link href="/login" passHref>
+              <Link href="/login">
                 <Button
                   as="a"
                   variant="ghost"
@@ -102,19 +102,19 @@ const Navbar = () => {
           </Flex>
 
           <Flex flexDir="column" align="center">
-            <Link href="/" passHref>
+            <Link href="/">
               <Button as="a" variant="ghost" aria-label="Home" my={5} w="100%">
                 Home
               </Button>
             </Link>
 
-            <Link href="/about" passHref>
+            <Link href="/about">
               <Button as="a" variant="ghost" aria-label="About" my={5} w="100%">
                 About
               </Button>
             </Link>
 
-            <Link href="/contact" passHref>
+            <Link href="/contact">
               <Button
                 as="a"
                 variant="ghost"

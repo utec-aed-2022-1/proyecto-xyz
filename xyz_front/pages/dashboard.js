@@ -23,7 +23,7 @@ export default function Dashboard() {
             justifyContent="center"
             alignItems="stretch"
           >
-            <Link href="/withdrawal" passHref>
+            <Link href="/withdrawal">
               <Button
                 w="100%"
                 rightIcon={<ArrowForwardIcon />}
@@ -33,7 +33,7 @@ export default function Dashboard() {
                 Withdrawal
               </Button>
             </Link>
-            <Link href="/transfer" passHref>
+            <Link href="/transfer">
               <Button
                 w="100%"
                 rightIcon={<ArrowForwardIcon />}
@@ -43,7 +43,7 @@ export default function Dashboard() {
                 Transfer
               </Button>
             </Link>
-            <Link href="/sales-record" passHref>
+            <Link href="/sales-record">
               <Button
                 w="100%"
                 rightIcon={<ArrowForwardIcon />}

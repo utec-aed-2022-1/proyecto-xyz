@@ -24,7 +24,7 @@ export default function Home() {
             amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet,
             consectetur adipiscing elit.
           </Text>
-          <Box>
+          <Box align="center">
             <Image
               boxSize="300px"
               objectFit="cover"
