@@ -32,6 +32,9 @@ auto main() -> int {
     return Server::HandlerResponse::Unhandled;
   });
 
+  svr.set_post_routing_handler([](const auto& req, auto& res) {
+    cout << "[" << req.method << "] " << req.path << " " << res.body << endl;
+  });
 
   svr.Get("/users", [&bank](const Request& /*req*/, Response& res) {
     res.set_content(json{bank.getUsers()}.dump(), "application/json");
