@@ -89,6 +89,10 @@ auto from_json(const json& j, BankOperation& bop) -> void {
   }
 }
 
+auto to_json(nlohmann::json& j, BankOperation const* bop) -> void {
+  to_json(j, *bop);
+}
+
 auto get_type(BankOperation const& bop) -> std::string const& {
   return std::visit(overload{[](BankWithdrawal const&) -> std::string const& {
                                return BankWithdrawal::type;
