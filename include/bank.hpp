@@ -28,6 +28,9 @@ class Bank {
   users_t m_users;
   std::vector<BankOperation> m_operations;
 
+  std::unordered_map<std::string, std::vector<BankOperation const*>>
+      m_search_by_type;
+
  public:
   Bank() = default;
   auto serialize(string filename) -> bool;
@@ -35,7 +38,8 @@ class Bank {
   auto getOperations() -> operations_t const& { return m_operations; }
 
   auto pushOperation(BankOperation bop) -> void {
-    m_operations.emplace_back(std::move(bop));
+    auto const& op = m_operations.emplace_back(std::move(bop));
+    m_search_by_type[get_type(op)].push_back(&op);
   }
 
   auto addUser(User p) -> void { m_users[p.dni] = std::move(p); }
@@ -44,4 +48,13 @@ class Bank {
     return m_users.at(key);
   }
   auto getUsers() -> users_t const& { return m_users; }
+
+  auto searchByType(std::string const& type)
+      -> std::vector<BankOperation const*> {
+    auto it = m_search_by_type.find(type);
+    if (it == m_search_by_type.end()) {
+      return {};
+    }
+    return it->second;
+  }
 };
