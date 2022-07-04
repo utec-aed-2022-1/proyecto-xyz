@@ -8,6 +8,8 @@
 
 using nlohmann::json;
 
+const std::string BankWithdrawal::type = "withdrawal";
+
 auto to_json(json& j, BankWithdrawal const& bw) -> void {
   j = json{{"id", bw.id},           {"type", "withdrawal"},
            {"id_user", bw.id_user}, {"amount", bw.amount},
@@ -21,6 +23,8 @@ auto from_json(const json& j, BankWithdrawal& bw) -> void {
   j.at("date").get_to(bw.date);
   j.at("id_client").get_to(bw.id_client);
 }
+
+const std::string BankTransfer::type = "withdrawal";
 
 auto to_json(json& j, BankTransfer const& bt) -> void {
   j = json{{"id", bt.id},
@@ -40,6 +44,8 @@ auto from_json(const json& j, BankTransfer& bt) -> void {
   j.at("id_sender").get_to(bt.id_sender);
   j.at("id_receiver").get_to(bt.id_receiver);
 }
+
+const std::string BankSaleRegister::type = "withdrawal";
 
 auto to_json(json& j, BankSaleRegister const& bsr) -> void {
   j = json{{"id", bsr.id},
