@@ -28,8 +28,7 @@ class Bank {
   users_t m_users;
   std::vector<BankOperation> m_operations;
 
-  std::unordered_map<std::string, std::vector<BankOperation const*>>
-      m_search_by_type;
+  std::unordered_map<std::string, std::vector<size_t>> m_search_by_type;
 
  public:
   Bank() = default;
@@ -39,7 +38,7 @@ class Bank {
 
   auto pushOperation(BankOperation bop) -> void {
     auto const& op = m_operations.emplace_back(std::move(bop));
-    m_search_by_type[get_type(op)].push_back(&op);
+    m_search_by_type[get_type(op)].push_back(m_operations.size() - 1);
   }
 
   auto addUser(User p) -> void { m_users[p.dni] = std::move(p); }
@@ -55,6 +54,11 @@ class Bank {
     if (it == m_search_by_type.end()) {
       return {};
     }
-    return it->second;
+
+    std::vector<BankOperation const*> res;
+    for (size_t i : it->second) {
+      res.push_back(&m_operations.at(i));
+    }
+    return res;
   }
 };
