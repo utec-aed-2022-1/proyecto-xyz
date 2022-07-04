@@ -10,6 +10,7 @@
 // means 1 of whatever currency)
 
 struct BankWithdrawal {
+  size_t id;
   std::string id_user;
   size_t amount;
   std::string date;
@@ -20,6 +21,7 @@ auto to_json(nlohmann::json& j, BankWithdrawal const& bw) -> void;
 auto from_json(const nlohmann::json& j, BankWithdrawal& bw) -> void;
 
 struct BankTransfer {
+  size_t id;
   std::string id_user;
   size_t amount;
   std::string date;
@@ -31,6 +33,7 @@ auto to_json(nlohmann::json& j, BankTransfer const& bt) -> void;
 auto from_json(const nlohmann::json& j, BankTransfer& bt) -> void;
 
 struct BankSaleRegister {
+  size_t id;
   std::string id_user;
   size_t amount;
   std::string date;
