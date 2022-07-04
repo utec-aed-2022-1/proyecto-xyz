@@ -32,7 +32,8 @@ auto main() -> int {
   });
 
   svr.set_post_routing_handler([](const auto& req, auto& res) {
-    cout << "[" << req.method << "] " << req.path << " " << res.body << endl;
+    std::cerr << "[" << req.method << "] " << req.path << " " << res.body
+              << "\n";
   });
 
   svr.Get("/users", [&bank](const Request& /*req*/, Response& res) {
@@ -65,6 +66,6 @@ auto main() -> int {
   });
 
   size_t const port = 8000;
-  cout << "Listening on port " << port << endl;
+  std::cerr << "Listening on port " << port << "\n";
   svr.listen("localhost", port);
 }
