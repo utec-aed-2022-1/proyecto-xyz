@@ -29,6 +29,7 @@ class Bank {
   std::vector<BankOperation> m_operations;
 
   std::unordered_map<std::string, std::vector<size_t>> m_search_by_type;
+  std::unordered_map<std::string, std::vector<size_t>> m_search_by_id_user;
 
  public:
   Bank() = default;
@@ -38,7 +39,12 @@ class Bank {
 
   auto pushOperation(BankOperation bop) -> void {
     auto const& op = m_operations.emplace_back(std::move(bop));
+
     m_search_by_type[get_type(op)].push_back(m_operations.size() - 1);
+
+    std::string const& id_user = std::visit(
+        [](auto const& bo) -> std::string const& { return bo.id_user; }, op);
+    m_search_by_id_user[id_user].push_back(m_operations.size() - 1);
   }
 
   auto addUser(User p) -> void { m_users[p.dni] = std::move(p); }
@@ -51,6 +57,20 @@ class Bank {
   auto searchByType(std::string const& type)
       -> std::vector<BankOperation const*> {
     auto it = m_search_by_type.find(type);
+    if (it == m_search_by_type.end()) {
+      return {};
+    }
+
+    std::vector<BankOperation const*> res;
+    for (size_t i : it->second) {
+      res.push_back(&m_operations.at(i));
+    }
+    return res;
+  }
+
+  auto searchByIdUser(std::string const& id_user)
+      -> std::vector<BankOperation const*> {
+    auto it = m_search_by_id_user.find(id_user);
     if (it == m_search_by_type.end()) {
       return {};
     }
