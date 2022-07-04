@@ -61,13 +61,16 @@ auto main() -> int {
   svr.Get("/operations/search", [&](const Request& req, Response& res) {
     auto const& params = req.params;
 
-    auto type_it = params.find("type");
-    if (type_it == params.end()) {
+    if (auto type_it = params.find("type"); type_it != params.end()) {
+      res.set_content(json(bank.searchByType(type_it->second)).dump(),
+                      "application/json");
+    } else if (auto id_user_it = params.find("id_user");
+               id_user_it != params.end()) {
+      res.set_content(json(bank.searchByIdUser(id_user_it->second)).dump(),
+                      "application/json");
+    } else {
       throw std::runtime_error("Not implemented");
     }
-
-    res.set_content(json(bank.searchByType(type_it->second)).dump(),
-                    "application/json");
   });
 
   svr.Post("/operations", [&](const Request& /*req*/, Response& res,
