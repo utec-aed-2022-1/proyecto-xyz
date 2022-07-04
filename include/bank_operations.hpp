@@ -55,3 +55,5 @@ using BankOperation =
 
 auto to_json(nlohmann::json& j, BankOperation const& bop) -> void;
 auto from_json(const nlohmann::json& j, BankOperation& bop) -> void;
+
+auto get_type(BankOperation const& bop) -> std::string const&;
