@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include <string>
 
 #include "bank.hpp"
@@ -55,6 +56,18 @@ auto main() -> int {
 
   svr.Get("/operations", [&bank](const Request& /*req*/, Response& res) {
     res.set_content(json(bank.getOperations()).dump(), "application/json");
+  });
+
+  svr.Get("/operations/search", [&](const Request& req, Response& res) {
+    auto const& params = req.params;
+
+    auto type_it = params.find("type");
+    if (type_it == params.end()) {
+      throw std::runtime_error("Not implemented");
+    }
+
+    res.set_content(json(bank.searchByType(type_it->second)).dump(),
+                    "application/json");
   });
 
   svr.Post("/operations", [&](const Request& /*req*/, Response& res,
