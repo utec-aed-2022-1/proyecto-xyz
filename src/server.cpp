@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include <cassert>
+#include <stdexcept>
 #include <string>
 
 #include "bank.hpp"
@@ -20,11 +21,10 @@ auto main() -> int {
   bank.addUser(User{"1", "name1", "pass1"});
   bank.addUser(User{"2", "name2", "pass2"});
 
+  bank.pushOperation(BankTransfer{1, "id_user 1", 111, "date 1", "id_sender 1",
+                                  "id_receiver 1"});
   bank.pushOperation(
-      BankTransfer{"id_user 1", 111, "date 1", "id_sender 1", "id_receiver 1"});
-  bank.pushOperation(BankWithdrawal{"id_user 2", 222, "date 2", "id_client 2"});
-
-  // std::cerr << json{bank.getUsers()} << "\n";
+      BankWithdrawal{2, "id_user 2", 222, "date 2", "id_client 2"});
 
   svr.set_pre_routing_handler([](const auto& req, auto& res) {
     res.set_header("Access-Control-Allow-Headers", "*");
@@ -36,7 +36,8 @@ auto main() -> int {
   });
 
   svr.set_post_routing_handler([](const auto& req, auto& res) {
-    cout << "[" << req.method << "] " << req.path << " " << res.body << endl;
+    std::cerr << "[" << req.method << "] " << req.path << " " << res.body
+              << "\n";
   });
 
   svr.Get("/users", [&bank](const Request& /*req*/, Response& res) {
@@ -60,6 +61,21 @@ auto main() -> int {
     res.set_content(json(bank.getOperations()).dump(), "application/json");
   });
 
+  svr.Get("/operations/search", [&](const Request& req, Response& res) {
+    auto const& params = req.params;
+
+    if (auto type_it = params.find("type"); type_it != params.end()) {
+      res.set_content(json(bank.searchByType(type_it->second)).dump(),
+                      "application/json");
+    } else if (auto id_user_it = params.find("id_user");
+               id_user_it != params.end()) {
+      res.set_content(json(bank.searchByIdUser(id_user_it->second)).dump(),
+                      "application/json");
+    } else {
+      throw std::runtime_error("Not implemented");
+    }
+  });
+
   svr.Post("/operations", [&](const Request& /*req*/, Response& res,
                               const ContentReader& content_reader) {
     content_reader([&](const char* data, size_t /*data_length*/) {
@@ -69,6 +85,6 @@ auto main() -> int {
   });
 
   size_t const port = 8000;
-  cout << "Listening on port " << port << endl;
+  std::cerr << "Listening on port " << port << "\n";
   svr.listen("localhost", port);
 }

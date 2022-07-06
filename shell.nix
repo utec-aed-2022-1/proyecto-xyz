@@ -25,6 +25,8 @@ mkShell rec {
     meson
     ninja
     pkg-config
+
+    nodejs
   ];
 
   CPATH = lib.makeSearchPathOutput "dev" "include" buildInputs;
