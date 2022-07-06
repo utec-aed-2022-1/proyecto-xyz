@@ -25,19 +25,19 @@ const LoginForm = () => {
   const [registerForm, setRegisterForm] = useState(0)
   const router = useRouter()
 
+  const url = 'http://localhost:8000'
+
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm()
 
-  const url = 'http://localhost:8000'
-
   useEffect(() => {
     // getUsers()
   }, [])
 
-  function changeForm() {
+  const changeForm = () => {
     setRegisterForm(!registerForm)
   }
 
@@ -74,13 +74,16 @@ const LoginForm = () => {
     setData(data)
     if (!registerForm) {
       try {
+        console.log('data', data)
         const result = await userLogin(data)
         setIsLoading(false)
         if (result.status) {
           console.log('login successfully')
-          router.push('/dashboard')
-        }
-        else console.log('error')
+          router.push({
+            pathname: '/dashboard/[pid]',
+            query: { pid: data.dni }
+          })
+        } else console.log('error')
       } catch (error) {
         setError('Invalid dni or password')
         setIsLoading(false)
