@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import Navbar from '../components/Navbar'
+import Navbar from '../../components/Navbar'
 
 import {
   Box,
@@ -14,11 +14,16 @@ import {
 } from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons'
 
-export default function Withdrawal() {
+import { useRouter } from 'next/router'
+
+export default function Transfer() {
+  const router = useRouter()
+  const { pid } = router.query
+
   return (
     <div>
       <Head>
-        <title>Withdrawal</title>
+        <title>Transfer</title>
         <meta name="description" content="XYZ App" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -27,11 +32,11 @@ export default function Withdrawal() {
       <Box height="85vh" className="hidden-overflow">
         <Container maxW="5xl">
           <Text fontSize="2xl" align="center">
-            Withdrawal
+            Transfer
           </Text>
           <Flex flexWrap="wrap">
             <Box p="4">
-              <b>Account number:</b> <span>1235341232</span>
+              <b>Account number:</b> <span>{pid}</span>
               <br />
               <b>Total Amount:</b> S/<span>5000</span>
             </Box>
@@ -88,21 +93,8 @@ export default function Withdrawal() {
                 </Box>
                 <Spacer />
                 <Box mx="2">
-                  <Text fontWeight="bold">Date:</Text>
-                  <Text>18/02/2022</Text>
-                </Box>
-              </Flex>
-            </Box>
-            <Box width="100%" borderWidth="1px" borderRadius="lg" p="3" mb="4">
-              <Flex flexWrap="wrap">
-                <Box mx="2">
-                  <Text fontWeight="bold">Amount:</Text>
-                  <Text>S/123</Text>
-                </Box>
-                <Spacer />
-                <Box mx="2">
-                  <Text fontWeight="bold">Operation Number:</Text>
-                  <Text>6187238</Text>
+                  <Text fontWeight="bold">Account receiver:</Text>
+                  <Text>72160454</Text>
                 </Box>
                 <Spacer />
                 <Box mx="2">
@@ -124,21 +116,8 @@ export default function Withdrawal() {
                 </Box>
                 <Spacer />
                 <Box mx="2">
-                  <Text fontWeight="bold">Date:</Text>
-                  <Text>18/02/2022</Text>
-                </Box>
-              </Flex>
-            </Box>
-            <Box width="100%" borderWidth="1px" borderRadius="lg" p="3" mb="4">
-              <Flex flexWrap="wrap">
-                <Box mx="2">
-                  <Text fontWeight="bold">Amount:</Text>
-                  <Text>S/123</Text>
-                </Box>
-                <Spacer />
-                <Box mx="2">
-                  <Text fontWeight="bold">Operation Number:</Text>
-                  <Text>6187238</Text>
+                  <Text fontWeight="bold">Account receiver:</Text>
+                  <Text>72160454</Text>
                 </Box>
                 <Spacer />
                 <Box mx="2">
@@ -157,6 +136,57 @@ export default function Withdrawal() {
                 <Box mx="2">
                   <Text fontWeight="bold">Operation Number:</Text>
                   <Text>6187238</Text>
+                </Box>
+                <Spacer />
+                <Box mx="2">
+                  <Text fontWeight="bold">Account receiver:</Text>
+                  <Text>72160454</Text>
+                </Box>
+                <Spacer />
+                <Box mx="2">
+                  <Text fontWeight="bold">Date:</Text>
+                  <Text>18/02/2022</Text>
+                </Box>
+              </Flex>
+            </Box>
+            <Box width="100%" borderWidth="1px" borderRadius="lg" p="3" mb="4">
+              <Flex flexWrap="wrap">
+                <Box mx="2">
+                  <Text fontWeight="bold">Amount:</Text>
+                  <Text>S/123</Text>
+                </Box>
+                <Spacer />
+                <Box mx="2">
+                  <Text fontWeight="bold">Operation Number:</Text>
+                  <Text>6187238</Text>
+                </Box>
+                <Spacer />
+                <Box mx="2">
+                  <Text fontWeight="bold">Account receiver:</Text>
+                  <Text>72160454</Text>
+                </Box>
+                <Spacer />
+                <Box mx="2">
+                  <Text fontWeight="bold">Date:</Text>
+                  <Text>18/02/2022</Text>
+                </Box>
+              </Flex>
+            </Box>
+            <Box width="100%" borderWidth="1px" borderRadius="lg" p="3" mb="4">
+              <Flex flexWrap="wrap">
+                <Box mx="2">
+                  <Text fontWeight="bold">Amount:</Text>
+                  <Text>S/123</Text>
+                </Box>
+                <Spacer />
+                <Box mx="2">
+                  <Text fontWeight="bold">Operation Number:</Text>
+                  <Text>6187238</Text>
+                </Box>
+                <Spacer />
+                <Box mx="2">
+                  <Text fontWeight="bold">Account receiver:</Text>
+                  <Text>72160454</Text>
                 </Box>
                 <Spacer />
                 <Box mx="2">
