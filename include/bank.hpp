@@ -25,7 +25,7 @@ auto from_json(json const& j, User& p) -> void;
 class Bank {
  private:
   using operations_t = Blockchain<BankOperation>;
-  using users_t = unordered_map<string, User>;
+  using users_t = HashMap<string, User>;
 
   users_t m_users;
   operations_t m_operations;
@@ -90,7 +90,7 @@ class Bank {
   auto addUser(User p) -> void { m_users[p.dni] = std::move(p); }
 
   auto getUser(std::string const& key) -> User const& {
-    return m_users.at(key);
+    return m_users[key];
   }
   auto getUsers() -> users_t const& { return m_users; }
 
