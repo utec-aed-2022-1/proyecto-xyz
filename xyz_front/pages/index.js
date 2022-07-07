@@ -19,10 +19,7 @@ export default function Home() {
             Blockchain - Bank operations
           </Heading>
           <Text fontSize="md" align="center">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum
-            dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit
-            amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit.
+            Aplicación para crear usuarios y operaciones bancarias de manera segura usando Blockchain.
           </Text>
           <Box align="center">
             <Image
