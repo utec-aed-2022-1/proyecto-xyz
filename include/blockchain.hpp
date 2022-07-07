@@ -15,6 +15,8 @@ class Blockchain {
   using block_t = Block<T>;
   using blocks_t = std::vector<block_t>;
 
+  using iterator = typename blocks_t::iterator;
+
  private:
   friend void to_json(nlohmann::json& j, Blockchain const& blocks) {
     j = json{blocks.bc};
@@ -99,6 +101,9 @@ class Blockchain {
 
   auto front() -> Block<T> { return this->bc.front(); }
   auto size() -> size_t { return this->bc.size(); }
+  auto begin() -> iterator { return this->bc.begin(); }
+  auto end() -> iterator { return this->bc.end(); }
+
   auto back() -> block_t { return this->bc.back(); }
   auto empty() -> bool { return this->bc.empty(); }
   auto nextId() -> size_t { return this->bc.size() + 1; };
