@@ -4,16 +4,16 @@
 #include <iostream>
 #include <string>
 #include <utility>
-#include <vector>
 
 #include "block.hpp"
 #include "json.hpp"
+#include "vector.hpp"
 
 template <typename T>
 class Blockchain {
  public:
   using block_t = Block<T>;
-  using blocks_t = std::vector<block_t>;
+  using blocks_t = Vector<block_t>;
 
   using iterator = typename blocks_t::iterator;
 

@@ -9,6 +9,7 @@
 #include "httplib.h"
 #include "json.hpp"
 #include "prettyprint.hpp"
+#include "util.hpp"
 
 using nlohmann::json;
 
@@ -17,9 +18,10 @@ auto main() -> int {
 
   Server svr;
 
-  Bank bank;
   // bank.addUser(User{"1", "name1", "pass1"});
   // bank.addUser(User{"2", "name2", "pass2"});
+  std::string const bank_file = "bank.json";
+  Bank bank;
 
   // bank.pushOperation(BankTransfer{1, "id_user 1", 111, "date 1", "id_sender 1",
   //                                 "id_receiver 1"});
@@ -51,7 +53,7 @@ auto main() -> int {
     res.set_content(json{bank.getUser(id)}.dump(), "application/json");
   });
 
-  svr.Post("/user", [&](const Request& /*req*/, Response& res,
+  svr.Post("/user", [&](const Request& /*req*/, Response& /*res*/,
                         const ContentReader& content_reader) {
     content_reader([&](const char* data, size_t /*data_length*/) {
       bank.addUser(json::parse(data).get<User>());
@@ -101,7 +103,7 @@ auto main() -> int {
     }
   });
 
-  svr.Post("/operation", [&](const Request& /*req*/, Response& res,
+  svr.Post("/operation", [&](const Request& /*req*/, Response& /*res*/,
                              const ContentReader& content_reader) {
     content_reader([&](const char* data, size_t /*data_length*/) {
       json j = json::parse(data);
@@ -109,6 +111,10 @@ auto main() -> int {
       bank.pushOperation(j.get<BankOperation>());
       return true;
     });
+  });
+
+  svr.Get("/write", [&](const Request& /*req*/, Response& /*res*/) {
+    jsonToFile(bank_file, json(bank));
   });
 
   size_t const port = 8000;

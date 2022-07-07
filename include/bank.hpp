@@ -1,13 +1,14 @@
 #pragma once
+
 #include <iostream>
 #include <string>
-#include <unordered_map>
-#include <vector>
 
 #include "bank_operations.hpp"
 #include "blockchain.hpp"
+#include "hash_map.hpp"
 #include "json.hpp"
 #include "util.hpp"
+#include "vector"
 
 using namespace std;
 using json = nlohmann::json;
@@ -27,28 +28,28 @@ auto from_json(json const& j, User& p) -> void;
 class Bank {
  private:
   using operations_t = Blockchain<BankOperation>;
-  using users_t = unordered_map<string, User>;
+  using users_t = HashMap<string, User>;
 
   users_t m_users;
   operations_t m_operations;
 
   // In all types
-  std::unordered_map<size_t, size_t> m_search_by_id;
-  std::unordered_map<std::string, std::vector<size_t>> m_search_by_type;
-  std::unordered_map<std::string, std::vector<size_t>> m_search_by_id_user;
+  HashMap<size_t, size_t> m_search_by_id;
+  HashMap<std::string, Vector<size_t>> m_search_by_type;
+  HashMap<std::string, Vector<size_t>> m_search_by_id_user;
 
   // In some types
-  std::unordered_map<std::string, std::vector<size_t>> m_search_by_id_client;
-  std::unordered_map<std::string, std::vector<size_t>> m_search_by_id_sender;
-  std::unordered_map<std::string, std::vector<size_t>> m_search_by_id_receiver;
-  std::unordered_map<std::string, std::vector<size_t>> m_search_by_id_seller;
+  HashMap<std::string, Vector<size_t>> m_search_by_id_client;
+  HashMap<std::string, Vector<size_t>> m_search_by_id_sender;
+  HashMap<std::string, Vector<size_t>> m_search_by_id_receiver;
+  HashMap<std::string, Vector<size_t>> m_search_by_id_seller;
 
  public:
   Bank() = default;
   auto serialize(string filename) -> bool;
 
-  auto getOperations() -> std::vector<BankOperation const*> {
-    std::vector<BankOperation const*> ret;
+  auto getOperations() -> Vector<BankOperation const*> {
+    Vector<BankOperation const*> ret;
     for (auto const& block : m_operations) {
       ret.push_back(&block.data);
     }
@@ -92,18 +93,17 @@ class Bank {
   auto addUser(User p) -> void { m_users[p.dni] = std::move(p); }
 
   auto getUser(std::string const& key) -> User const& {
-    return m_users.at(key);
+    return m_users[key];
   }
   auto getUsers() -> users_t const& { return m_users; }
 
-  auto searchByType(std::string const& type)
-      -> std::vector<BankOperation const*> {
+  auto searchByType(std::string const& type) -> Vector<BankOperation const*> {
     auto it = m_search_by_type.find(type);
     if (it == m_search_by_type.end()) {
       return {};
     }
 
-    std::vector<BankOperation const*> res;
+    Vector<BankOperation const*> res;
     for (size_t i : it->second) {
       res.push_back(&m_operations.at(i).data);
     }
@@ -111,13 +111,13 @@ class Bank {
   }
 
   auto searchByIdUser(std::string const& id_user)
-      -> std::vector<BankOperation const*> {
+      -> Vector<BankOperation const*> {
     auto it = m_search_by_id_user.find(id_user);
     if (it == m_search_by_id_user.end()) {
       return {};
     }
 
-    std::vector<BankOperation const*> res;
+    Vector<BankOperation const*> res;
     for (size_t i : it->second) {
       res.push_back(&m_operations.at(i).data);
     }
@@ -125,13 +125,13 @@ class Bank {
   }
 
   auto searchByIdClient(std::string const& id_client)
-      -> std::vector<BankOperation const*> {
+      -> Vector<BankOperation const*> {
     auto it = m_search_by_id_client.find(id_client);
     if (it == m_search_by_id_client.end()) {
       return {};
     }
 
-    std::vector<BankOperation const*> res;
+    Vector<BankOperation const*> res;
     for (size_t i : it->second) {
       res.push_back(&m_operations.at(i).data);
     }
@@ -139,13 +139,13 @@ class Bank {
   }
 
   auto searchByIdSender(std::string const& id_sender)
-      -> std::vector<BankOperation const*> {
+      -> Vector<BankOperation const*> {
     auto it = m_search_by_id_sender.find(id_sender);
     if (it == m_search_by_id_sender.end()) {
       return {};
     }
 
-    std::vector<BankOperation const*> res;
+    Vector<BankOperation const*> res;
     for (size_t i : it->second) {
       res.push_back(&m_operations.at(i).data);
     }
@@ -153,13 +153,13 @@ class Bank {
   }
 
   auto searchByIdReceiver(std::string const& id_receiver)
-      -> std::vector<BankOperation const*> {
+      -> Vector<BankOperation const*> {
     auto it = m_search_by_id_receiver.find(id_receiver);
     if (it == m_search_by_id_receiver.end()) {
       return {};
     }
 
-    std::vector<BankOperation const*> res;
+    Vector<BankOperation const*> res;
     for (size_t i : it->second) {
       res.push_back(&m_operations.at(i).data);
     }
@@ -167,13 +167,13 @@ class Bank {
   }
 
   auto searchByIdSeller(std::string const& id_seller)
-      -> std::vector<BankOperation const*> {
+      -> Vector<BankOperation const*> {
     auto it = m_search_by_id_seller.find(id_seller);
     if (it == m_search_by_id_seller.end()) {
       return {};
     }
 
-    std::vector<BankOperation const*> res;
+    Vector<BankOperation const*> res;
     for (size_t i : it->second) {
       res.push_back(&m_operations.at(i).data);
     }
@@ -181,4 +181,16 @@ class Bank {
   }
 
   auto nextOperationId() const -> size_t { return m_operations.size(); }
+
+  friend auto to_json(json& j, Bank const& bank) -> void {
+    j = json{
+        {"operations", bank.m_operations},
+        {"users", bank.m_users},
+    };
+  }
+
+  friend auto from_json(const json& j, Bank& bank) -> void {
+    j.at("operations").get_to(bank.m_operations);
+    j.at("users").get_to(bank.m_users);
+  }
 };
