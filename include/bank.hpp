@@ -178,4 +178,16 @@ class Bank {
   }
 
   auto nextOperationId() const -> size_t { return m_operations.size(); }
+
+  friend auto to_json(json& j, Bank const& bank) -> void {
+    j = json{
+        {"operations", bank.m_operations},
+        {"users", bank.m_users},
+    };
+  }
+
+  friend auto from_json(const json& j, Bank& bank) -> void {
+    j.at("operations").get_to(bank.m_operations);
+    j.at("users").get_to(bank.m_users);
+  }
 };
