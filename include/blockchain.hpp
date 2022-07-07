@@ -27,7 +27,7 @@ class Blockchain {
   Blockchain() = default;
 
   Blockchain(Blockchain const& other) = default;
-  Blockchain(Blockchain&& other) = default;
+  Blockchain(Blockchain&& other) noexcept = default;
 
   Blockchain& operator=(Blockchain const& other) = default;
   Blockchain& operator=(Blockchain&& other) = default;
