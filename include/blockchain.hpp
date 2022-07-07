@@ -29,23 +29,23 @@ class Blockchain {
   Blockchain(Blockchain const& other) = default;
   Blockchain(Blockchain&& other) noexcept = default;
 
-  Blockchain& operator=(Blockchain const& other) = default;
-  Blockchain& operator=(Blockchain&& other) = default;
+  auto operator=(Blockchain const& other) -> Blockchain& = default;
+  auto operator=(Blockchain&& other) noexcept -> Blockchain& = default;
 
   auto getBlocks() -> blocks_t const&;
 
   void push(TDATA data);
-  bool isValid();
+  auto isValid() -> bool;
   void makeValid();
 
-  Block front();
-  Block end();
+  auto front() -> Block<T>;
+  auto end() -> Block<T>;
 
-  size_t size();
-  bool empty();
-  size_t nextId();
+  auto size() -> size_t;
+  auto empty() -> bool;
+  auto nextId() -> size_t;
 
-  TDATA const& find(size_t position);
+  auto find(size_t position) -> TDATA const&;
   void edit(size_t position, TDATA data);
   void clear();
 
