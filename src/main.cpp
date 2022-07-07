@@ -1,9 +1,10 @@
 #include <array>
 #include <cassert>
 #include <iostream>
+#include <string>
 
-#include "blockchain.hpp"
 #include "bank.hpp"
+#include "blockchain.hpp"
 #include "json.hpp"
 
 using json = nlohmann::json;
@@ -31,8 +32,8 @@ auto main() -> int { /*
   // cout << "Mina el bloque: " << endl;
   // json jsxn = blck.mineBlock(3);
 
-  Blockchain bs = blockchainFromFile("mainjson.json");
-  vector<Block> xd;
+  Blockchain bs = blockchainFromFile<std::string>("mainjson.json");
+  vector<Block<std::string>> xd;
   xd = {{1, "mauri", 680,
          "000000000000000000000000000000000000000000"
          "0000000000000000000000",
@@ -58,7 +59,7 @@ auto main() -> int { /*
 
   bs.push("jefferson-prestamo: 10000$");
 
-  Block jef = bs.getBlocks().back();
+  Block<std::string> jef = bs.getBlocks().back();
   cout << jef << endl;
   //  {
   //   4, "jefferson-prestamo: 10000$", 2925,
@@ -66,7 +67,7 @@ auto main() -> int { /*
   //   "00020C1E5C693D80F35D577A12CD7185A5700FAABDEBB78D9465A5EF0176B1A7"
   //};
   bs.push("maria-prestamo: 1240$");
-  Block maria = bs.getBlocks().back();
+  Block<std::string> maria = bs.getBlocks().back();
   cout << maria << endl;
   //  {
   //   5, "maria-prestamo: 1240$", 1078,
@@ -111,6 +112,6 @@ auto main() -> int { /*
 
   assert(bs.size() == 5);
   assert(bs.find(1) == "2dsfsdfsfsdfsdfsds");
-  
+
   return 0;
 }
