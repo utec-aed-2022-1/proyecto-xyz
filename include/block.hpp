@@ -23,28 +23,24 @@ const string hashZeros =
     "0000000000000000000000000000000000000000000000000000000000000000";
 const uint64_t nonceDefaultVal = -1;
 
+template <typename T>
 struct Block {
   uint64_t id{0};
-  string data{""};
+  T data{""};
   uint64_t nonce{0};
   string hash{hashZeros};
   string prevHash{hashZeros};
   string jsxn;
 
-  // auto readFromJson(string pathFile) -> Block;
-
   Block() = default;
 
-  Block(uint64_t id, string data) : id(id), data(data) {
+  Block(uint64_t id, T data) : id(id), data(std::move(data)) {
     nonce = nonceDefaultVal;
     hash = hashZeros;
     prevHash = hashZeros;
   }
 
-  Block(string jsxn) : jsxn(jsxn) { readFromJson(jsxn, *this); }
-
-  Block(uint64_t id, string data, uint64_t nonce, string prevHash,
-        string hash = "")
+  Block(uint64_t id, T data, uint64_t nonce, string prevHash, string hash = "")
       : id(id),
         data(move(data)),
         nonce(nonce),
@@ -53,43 +49,77 @@ struct Block {
     ;
   }
 
-  auto operator==(Block const& other) const -> bool;
-  friend auto operator<<(ostream& os, Block const& blck) -> ostream&;
+  auto operator==(Block const& other) const -> bool {
+    return id == other.id && data == other.data && nonce == other.nonce &&
+           hash == other.hash && prevHash == other.prevHash;
+  }
 
-  auto getId() -> uint64_t;
-  auto getData() -> string const&;
-  auto getNonce() -> uint64_t;
-  auto getHash() -> string const&;
-  auto getPrevHash() -> string const&;
+  auto getId() -> uint64_t { return id; }
+  auto getData() -> T const& { return data; }
+  auto getNonce() -> uint64_t { return nonce; }
+  auto getHash() -> string const& { return hash; }
+  auto getPrevHash() -> string const& { return prevHash; }
 
-  auto calculateHash() -> string;
-  auto updateHash() -> void;
+  auto calculateHash() -> string {
+    return sha256_hex(id, nonce, data, prevHash);
+  }
 
-  auto isValid(uint32_t difficulty) -> bool;
-  auto mine(uint32_t difficulty) -> void;
+  auto updateHash() -> void { hash = calculateHash(); }
 
-  auto mineBlock(uint32_t nDifficulty) -> json;
+  auto isValid(uint32_t difficulty) -> bool {
+    return all_of(this->hash.begin(), next(this->hash.begin(), difficulty),
+                  [](char c) { return c == '0'; });
+  }
 
-  auto saveInJson(string const& filepath) -> void;
+  auto mine(uint32_t difficulty) -> void {
+    updateHash();
+    if (isValid(difficulty)) {
+      return;
+    }
 
-  auto readFromJson(string pathFile, Block& blck) -> void {
-    string line;
+    nonce = 0;
+    updateHash();
 
-    ifstream read(pathFile);
-    if (read.is_open()) {
-      while (!read.eof()) {
-        getline(read, line);
-        json jsonParsed = json::parse(line);
-        blck.id = jsonParsed["id"];
-        blck.data = jsonParsed["data"];
-      }
-      read.close();
-    } else
-      cout << "Unable to open file";
+    while (!this->isValid(difficulty)) {
+      ++nonce;
+      updateHash();
+    }
+  }
+
+  auto saveInJson(string const& filepath) -> void {
+    jsonToFile(filepath, json(*this));
+  }
+
+  friend auto operator<<(ostream& os, Block const& blck) -> ostream& {
+    os << "id: " << blck.id << " \ndata: " << blck.data
+       << " \nnonce: " << blck.nonce << " \nprevHash: " << blck.prevHash
+       << " \nhash: " << blck.hash;
+    return os;
   }
 };
 
-auto to_json(json& j, Block const& blk) -> void;
-auto from_json(const json& j, Block& blk) -> void;
+template <typename T>
+auto to_json(json& j, Block<T> const& blk) -> void {
+  j = json{{"id", blk.id},
+           {"nonce", blk.nonce},
+           {"data", blk.data},
+           {"prev", blk.prevHash},
+           {"hash", blk.hash}};
+}
 
-auto blockFromFile(string const& filepath) -> Block;
+template <typename T>
+auto from_json(const json& j, Block<T>& blk) -> void {
+  j.at("id").get_to(blk.id);
+  j.at("nonce").get_to(blk.nonce);
+  j.at("data").get_to(blk.data);
+  j.at("prev").get_to(blk.prevHash);
+  j.at("hash").get_to(blk.hash);
+}
+
+template <typename T>
+auto blockFromFile(string const& filepath) -> Block<T> {
+  ifstream fp{filepath};
+  json j;
+  fp >> j;
+  return j.get<Block<T>>();
+}

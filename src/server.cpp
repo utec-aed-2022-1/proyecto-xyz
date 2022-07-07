@@ -79,7 +79,9 @@ auto main() -> int {
   svr.Post("/operation", [&](const Request& /*req*/, Response& res,
                              const ContentReader& content_reader) {
     content_reader([&](const char* data, size_t /*data_length*/) {
-      bank.pushOperation(json::parse(data).get<BankOperation>());
+      json j = json::parse(data);
+      j["id"] = 0;
+      bank.pushOperation(j.get<BankOperation>());
       return true;
     });
   });

@@ -41,7 +41,10 @@ class Bank {
   auto getOperations() -> operations_t const& { return m_operations; }
 
   auto pushOperation(BankOperation bop) -> void {
-    auto const& op = m_operations.emplace_back(std::move(bop));
+    std::visit(overload{[&](auto& bo) { bo.id = this->nextOperationId(); }},
+               bop);
+
+    auto& op = m_operations.emplace_back(std::move(bop));
 
     m_search_by_type[get_type(op)].push_back(m_operations.size() - 1);
 
@@ -84,4 +87,6 @@ class Bank {
     }
     return res;
   }
+
+  auto nextOperationId() const -> size_t { return m_operations.size(); }
 };
