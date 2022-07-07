@@ -13,7 +13,8 @@ import {
   CircularProgress,
   Text,
   Link,
-  Heading
+  Heading,
+  useToast
 } from '@chakra-ui/react'
 
 const axios = require('axios')
@@ -24,6 +25,7 @@ const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [registerForm, setRegisterForm] = useState(0)
   const router = useRouter()
+  const toast = useToast()
 
   const url = 'http://localhost:8000'
 
@@ -42,7 +44,6 @@ const LoginForm = () => {
   }
 
   const userRegister = async ({ dni, name, password }) => {
-    console.log('userRegister', dni, name, password)
     try {
       const response = axios.post(`${url}/user`, {
         dni: dni,
@@ -57,7 +58,6 @@ const LoginForm = () => {
   }
 
   const userLogin = async ({ dni, password }) => {
-    console.log('userLogin', dni, password)
     try {
       const response = axios.get(`${url}/user/${dni}`, {
         dni: dni,
@@ -72,30 +72,19 @@ const LoginForm = () => {
 
   const onSubmit = async (data) => {
     setData(data)
-    if (!registerForm) {
-      try {
-        console.log('data', data)
-        const result = await userLogin(data)
-        setIsLoading(false)
-        if (result.status) {
-          console.log('login successfully')
-          router.push({
-            pathname: '/dashboard/[pid]',
-            query: { pid: data.dni }
-          })
-        } else console.log('error')
-      } catch (error) {
-        setError('Invalid dni or password')
-        setIsLoading(false)
-        setData('')
-      }
-      return
-    }
     try {
       const result = await userRegister(data)
       setIsLoading(false)
-      if (result.status) console.log('register successfully')
-      else console.log('error')
+      if (result.status) {
+        toast({
+          title: 'Register successfully',
+          description: "New Account created.",
+          status: 'success',
+          position: 'top',
+          duration: 3000,
+          isClosable: true
+        })
+      } else console.log('error')
     } catch (error) {
       setError('Invalid data')
       setIsLoading(false)

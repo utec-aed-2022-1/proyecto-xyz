@@ -10,7 +10,8 @@ import {
   Box,
   Button,
   CircularProgress,
-  Heading
+  Heading,
+  useToast
 } from '@chakra-ui/react'
 
 const axios = require('axios')
@@ -20,7 +21,7 @@ const Operation = () => {
   const [operationType, setOperationType] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [operationAdded, setOperationAdded] = useState(0)
+  const toast = useToast()
 
   const url = 'http://localhost:8000'
 
@@ -35,9 +36,7 @@ const Operation = () => {
   }
 
   const addOperation = async (data) => {
-    console.log('addOperation', data)
     if (data.operationType === 'transfer') {
-      console.log('transfer')
       try {
         const response = axios.post(`${url}/operation`, {
           amount: parseInt(data.amount),
@@ -48,7 +47,6 @@ const Operation = () => {
           type: data.operationType
         })
         setData('')
-        console.log('response', response)
         return response
       } catch (err) {
         console.error(err)
@@ -57,7 +55,6 @@ const Operation = () => {
     }
 
     if (data.operationType === 'sale_register') {
-      console.log('sale_register')
       try {
         const response = axios.post(`${url}/operation`, {
           amount: parseInt(data.amount),
@@ -68,7 +65,6 @@ const Operation = () => {
           type: data.operationType
         })
         setData('')
-        console.log('response', response)
         return response
       } catch (err) {
         console.error(err)
@@ -76,7 +72,6 @@ const Operation = () => {
       return
     }
 
-    console.log('withdrawal')
     try {
       const response = axios.post(`${url}/operation`, {
         amount: parseInt(data.amount),
@@ -86,7 +81,6 @@ const Operation = () => {
         type: data.operationType
       })
       setData('')
-      console.log('response', response)
       return response
     } catch (err) {
       console.error(err)
@@ -94,32 +88,55 @@ const Operation = () => {
   }
 
   const onSubmit = async (data) => {
-    console.log('data', data)
     setData(data)
     try {
       const result = await addOperation(data)
-      console.log('result', result)
-      // setIsLoading(false)
-      // if (result.status) {
-      //   console.log('login successfully')
-      // } else console.log('error')
+      setIsLoading(false)
+      if (result.status !== 200) {
+        toast({
+          title: 'Error',
+          status: 'error',
+          position: 'top',
+          duration: 3000,
+          isClosable: true
+        })
+        return
+      }
+      
+      if (data.operationType === 'transfer') {
+        toast({
+          title: 'Transfer registered',
+          status: 'success',
+          position: 'top',
+          duration: 3000,
+          isClosable: true
+        })
+        return
+      }
+
+      if (data.operationType === 'sale_register') {
+        toast({
+          title: 'Sales registered',
+          status: 'success',
+          position: 'top',
+          duration: 3000,
+          isClosable: true
+        })
+        return
+      }
+
+      toast({
+        title: 'Withdrawal registered',
+        status: 'success',
+        position: 'top',
+        duration: 3000,
+        isClosable: true
+      })
     } catch (error) {
       setError('Invalid dni or password')
       setIsLoading(false)
       setData('')
     }
-    //   return
-    // }
-    // try {
-    //   const result = await userRegister(data)
-    //   setIsLoading(false)
-    //   if (result.status) console.log('register successfully')
-    //   else console.log('error')
-    // } catch (error) {
-    //   setError('Invalid data')
-    //   setIsLoading(false)
-    //   setData('')
-    // }
   }
 
   return (
