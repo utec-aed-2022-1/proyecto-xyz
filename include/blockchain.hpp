@@ -39,8 +39,8 @@ class Blockchain {
 
   auto getBlocks() -> blocks_t const& { return this->bc; }
 
-  void push(T data) {
-    Block<T> new_block;
+  auto push(T data) -> block_t const& {
+    block_t new_block;
 
     new_block.data = std::move(data);
     new_block.id = this->nextId();
@@ -51,6 +51,8 @@ class Blockchain {
 
     new_block.mine(this->difficulty);
     this->bc.push_back(new_block);
+
+    return this->bc.back();
   }
 
   auto isValid() -> bool {
