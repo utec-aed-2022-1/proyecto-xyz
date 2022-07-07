@@ -50,7 +50,7 @@ auto main() -> int {
     res.set_content(json{bank.getUser(id)}.dump(), "application/json");
   });
 
-  svr.Post("/user", [&](const Request& /*req*/, Response& res,
+  svr.Post("/user", [&](const Request& /*req*/, Response& /*res*/,
                         const ContentReader& content_reader) {
     content_reader([&](const char* data, size_t /*data_length*/) {
       bank.addUser(json::parse(data).get<User>());
@@ -100,7 +100,7 @@ auto main() -> int {
     }
   });
 
-  svr.Post("/operation", [&](const Request& /*req*/, Response& res,
+  svr.Post("/operation", [&](const Request& /*req*/, Response& /*res*/,
                              const ContentReader& content_reader) {
     content_reader([&](const char* data, size_t /*data_length*/) {
       json j = json::parse(data);
