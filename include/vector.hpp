@@ -82,8 +82,9 @@ class Vector {
   auto end() const -> iterator { return m_arr + m_size; }
 
   auto front() -> element_type& { return *this->begin(); }
-
+  auto front() const -> element_type const& { return *this->begin(); }
   auto back() -> element_type& { return m_arr[m_size - 1]; }
+  auto back() const -> element_type const& { return m_arr[m_size - 1]; }
 
   auto operator[](size_type index) -> element_type& { return m_arr[index]; }
 
