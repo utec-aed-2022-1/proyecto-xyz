@@ -6,6 +6,8 @@
 #include <stdexcept>
 #include <utility>
 
+#include "json.hpp"
+
 template <typename T>
 class Vector {
  public:
@@ -148,4 +150,20 @@ class Vector {
       this->enlarge();
     }
   }
+
+ public:
+  friend auto to_json(nlohmann::json& j, Vector const& vec) -> void {
+    j.clear();
+
+    for (auto const& e : vec) {
+      j.push_back(e);
+    }
+  }
+
+  friend auto from_json(const nlohmann::json& j, Vector& vec) -> void {
+    vec.clear();
+    for (auto const& e : j) {
+      vec.push_back(e);
+    }
+  };
 };
