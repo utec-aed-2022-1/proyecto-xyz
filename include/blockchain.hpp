@@ -99,13 +99,15 @@ class Blockchain {
     }
   }
 
-  auto front() -> Block<T> { return this->bc.front(); }
-  auto size() -> size_t { return this->bc.size(); }
   auto begin() -> iterator { return this->bc.begin(); }
   auto end() -> iterator { return this->bc.end(); }
 
+  auto front() -> block_t { return this->bc.front(); }
   auto back() -> block_t { return this->bc.back(); }
+
+  [[nodiscard]] auto size() const -> size_t { return this->bc.size(); }
   auto empty() -> bool { return this->bc.empty(); }
+
   auto nextId() -> size_t { return this->bc.size() + 1; };
 
   auto find(size_t position) -> T const& { return this->bc.at(position).data; }
