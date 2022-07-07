@@ -13,7 +13,8 @@ import {
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons'
 import Link from 'next/link'
 
-const Navbar = () => {
+const Navbar = (props) => {
+  console.log('props', props)
   const { colorMode, toggleColorMode } = useColorMode()
   const isDark = colorMode === 'dark'
   const [display, changeDisplay] = useState('none')
@@ -45,6 +46,21 @@ const Navbar = () => {
                   Home
                 </Button>
               </Link>
+              {props.opt === 'dashboard' ? (
+                <Link href={'/dashboard/' + props.id}>
+                  <Button
+                    as="a"
+                    variant="ghost"
+                    aria-label="Home"
+                    my={5}
+                    w="100%"
+                  >
+                    Dashboard
+                  </Button>
+                </Link>
+              ) : (
+                ''
+              )}
 
               <Link href="/login">
                 <Button
@@ -108,21 +124,25 @@ const Navbar = () => {
               </Button>
             </Link>
 
-            <Link href="/about">
-              <Button as="a" variant="ghost" aria-label="About" my={5} w="100%">
-                About
-              </Button>
-            </Link>
+            {props.opt === 'dashboard' ? (
+              <Link href={'/dashboard/' + props.id}>
+                <Button
+                  as="a"
+                  variant="ghost"
+                  aria-label="Home"
+                  my={5}
+                  w="100%"
+                >
+                  Dashboard
+                </Button>
+              </Link>
+            ) : (
+              ''
+            )}
 
-            <Link href="/contact">
-              <Button
-                as="a"
-                variant="ghost"
-                aria-label="Contact"
-                my={5}
-                w="100%"
-              >
-                Contact
+            <Link href="/login">
+              <Button as="a" variant="ghost" aria-label="About" my={5} w="100%">
+                Login
               </Button>
             </Link>
           </Flex>
