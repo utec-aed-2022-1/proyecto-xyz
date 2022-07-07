@@ -8,6 +8,7 @@
 #include <sstream>
 #include <string>
 #include <type_traits>
+#include <variant>
 #include <vector>
 
 template <
@@ -43,6 +44,11 @@ auto hash_combine(std::array<uint32_t, 8> lhs,
 auto sha256(std::vector<bool> bytes) -> std::array<uint32_t, 8>;
 auto sha256(uint8_t const* octets, uint64_t n_octets)
     -> std::array<uint32_t, 8>;
+
+template <typename... Args>
+auto sha256(std::variant<Args...> const& var) {
+  return std::visit([](auto const& v) { return sha256(v); }, var);
+}
 
 template <typename T>
 auto sha256_raw(T const& v) -> std::array<uint32_t, 8> {
