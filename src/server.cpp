@@ -70,6 +70,29 @@ auto main() -> int {
                id_user_it != params.end()) {
       res.set_content(json(bank.searchByIdUser(id_user_it->second)).dump(),
                       "application/json");
+    } else if (auto id_amount_it = params.find("amount");
+               id_amount_it != params.end()) {
+      throw std::runtime_error("Not implemented");
+    } else if (auto id_date_it = params.find("date");
+               id_date_it != params.end()) {
+      throw std::runtime_error("Not implemented");
+    } else if (auto id_client_it = params.find("id_client");
+               id_client_it != params.end()) {
+      res.set_content(json(bank.searchByIdClient(id_client_it->second)).dump(),
+                      "application/json");
+    } else if (auto id_sender_it = params.find("id_sender");
+               id_sender_it != params.end()) {
+      res.set_content(json(bank.searchByIdSender(id_sender_it->second)).dump(),
+                      "application/json");
+    } else if (auto id_receiver_it = params.find("id_receiver");
+               id_receiver_it != params.end()) {
+      res.set_content(
+          json(bank.searchByIdReceiver(id_receiver_it->second)).dump(),
+          "application/json");
+    } else if (auto id_seller_it = params.find("id_seller");
+               id_seller_it != params.end()) {
+      res.set_content(json(bank.searchByIdSeller(id_seller_it->second)).dump(),
+                      "application/json");
     } else {
       throw std::runtime_error("Not implemented");
     }
