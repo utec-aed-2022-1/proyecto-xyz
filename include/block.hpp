@@ -54,7 +54,7 @@ struct Block {
   }
 
   auto operator==(Block const& other) const -> bool;
-  friend auto operator<<(ostream& os, Block const& blck) -> ostream&;
+  friend auto operator<<(ostream& os, Block const& blk) -> ostream&;
 
   auto getId() -> uint64_t;
   auto getData() -> string const&;
@@ -72,7 +72,7 @@ struct Block {
 
   auto saveInJson(string const& filepath) -> void;
 
-  auto readFromJson(string pathFile, Block& blck) -> void {
+  auto readFromJson(string pathFile, Block& blk) -> void {
     string line;
 
     ifstream read(pathFile);
@@ -80,8 +80,8 @@ struct Block {
       while (!read.eof()) {
         getline(read, line);
         json jsonParsed = json::parse(line);
-        blck.id = jsonParsed["id"];
-        blck.data = jsonParsed["data"];
+        blk.id = jsonParsed["id"];
+        blk.data = jsonParsed["data"];
       }
       read.close();
     } else
