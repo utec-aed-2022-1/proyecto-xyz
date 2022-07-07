@@ -112,6 +112,8 @@ class Blockchain {
 
   auto find(size_t position) -> T const& { return this->bc.at(position).data; }
 
+  auto at(size_t index) -> block_t const& { return this->bc.at(index); }
+
   void edit(size_t position, T data) {
     block_t& blk = this->bc.at(position);
     blk.data = std::move(data);
