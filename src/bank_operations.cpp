@@ -5,6 +5,7 @@
 #include <variant>
 
 #include "json.hpp"
+#include "sha256.hpp"
 #include "util.hpp"
 
 using nlohmann::json;
@@ -23,6 +24,10 @@ auto from_json(const json& j, BankWithdrawal& bw) -> void {
   j.at("amount").get_to(bw.amount);
   j.at("date").get_to(bw.date);
   j.at("id_client").get_to(bw.id_client);
+}
+
+auto sha256(BankWithdrawal const& bw) -> std::array<uint32_t, 8> {
+  return sha256(bw.id, bw.id_user, bw.amount, bw.date, bw.id_client);
 }
 
 const std::string BankTransfer::type = "transfer";
@@ -46,6 +51,11 @@ auto from_json(const json& j, BankTransfer& bt) -> void {
   j.at("id_receiver").get_to(bt.id_receiver);
 }
 
+auto sha256(BankTransfer const& bt) -> std::array<uint32_t, 8> {
+  return sha256(bt.id, bt.id_user, bt.amount, bt.date, bt.id_sender,
+                bt.id_receiver);
+}
+
 const std::string BankSaleRegister::type = "sale_register";
 
 auto to_json(json& j, BankSaleRegister const& bsr) -> void {
@@ -65,6 +75,11 @@ auto from_json(const json& j, BankSaleRegister& bw) -> void {
   j.at("date").get_to(bw.date);
   j.at("id_client").get_to(bw.id_client);
   j.at("id_seller").get_to(bw.id_seller);
+}
+
+auto sha256(BankSaleRegister const& bsr) -> std::array<uint32_t, 8> {
+  return sha256(bsr.id, bsr.id_user, bsr.amount, bsr.date, bsr.id_client,
+                bsr.id_seller);
 }
 
 auto to_json(json& j, BankOperation const& bop) -> void {
