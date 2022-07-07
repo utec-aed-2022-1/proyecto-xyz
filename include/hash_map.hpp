@@ -237,4 +237,16 @@ class HashMap {
     this->sort_bucket(from);
     this->sort_bucket(last);
   }
+
+  friend auto to_json(nlohmann::json& j, HashMap const& hm) -> void {
+    for (auto const& [k, v] : hm) {
+      j[k] = v;
+    }
+  }
+
+  friend auto from_json(const nlohmann::json& j, HashMap& hm) -> void {
+    for (auto const& [key, value] : j.items()) {
+      hm[key] = value;
+    }
+  }
 };
