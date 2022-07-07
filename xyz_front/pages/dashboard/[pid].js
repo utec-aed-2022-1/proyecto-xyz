@@ -1,33 +1,19 @@
 import Head from 'next/head'
 import Navbar from '../../components/Navbar'
 
-import { Box, Container, Button, Text, VStack, Link } from '@chakra-ui/react'
+import { Box, Container, Button, Text, VStack } from '@chakra-ui/react'
 import { ArrowForwardIcon } from '@chakra-ui/icons'
 
 import { useRouter } from 'next/router'
 
 export default function Dashboard() {
   const router = useRouter()
-  const { pid } = router.query
-  const dni = { pid }
+  const pid = router.query.pid
+  const dni = pid
 
-  const goToWithdrawal = () => {
+  const goToView = (view) => {
     router.push({
-      pathname: '/withdrawal/[pid]',
-      query: { pid: dni }
-    })
-  }
-
-  const goToTransfer = () => {
-    router.push({
-      pathname: '/transfer/[pid]',
-      query: { pid: dni }
-    })
-  }
-
-  const goToSalesRecord = () => {
-    router.push({
-      pathname: '/sales-record/[pid]',
+      pathname: `/${view}/[pid]`,
       query: { pid: dni }
     })
   }
@@ -51,39 +37,52 @@ export default function Dashboard() {
             justifyContent="center"
             alignItems="stretch"
           >
-            <Link href="/withdrawal">
-              <Button
-                w="100%"
-                rightIcon={<ArrowForwardIcon />}
-                colorScheme="teal"
-                variant="outline"
-                onClick={goToWithdrawal}
-              >
-                Withdrawal
-              </Button>
-            </Link>
-            <Link href="/transfer">
-              <Button
-                w="100%"
-                rightIcon={<ArrowForwardIcon />}
-                colorScheme="teal"
-                variant="outline"
-                onClick={goToTransfer}
-              >
-                Transfer
-              </Button>
-            </Link>
-            <Link href="/sales-record">
-              <Button
-                w="100%"
-                rightIcon={<ArrowForwardIcon />}
-                colorScheme="teal"
-                variant="outline"
-                onClick={goToSalesRecord}
-              >
-                Sales Record
-              </Button>
-            </Link>
+            <Button
+              w="100%"
+              rightIcon={<ArrowForwardIcon />}
+              colorScheme="teal"
+              variant="outline"
+              onClick={() => {
+                goToView('withdrawal')
+              }}
+            >
+              Withdrawal
+            </Button>
+            <Button
+              w="100%"
+              rightIcon={<ArrowForwardIcon />}
+              colorScheme="teal"
+              variant="outline"
+              onClick={() => {
+                goToView('transfer')
+              }}
+            >
+              Transfer
+            </Button>
+            <Button
+              w="100%"
+              rightIcon={<ArrowForwardIcon />}
+              colorScheme="teal"
+              variant="outline"
+              onClick={() => {
+                goToView('sales-record')
+              }}
+            >
+              Sales Record
+            </Button>
+          </VStack>
+          <VStack justifyContent="center" alignItems="stretch">
+            <Button
+              w="100%"
+              rightIcon={<ArrowForwardIcon />}
+              colorScheme="teal"
+              variant="outline"
+              onClick={() => {
+                goToView('operation')
+              }}
+            >
+              Add Operation
+            </Button>
           </VStack>
         </Box>
       </Container>

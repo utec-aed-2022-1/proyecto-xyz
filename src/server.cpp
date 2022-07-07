@@ -73,8 +73,8 @@ auto main() -> int {
     }
   });
 
-  svr.Post("/operations", [&](const Request& /*req*/, Response& res,
-                              const ContentReader& content_reader) {
+  svr.Post("/operation", [&](const Request& /*req*/, Response& res,
+                             const ContentReader& content_reader) {
     content_reader([&](const char* data, size_t /*data_length*/) {
       json j = json::parse(data);
       j["id"] = 0;
