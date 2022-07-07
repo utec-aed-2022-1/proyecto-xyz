@@ -3,21 +3,25 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "block.hpp"
 #include "json.hpp"
 
+template <typename T>
 class Blockchain {
  public:
-  using blocks_t = std::vector<Block>;
+  using blocks_t = std::vector<Block<T>>;
 
  private:
-  friend void to_json(nlohmann::json& j, Blockchain const& blocks);
-  friend void from_json(const nlohmann::json& j, Blockchain& blocks);
+  friend void to_json(nlohmann::json& j, Blockchain const& blocks) {
+    j = json{blocks.bc};
+  }
+  friend void from_json(const nlohmann::json& j, Blockchain& blocks) {
+    j.get_to(blocks.bc);
+  }
 
-  using TDATA = std::string;
-  using THASH = std::string;
   using json = nlohmann::json;
 
   blocks_t bc;
@@ -32,27 +36,98 @@ class Blockchain {
   auto operator=(Blockchain const& other) -> Blockchain& = default;
   auto operator=(Blockchain&& other) noexcept -> Blockchain& = default;
 
-  auto getBlocks() -> blocks_t const&;
+  auto getBlocks() -> blocks_t const& { return this->bc; }
 
-  void push(TDATA data);
-  auto isValid() -> bool;
-  void makeValid();
+  void push(T data) {
+    Block<T> new_block;
 
-  auto front() -> Block<T>;
-  auto end() -> Block<T>;
+    new_block.data = std::move(data);
+    new_block.id = this->nextId();
 
-  auto size() -> size_t;
-  auto empty() -> bool;
-  auto nextId() -> size_t;
+    if (!this->empty()) {
+      new_block.prevHash = bc.back().hash;
+    }
 
-  auto find(size_t position) -> TDATA const&;
-  void edit(size_t position, TDATA data);
-  void clear();
+    new_block.mine(this->difficulty);
+    this->bc.push_back(new_block);
+  }
+
+  auto isValid() -> bool {
+    if (this->size() == 0) {
+      return true;
+    }
+
+    auto it = this->bc.begin();
+    std::string const* prevHash = &it->hash;
+
+    if (!it->isValid(this->difficulty)) {
+      return false;
+    }
+    ++it;
+
+    while (it != this->bc.end()) {
+      if (it->prevHash != *prevHash || it->calculateHash() != it->hash ||
+          !it->isValid(this->difficulty)) {
+        return false;
+      }
+
+      prevHash = &it->hash;
+    }
+
+    return true;
+  }
+
+  void makeValid() {
+    if (this->empty()) {
+      return;
+    }
+
+    auto it = this->bc.begin();
+    it->mine(this->difficulty);
+    std::string const* prevHash = &it->hash;
+
+    while (it != this->bc.end()) {
+      it->prevHash = *prevHash;
+      it->mine(this->difficulty);
+
+      prevHash = &it->hash;
+    }
+  }
+
+  auto front() -> Block<T> { return this->bc.front(); }
+  auto end() -> Block<T> { return this->bc.back(); }
+  auto size() -> size_t { return this->bc.size(); }
+  auto empty() -> bool { return this->bc.empty(); }
+  auto nextId() -> size_t { return this->bc.size() + 1; };
+
+  auto find(size_t position) -> T const& { return this->bc.at(position).data; }
+
+  void edit(size_t position, T data) {
+    Block<T>& blk = this->bc.at(position);
+    blk.data = std::move(data);
+    blk.mine(this->difficulty);
+
+    std::string const* prevHash = &blk.hash;
+
+    for (size_t i = position + 1; i < this->bc.size(); ++i) {
+      Block<T>& blk = this->bc[i];
+
+      blk.prevHash = *prevHash;
+      blk.mine(this->difficulty);
+
+      prevHash = &blk.hash;
+    }
+  }
+
+  void clear() { this->bc.clear(); }
 
   ~Blockchain() = default;
 };
 
-void to_json(nlohmann::json& j, Blockchain const& blocks);
-void from_json(const nlohmann::json& j, Blockchain& blocks);
-
-auto blockchainFromFile(std::string const& filepath) -> Blockchain;
+template <typename T>
+auto blockchainFromFile(std::string const& filepath) -> Blockchain<T> {
+  std::ifstream fp{filepath};
+  nlohmann::json j;
+  fp >> j;
+  return j.get<Blockchain<T>>();
+}
