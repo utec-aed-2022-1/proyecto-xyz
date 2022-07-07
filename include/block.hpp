@@ -31,8 +31,6 @@ struct Block {
   string prevHash{hashZeros};
   string jsxn;
 
-  // auto readFromJson(string pathFile) -> Block;
-
   Block() = default;
 
   Block(uint64_t id, string data) : id(id), data(data) {
@@ -40,8 +38,6 @@ struct Block {
     hash = hashZeros;
     prevHash = hashZeros;
   }
-
-  Block(string jsxn) : jsxn(jsxn) { readFromJson(jsxn, *this); }
 
   Block(uint64_t id, string data, uint64_t nonce, string prevHash,
         string hash = "")
@@ -71,22 +67,6 @@ struct Block {
   auto mineBlock(uint32_t nDifficulty) -> json;
 
   auto saveInJson(string const& filepath) -> void;
-
-  auto readFromJson(string pathFile, Block& blk) -> void {
-    string line;
-
-    ifstream read(pathFile);
-    if (read.is_open()) {
-      while (!read.eof()) {
-        getline(read, line);
-        json jsonParsed = json::parse(line);
-        blk.id = jsonParsed["id"];
-        blk.data = jsonParsed["data"];
-      }
-      read.close();
-    } else
-      cout << "Unable to open file";
-  }
 };
 
 auto to_json(json& j, Block const& blk) -> void;
