@@ -6,7 +6,8 @@ project('xyz-aed-project', 'cpp',
                            'warning_level=3'
         ])
 
-inc = include_directories('include')
+inc = include_directories('include',
+                          'lists-alvaroguerreroj-lists/include/')
 
 subdir('include')
 subdir('src')

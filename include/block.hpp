@@ -54,6 +54,10 @@ struct Block {
            hash == other.hash && prevHash == other.prevHash;
   }
 
+  auto operator!=(Block const& other) const -> bool {
+    return !(*this == other);
+  }
+
   auto getId() -> uint64_t { return id; }
   auto getData() -> T const& { return data; }
   auto getNonce() -> uint64_t { return nonce; }
