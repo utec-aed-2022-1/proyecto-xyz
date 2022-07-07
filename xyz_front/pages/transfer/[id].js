@@ -18,7 +18,7 @@ import { useRouter } from 'next/router'
 
 export default function Transfer() {
   const router = useRouter()
-  const { pid } = router.query
+  const pid = router.query.pid
 
   return (
     <div>
@@ -28,7 +28,7 @@ export default function Transfer() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Navbar />
+      <Navbar opt="dashboard" id={pid} />
       <Box height="85vh" className="hidden-overflow">
         <Container maxW="5xl">
           <Text fontSize="2xl" align="center">
