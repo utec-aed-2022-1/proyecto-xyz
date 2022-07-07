@@ -25,6 +25,8 @@ auto main() -> int {
   //                                 "id_receiver 1"});
   // bank.pushOperation(
   //     BankWithdrawal{2, "id_user 2", 222, "date 2", "id_client 2"});
+  // bank.pushOperation(BankSaleRegister{3, "id_user 3", 333, "date 3",
+  //                                     "id_client 3", "id_seller 3"});
 
   svr.set_pre_routing_handler([](const auto& req, auto& res) {
     res.set_header("Access-Control-Allow-Headers", "*");
@@ -70,6 +72,29 @@ auto main() -> int {
     } else if (auto id_user_it = params.find("id_user");
                id_user_it != params.end()) {
       res.set_content(json(bank.searchByIdUser(id_user_it->second)).dump(),
+                      "application/json");
+    } else if (auto id_amount_it = params.find("amount");
+               id_amount_it != params.end()) {
+      throw std::runtime_error("Not implemented");
+    } else if (auto id_date_it = params.find("date");
+               id_date_it != params.end()) {
+      throw std::runtime_error("Not implemented");
+    } else if (auto id_client_it = params.find("id_client");
+               id_client_it != params.end()) {
+      res.set_content(json(bank.searchByIdClient(id_client_it->second)).dump(),
+                      "application/json");
+    } else if (auto id_sender_it = params.find("id_sender");
+               id_sender_it != params.end()) {
+      res.set_content(json(bank.searchByIdSender(id_sender_it->second)).dump(),
+                      "application/json");
+    } else if (auto id_receiver_it = params.find("id_receiver");
+               id_receiver_it != params.end()) {
+      res.set_content(
+          json(bank.searchByIdReceiver(id_receiver_it->second)).dump(),
+          "application/json");
+    } else if (auto id_seller_it = params.find("id_seller");
+               id_seller_it != params.end()) {
+      res.set_content(json(bank.searchByIdSeller(id_seller_it->second)).dump(),
                       "application/json");
     } else {
       throw std::runtime_error("Not implemented");
