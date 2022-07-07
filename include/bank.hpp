@@ -29,8 +29,16 @@ class Bank {
   users_t m_users;
   operations_t m_operations;
 
+  // In all types
+  std::unordered_map<size_t, size_t> m_search_by_id;
   std::unordered_map<std::string, std::vector<size_t>> m_search_by_type;
   std::unordered_map<std::string, std::vector<size_t>> m_search_by_id_user;
+
+  // In some types
+  std::unordered_map<std::string, std::vector<size_t>> m_search_by_id_client;
+  std::unordered_map<std::string, std::vector<size_t>> m_search_by_id_sender;
+  std::unordered_map<std::string, std::vector<size_t>> m_search_by_id_receiver;
+  std::unordered_map<std::string, std::vector<size_t>> m_search_by_id_seller;
 
  public:
   Bank() = default;
@@ -50,12 +58,32 @@ class Bank {
                bop);
 
     auto const& op = m_operations.push(std::move(bop)).data;
+    size_t last_index = m_operations.size() - 1;
 
-    m_search_by_type[get_type(op)].push_back(m_operations.size() - 1);
+    // TODO: `amount` and `date` are range searches
 
-    std::string const& id_user = std::visit(
-        [](auto const& bo) -> std::string const& { return bo.id_user; }, op);
-    m_search_by_id_user[id_user].push_back(m_operations.size() - 1);
+    m_search_by_type[get_type(op)].push_back(last_index);
+    std::visit(
+        [&](auto const& bop) {
+          m_search_by_id[bop.id] = last_index;
+          m_search_by_id_user[bop.id_user].push_back(last_index);
+        },
+        op);
+
+    std::visit(
+        overload{[&](BankWithdrawal const& bw) {
+                   m_search_by_id_client[bw.id_client].push_back(last_index);
+                 },
+                 [&](BankTransfer const& bt) {
+                   m_search_by_id_sender[bt.id_sender].push_back(last_index);
+                   m_search_by_id_receiver[bt.id_receiver].push_back(
+                       last_index);
+                 },
+                 [&](BankSaleRegister const& bsr) {
+                   m_search_by_id_client[bsr.id_client].push_back(last_index);
+                   m_search_by_id_seller[bsr.id_seller].push_back(last_index);
+                 }},
+        op);
   }
 
   auto addUser(User p) -> void { m_users[p.dni] = std::move(p); }
@@ -82,7 +110,63 @@ class Bank {
   auto searchByIdUser(std::string const& id_user)
       -> std::vector<BankOperation const*> {
     auto it = m_search_by_id_user.find(id_user);
-    if (it == m_search_by_type.end()) {
+    if (it == m_search_by_id_user.end()) {
+      return {};
+    }
+
+    std::vector<BankOperation const*> res;
+    for (size_t i : it->second) {
+      res.push_back(&m_operations.at(i).data);
+    }
+    return res;
+  }
+
+  auto searchByIdClient(std::string const& id_client)
+      -> std::vector<BankOperation const*> {
+    auto it = m_search_by_id_client.find(id_client);
+    if (it == m_search_by_id_client.end()) {
+      return {};
+    }
+
+    std::vector<BankOperation const*> res;
+    for (size_t i : it->second) {
+      res.push_back(&m_operations.at(i).data);
+    }
+    return res;
+  }
+
+  auto searchByIdSender(std::string const& id_sender)
+      -> std::vector<BankOperation const*> {
+    auto it = m_search_by_id_sender.find(id_sender);
+    if (it == m_search_by_id_sender.end()) {
+      return {};
+    }
+
+    std::vector<BankOperation const*> res;
+    for (size_t i : it->second) {
+      res.push_back(&m_operations.at(i).data);
+    }
+    return res;
+  }
+
+  auto searchByIdReceiver(std::string const& id_receiver)
+      -> std::vector<BankOperation const*> {
+    auto it = m_search_by_id_receiver.find(id_receiver);
+    if (it == m_search_by_id_receiver.end()) {
+      return {};
+    }
+
+    std::vector<BankOperation const*> res;
+    for (size_t i : it->second) {
+      res.push_back(&m_operations.at(i).data);
+    }
+    return res;
+  }
+
+  auto searchByIdSeller(std::string const& id_seller)
+      -> std::vector<BankOperation const*> {
+    auto it = m_search_by_id_seller.find(id_seller);
+    if (it == m_search_by_id_seller.end()) {
       return {};
     }
 
