@@ -5,11 +5,13 @@
 #include "catch.hpp"
 #include "json.hpp"
 
-using blocks_t = Blockchain::blocks_t;
+using blocks_t = Blockchain<std::string>::blocks_t;
+using block_t = Block<std::string>;
 using json = nlohmann::json;
 
 TEST_CASE("blockchain", "[blockchain]") {
-  Blockchain bs = blockchainFromFile("tests/json/blockchain1.json");
+  Blockchain<std::string> bs =
+      blockchainFromFile<std::string>("tests/json/blockchain1.json");
 
   REQUIRE(
       bs.getBlocks() ==
@@ -19,7 +21,7 @@ TEST_CASE("blockchain", "[blockchain]") {
            "0003D8C5719DD759F74C77AC1F32A6EBA6F202F081DDAF1DD9808D22AF8982A"
            "E"}});
 
-  bs = blockchainFromFile("tests/json/blockchain2.json");
+  bs = blockchainFromFile<std::string>("tests/json/blockchain2.json");
 
   REQUIRE(
       bs.getBlocks() ==
@@ -52,7 +54,7 @@ TEST_CASE("blockchain", "[blockchain]") {
   bs.push("jefferson-prestamo: 10000$");
   REQUIRE(
       bs.getBlocks().back() ==
-      Block{
+      block_t{
           4, "jefferson-prestamo: 10000$", 2925,
           "00019E1549661BCF33425C23B3C47F0D275733D20B30681C931219BB9D97EF18",
           "00020C1E5C693D80F35D577A12CD7185A5700FAABDEBB78D9465A5EF0176B1A7"});
@@ -60,7 +62,7 @@ TEST_CASE("blockchain", "[blockchain]") {
   bs.push("maria-prestamo: 1240$");
   REQUIRE(
       bs.getBlocks().back() ==
-      Block{
+      block_t{
           5, "maria-prestamo: 1240$", 1078,
           "00020C1E5C693D80F35D577A12CD7185A5700FAABDEBB78D9465A5EF0176B1A7",
           "00070737C2D76C6DD998053D7A90F591936419A8D3F4DD0B290B31AD8BCD6CE5"});
