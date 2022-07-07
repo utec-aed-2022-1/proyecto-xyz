@@ -41,6 +41,7 @@ auto hash_combine(uint64_t lhs, uint64_t rhs) -> size_t;
 auto hash_combine(std::array<uint32_t, 8> lhs,
                   std::array<uint32_t, 8> const& rhs)
     -> std::array<uint32_t, 8>;
+
 auto sha256(std::vector<bool> bytes) -> std::array<uint32_t, 8>;
 auto sha256(uint8_t const* octets, uint64_t n_octets)
     -> std::array<uint32_t, 8>;
