@@ -22,6 +22,8 @@ auto main() -> int {
                                   "id_receiver 1"});
   bank.pushOperation(
       BankWithdrawal{2, "id_user 2", 222, "date 2", "id_client 2"});
+  bank.pushOperation(BankSaleRegister{3, "id_user 3", 333, "date 3",
+                                      "id_client 3", "id_seller 3"});
 
   svr.set_pre_routing_handler([](const auto& req, auto& res) {
     res.set_header("Access-Control-Allow-Headers", "*");
