@@ -78,18 +78,6 @@ auto Block::mine(uint32_t difficulty) -> void {
   }
 }
 
-auto Block::mineBlock(uint32_t nDifficulty) -> json {
-  mine(nDifficulty);
-
-  json dataJson = toJson(*this);
-
-  cout << "nDifficulty: " << nDifficulty << endl;
-  cout << "nonce: " << nonce << endl;
-  cout << "hash: " << hash << endl;
-
-  return dataJson;
-}
-
 auto Block::saveInJson(string const& filepath) -> void {
   jsonToFile(filepath, json(*this));
 }
