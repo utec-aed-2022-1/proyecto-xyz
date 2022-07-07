@@ -51,6 +51,13 @@ class Vector {
     swap(m_size, other.m_size);
   }
 
+  void swap(Vector&& other) {
+    using std::swap;
+    swap(m_arr, other.m_arr);
+    swap(m_capacity, other.m_capacity);
+    swap(m_size, other.m_size);
+  }
+
   auto operator=(Vector const& other) -> Vector& {
     this->swap(Vector{other});
     return *this;
