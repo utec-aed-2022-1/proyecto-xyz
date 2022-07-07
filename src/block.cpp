@@ -34,18 +34,6 @@ auto blockFromFile(string const& filepath) -> Block {
   return j.get<Block>();
 }
 
-auto toJson(Block const& bl) -> json {
-  json j;
-
-  j["id"] = bl.id;
-  j["nonce"] = bl.nonce;
-  j["data"] = bl.data;
-  j["prevHash"] = bl.prevHash;
-  j["hash"] = bl.hash;
-
-  return j;
-}
-
 auto Block::operator==(Block const& other) const -> bool {
   return id == other.id && data == other.data && nonce == other.nonce &&
          hash == other.hash && prevHash == other.prevHash;
