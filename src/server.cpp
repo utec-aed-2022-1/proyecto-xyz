@@ -18,7 +18,7 @@ auto main() -> int {
   // bank.addUser(User{"1", "name1", "pass1"});
   // bank.addUser(User{"2", "name2", "pass2"});
   std::string const bank_file = "bank.json";
-  Bank bank = getTFromJsonFile<Bank>(bank_file);
+  Bank bank;
 
   // bank.pushOperation(BankTransfer{1, "id_user 1", 111, "date 1", "id_sender 1",
   //                                 "id_receiver 1"});
