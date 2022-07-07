@@ -1,11 +1,11 @@
 #pragma once
 #include <iostream>
 #include <string>
-#include <unordered_map>
 #include <vector>
 
 #include "bank_operations.hpp"
 #include "blockchain.hpp"
+#include "hash_map.hpp"
 #include "json.hpp"
 #include "util.hpp"
 
@@ -30,15 +30,15 @@ class Bank {
   operations_t m_operations;
 
   // In all types
-  std::unordered_map<size_t, size_t> m_search_by_id;
-  std::unordered_map<std::string, std::vector<size_t>> m_search_by_type;
-  std::unordered_map<std::string, std::vector<size_t>> m_search_by_id_user;
+  HashMap<size_t, size_t> m_search_by_id;
+  HashMap<std::string, std::vector<size_t>> m_search_by_type;
+  HashMap<std::string, std::vector<size_t>> m_search_by_id_user;
 
   // In some types
-  std::unordered_map<std::string, std::vector<size_t>> m_search_by_id_client;
-  std::unordered_map<std::string, std::vector<size_t>> m_search_by_id_sender;
-  std::unordered_map<std::string, std::vector<size_t>> m_search_by_id_receiver;
-  std::unordered_map<std::string, std::vector<size_t>> m_search_by_id_seller;
+  HashMap<std::string, std::vector<size_t>> m_search_by_id_client;
+  HashMap<std::string, std::vector<size_t>> m_search_by_id_sender;
+  HashMap<std::string, std::vector<size_t>> m_search_by_id_receiver;
+  HashMap<std::string, std::vector<size_t>> m_search_by_id_seller;
 
  public:
   Bank() = default;
