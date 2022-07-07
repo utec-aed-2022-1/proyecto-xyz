@@ -17,7 +17,7 @@ import { SearchIcon } from '@chakra-ui/icons'
 
 import { useRouter } from 'next/router'
 
-export default function Withdrawal() {
+export default function Transfer() {
   const axios = require('axios')
   const [data, setData] = useState([])
   const router = useRouter()
@@ -32,7 +32,7 @@ export default function Withdrawal() {
   const getOperations = async () => {
     try {
       const response = await axios.get(
-        `${url}/operations/search?type=withdrawal&id_user=${pid}`
+        `${url}/operations/search?type=transfer&id_user=${pid}`
       )
       setData(response.data)
     } catch (err) {
@@ -43,7 +43,7 @@ export default function Withdrawal() {
   return (
     <div>
       <Head>
-        <title>Withdrawal</title>
+        <title>Transfer</title>
         <meta name="description" content="XYZ App" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -52,7 +52,7 @@ export default function Withdrawal() {
       <Box height="85vh" className="hidden-overflow">
         <Container maxW="5xl">
           <Text fontSize="2xl" align="center">
-            Withdrawal
+            Transfer
           </Text>
           <Flex flexWrap="wrap">
             <Box p="4">
@@ -113,6 +113,11 @@ export default function Withdrawal() {
                   <Box mx="2">
                     <Text fontWeight="bold">Amount:</Text>
                     <Text>S/{dat.amount}</Text>
+                  </Box>
+                  <Spacer />
+                  <Box mx="2">
+                    <Text fontWeight="bold">Account receiver:</Text>
+                    <Text>{dat.id_receiver}</Text>
                   </Box>
                   <Spacer />
                   <Box mx="2">

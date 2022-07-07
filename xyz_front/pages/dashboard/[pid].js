@@ -8,9 +8,7 @@ import { useRouter } from 'next/router'
 
 export default function Dashboard() {
   const router = useRouter()
-  const pid = router.query.pid
-  const name = router.query.name
-  const dni = pid
+  const dni = router.query.pid
 
   const goToView = (view) => {
     router.push({
@@ -30,7 +28,7 @@ export default function Dashboard() {
       <Navbar />
       <Container maxW="2xl" py="10" height="75vh" centerContent>
         <Text fontSize="4xl">Operations</Text>
-        <Text fontSize="2xl">User: {pid}</Text>
+        <Text fontSize="2xl">User: {dni}</Text>
         <Box height="100%">
           <VStack
             spacing={5}
@@ -66,10 +64,10 @@ export default function Dashboard() {
               colorScheme="teal"
               variant="outline"
               onClick={() => {
-                goToView('sales-record')
+                goToView('sale-register')
               }}
             >
-              Sales Record
+              Sales Register
             </Button>
           </VStack>
           <VStack justifyContent="center" alignItems="stretch">

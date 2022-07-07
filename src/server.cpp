@@ -15,15 +15,15 @@ auto main() -> int {
   Server svr;
 
   Bank bank;
-  bank.addUser(User{"1", "name1", "pass1"});
-  bank.addUser(User{"2", "name2", "pass2"});
+  // bank.addUser(User{"1", "name1", "pass1"});
+  // bank.addUser(User{"2", "name2", "pass2"});
 
-  bank.pushOperation(BankTransfer{1, "id_user 1", 111, "date 1", "id_sender 1",
-                                  "id_receiver 1"});
-  bank.pushOperation(
-      BankWithdrawal{2, "id_user 2", 222, "date 2", "id_client 2"});
-  bank.pushOperation(BankSaleRegister{3, "id_user 3", 333, "date 3",
-                                      "id_client 3", "id_seller 3"});
+  // bank.pushOperation(BankTransfer{1, "id_user 1", 111, "date 1", "id_sender 1",
+  //                                 "id_receiver 1"});
+  // bank.pushOperation(
+  //     BankWithdrawal{2, "id_user 2", 222, "date 2", "id_client 2"});
+  // bank.pushOperation(BankSaleRegister{3, "id_user 3", 333, "date 3",
+  //                                     "id_client 3", "id_seller 3"});
 
   svr.set_pre_routing_handler([](const auto& req, auto& res) {
     res.set_header("Access-Control-Allow-Headers", "*");
