@@ -1,0 +1,40 @@
+version: '3'
+
+vars:
+  build_dir: "compile/"
+
+tasks:
+  build:
+    cmds:
+      - meson compile
+      - cd {{.build_dir}} && ninja
+    sources:
+      - src/*
+      - include/*
+    generates:
+      - "{{.build_dir}}/**"
+
+  run:
+    deps: [build]
+    cmds: 
+      - ./{{.build_dir}}src/main
+
+  serve:
+    deps: [build]
+    cmds: 
+      - ./{{.build_dir}}src/server
+
+  setup:
+    cmds:
+      - meson setup {{.CLI_ARGS}} {{.build_dir}}
+
+  clean:
+    cmds:
+      - rm -rf {{.build_dir}}
+    status:
+      - test ! -d {{.build_dir}}
+
+  test:
+    deps: [build]
+    cmds:
+      - meson test -C {{.build_dir}} {{.CLI_ARGS}}
