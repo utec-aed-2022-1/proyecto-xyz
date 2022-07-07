@@ -98,8 +98,8 @@ class Blockchain {
   }
 
   auto front() -> Block<T> { return this->bc.front(); }
-  auto end() -> Block<T> { return this->bc.back(); }
   auto size() -> size_t { return this->bc.size(); }
+  auto back() -> block_t { return this->bc.back(); }
   auto empty() -> bool { return this->bc.empty(); }
   auto nextId() -> size_t { return this->bc.size() + 1; };
 
