@@ -9,6 +9,7 @@ import { useRouter } from 'next/router'
 export default function Dashboard() {
   const router = useRouter()
   const pid = router.query.pid
+  const name = router.query.name
   const dni = pid
 
   const goToView = (view) => {
