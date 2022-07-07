@@ -72,13 +72,40 @@ const LoginForm = () => {
 
   const onSubmit = async (data) => {
     setData(data)
+    if (!registerForm) {
+      try {
+        const result = await userLogin(data)
+        console.log('data', result)
+        setIsLoading(false)
+        if (result.status !== 200) {
+          toast({
+            title: 'error',
+            status: 'error',
+            position: 'top',
+            duration: 3000,
+            isClosable: true
+          })
+          return
+        }
+        router.push({
+          pathname: '/dashboard/[pid]',
+          query: { pid: data.dni }
+        })
+      } catch (error) {
+        setError('Invalid dni or password')
+        setIsLoading(false)
+        setData('')
+      }
+      return
+    }
+
     try {
       const result = await userRegister(data)
       setIsLoading(false)
       if (result.status) {
         toast({
           title: 'Register successfully',
-          description: "New Account created.",
+          description: 'New Account created.',
           status: 'success',
           position: 'top',
           duration: 3000,
