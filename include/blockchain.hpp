@@ -12,7 +12,8 @@
 template <typename T>
 class Blockchain {
  public:
-  using blocks_t = std::vector<Block<T>>;
+  using block_t = Block<T>;
+  using blocks_t = std::vector<block_t>;
 
  private:
   friend void to_json(nlohmann::json& j, Blockchain const& blocks) {
@@ -103,14 +104,14 @@ class Blockchain {
   auto find(size_t position) -> T const& { return this->bc.at(position).data; }
 
   void edit(size_t position, T data) {
-    Block<T>& blk = this->bc.at(position);
+    block_t& blk = this->bc.at(position);
     blk.data = std::move(data);
     blk.mine(this->difficulty);
 
     std::string const* prevHash = &blk.hash;
 
     for (size_t i = position + 1; i < this->bc.size(); ++i) {
-      Block<T>& blk = this->bc[i];
+      block_t& blk = this->bc[i];
 
       blk.prevHash = *prevHash;
       blk.mine(this->difficulty);
