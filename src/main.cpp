@@ -6,6 +6,7 @@
 #include "bank.hpp"
 #include "blockchain.hpp"
 #include "json.hpp"
+#include "vector.hpp"
 
 using json = nlohmann::json;
 using namespace std;
@@ -33,7 +34,7 @@ auto main() -> int { /*
   // json jsxn = blck.mineBlock(3);
 
   Blockchain bs = blockchainFromFile<std::string>("mainjson.json");
-  vector<Block<std::string>> xd;
+  Vector<Block<std::string>> xd;
   xd = {{1, "mauri", 680,
          "000000000000000000000000000000000000000000"
          "0000000000000000000000",
