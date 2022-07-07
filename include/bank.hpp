@@ -17,6 +17,9 @@ struct User {
   string dni;
   string name;
   string password;
+
+  User() {}
+  User(string dni, string name, string password) : dni{dni}, name{name}, password{password} {}
 };
 
 auto to_json(json& j, User const& p) -> void;

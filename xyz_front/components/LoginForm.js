@@ -45,7 +45,7 @@ const LoginForm = () => {
 
   const userRegister = async ({ dni, name, password }) => {
     try {
-      const response = axios.post(`${url}/user`, {
+      const response = await axios.post(`${url}/user`, {
         dni: dni,
         name: name,
         password: password
@@ -59,7 +59,7 @@ const LoginForm = () => {
 
   const userLogin = async ({ dni, password }) => {
     try {
-      const response = axios.get(`${url}/user/${dni}`, {
+      const response = await axios.get(`${url}/user/${dni}`, {
         dni: dni,
         password: password
       })
@@ -75,7 +75,6 @@ const LoginForm = () => {
     if (!registerForm) {
       try {
         const result = await userLogin(data)
-        console.log('data', result)
         setIsLoading(false)
         if (result.status !== 200) {
           toast({
@@ -102,16 +101,24 @@ const LoginForm = () => {
     try {
       const result = await userRegister(data)
       setIsLoading(false)
-      if (result.status) {
+      if (result.status !== 200) {
         toast({
-          title: 'Register successfully',
-          description: 'New Account created.',
-          status: 'success',
+          title: 'error',
+          status: 'error',
           position: 'top',
           duration: 3000,
           isClosable: true
         })
-      } else console.log('error')
+        return
+      }
+      toast({
+        title: 'Register successfully',
+        description: 'New Account created.',
+        status: 'success',
+        position: 'top',
+        duration: 3000,
+        isClosable: true
+      })
     } catch (error) {
       setError('Invalid data')
       setIsLoading(false)

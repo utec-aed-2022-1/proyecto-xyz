@@ -1,3 +1,6 @@
+#include <stdio.h>
+
+#include <cassert>
 #include <stdexcept>
 #include <string>
 

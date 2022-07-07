@@ -48,7 +48,7 @@ const Operation = () => {
   const addOperation = async (data) => {
     if (data.operationType === 'transfer') {
       try {
-        const response = axios.post(`${url}/operation`, {
+        const response = await axios.post(`${url}/operation`, {
           amount: parseInt(data.amount),
           date: data.date,
           id_sender: data.dni,
