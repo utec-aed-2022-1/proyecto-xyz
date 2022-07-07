@@ -26,7 +26,7 @@ const uint64_t nonceDefaultVal = -1;
 template <typename T>
 struct Block {
   uint64_t id{0};
-  T data{""};
+  T data{};
   uint64_t nonce{0};
   string hash{hashZeros};
   string prevHash{hashZeros};

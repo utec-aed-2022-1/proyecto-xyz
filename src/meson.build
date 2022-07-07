@@ -20,6 +20,7 @@ httplib_library = library('httplib',
 server_exe = executable('server',
                         'server.cpp',
                         link_with : [bank_library,
+                                     sha256_library,
                                      httplib_library],
                         include_directories : inc)
 

@@ -12,7 +12,10 @@
 template <typename T>
 class Blockchain {
  public:
-  using blocks_t = std::vector<Block<T>>;
+  using block_t = Block<T>;
+  using blocks_t = std::vector<block_t>;
+
+  using iterator = typename blocks_t::iterator;
 
  private:
   friend void to_json(nlohmann::json& j, Blockchain const& blocks) {
@@ -38,8 +41,8 @@ class Blockchain {
 
   auto getBlocks() -> blocks_t const& { return this->bc; }
 
-  void push(T data) {
-    Block<T> new_block;
+  auto push(T data) -> block_t const& {
+    block_t new_block;
 
     new_block.data = std::move(data);
     new_block.id = this->nextId();
@@ -50,6 +53,8 @@ class Blockchain {
 
     new_block.mine(this->difficulty);
     this->bc.push_back(new_block);
+
+    return this->bc.back();
   }
 
   auto isValid() -> bool {
@@ -94,23 +99,30 @@ class Blockchain {
     }
   }
 
-  auto front() -> Block<T> { return this->bc.front(); }
-  auto end() -> Block<T> { return this->bc.back(); }
-  auto size() -> size_t { return this->bc.size(); }
+  auto begin() -> iterator { return this->bc.begin(); }
+  auto end() -> iterator { return this->bc.end(); }
+
+  auto front() -> block_t { return this->bc.front(); }
+  auto back() -> block_t { return this->bc.back(); }
+
+  [[nodiscard]] auto size() const -> size_t { return this->bc.size(); }
   auto empty() -> bool { return this->bc.empty(); }
+
   auto nextId() -> size_t { return this->bc.size() + 1; };
 
   auto find(size_t position) -> T const& { return this->bc.at(position).data; }
 
+  auto at(size_t index) -> block_t const& { return this->bc.at(index); }
+
   void edit(size_t position, T data) {
-    Block<T>& blk = this->bc.at(position);
+    block_t& blk = this->bc.at(position);
     blk.data = std::move(data);
     blk.mine(this->difficulty);
 
     std::string const* prevHash = &blk.hash;
 
     for (size_t i = position + 1; i < this->bc.size(); ++i) {
-      Block<T>& blk = this->bc[i];
+      block_t& blk = this->bc[i];
 
       blk.prevHash = *prevHash;
       blk.mine(this->difficulty);

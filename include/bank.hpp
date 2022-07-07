@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "bank_operations.hpp"
+#include "blockchain.hpp"
 #include "json.hpp"
 #include "util.hpp"
 
@@ -25,11 +26,11 @@ auto from_json(json const& j, User& p) -> void;
 
 class Bank {
  private:
-  using operations_t = std::vector<BankOperation>;
+  using operations_t = Blockchain<BankOperation>;
   using users_t = unordered_map<string, User>;
 
   users_t m_users;
-  std::vector<BankOperation> m_operations;
+  operations_t m_operations;
 
   std::unordered_map<std::string, std::vector<size_t>> m_search_by_type;
   std::unordered_map<std::string, std::vector<size_t>> m_search_by_id_user;
@@ -38,13 +39,20 @@ class Bank {
   Bank() = default;
   auto serialize(string filename) -> bool;
 
-  auto getOperations() -> operations_t const& { return m_operations; }
+  auto getOperations() -> std::vector<BankOperation const*> {
+    std::vector<BankOperation const*> ret;
+    for (auto const& block : m_operations) {
+      ret.push_back(&block.data);
+    }
+
+    return ret;
+  }
 
   auto pushOperation(BankOperation bop) -> void {
     std::visit(overload{[&](auto& bo) { bo.id = this->nextOperationId(); }},
                bop);
 
-    auto& op = m_operations.emplace_back(std::move(bop));
+    auto const& op = m_operations.push(std::move(bop)).data;
 
     m_search_by_type[get_type(op)].push_back(m_operations.size() - 1);
 
@@ -69,7 +77,7 @@ class Bank {
 
     std::vector<BankOperation const*> res;
     for (size_t i : it->second) {
-      res.push_back(&m_operations.at(i));
+      res.push_back(&m_operations.at(i).data);
     }
     return res;
   }
@@ -83,7 +91,7 @@ class Bank {
 
     std::vector<BankOperation const*> res;
     for (size_t i : it->second) {
-      res.push_back(&m_operations.at(i));
+      res.push_back(&m_operations.at(i).data);
     }
     return res;
   }
