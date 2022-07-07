@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Navbar from '../../components/Navbar'
+import { useForm } from 'react-hook-form'
 
 import {
   Box,
@@ -23,6 +24,12 @@ export default function Transfer() {
   const router = useRouter()
   const pid = router.query.pid
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm()
+
   const url = 'http://localhost:8000'
 
   useEffect(() => {
@@ -37,6 +44,28 @@ export default function Transfer() {
       setData(response.data)
     } catch (err) {
       console.error(err)
+    }
+  }
+
+  const search = async (data) => {
+    try {
+      const response = await axios.get(
+        `${url}/operations/search?id_receiver=${data}`
+      )
+      setData('')
+      return response
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  const onSubmit = async (data) => {
+    try {
+      const result = await search(data.dni_receiver)
+      setData(result.data)
+    } catch (error) {
+      setError('error')
+      setData('')
     }
   }
 
@@ -62,36 +91,30 @@ export default function Transfer() {
             </Box>
             <Spacer />
             <Box p="4">
-              {/* <VStack direction="row" spacing={2} align="center">
-                <Stack spacing={1} direction="row">
-                  <Input placeholder="Search by date" size="sm" width="200px" />
-                  <Flex>
-                    <IconButton
-                      variant="outline"
-                      colorScheme="teal"
+              <VStack direction="row" spacing={2} align="center">
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <Stack spacing={1} direction="row">
+                    <Input
+                      placeholder="Search by receiver dni"
                       size="sm"
-                      aria-label="Search by date"
-                      icon={<SearchIcon />}
+                      width="200px"
+                      {...register('dni_receiver', {
+                        required: 'Please enter the dni receiver'
+                      })}
                     />
-                  </Flex>
-                </Stack>
-                <Stack spacing={1} direction="row">
-                  <Input
-                    placeholder="Search by operation number"
-                    size="sm"
-                    width="200px"
-                  />
-                  <Flex>
-                    <IconButton
-                      variant="outline"
-                      colorScheme="teal"
-                      size="sm"
-                      aria-label="Search by operation number"
-                      icon={<SearchIcon />}
-                    />
-                  </Flex>
-                </Stack>
-              </VStack> */}
+                    <Flex>
+                      <IconButton
+                        variant="outline"
+                        colorScheme="teal"
+                        size="sm"
+                        aria-label="Search by receiver dni"
+                        type="submit"
+                        icon={<SearchIcon />}
+                      />
+                    </Flex>
+                  </Stack>
+                </form>
+              </VStack>
             </Box>
           </Flex>
         </Container>
