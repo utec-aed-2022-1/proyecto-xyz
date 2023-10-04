@@ -1,5 +1,5 @@
-# Proyecto XYZ Blockchai
-### Requerimentos
+# Proyecto XYZ Blockchain
+### Requerimientos
 - Taskfile
 - Meson
 - Ninja
